@@ -1,6 +1,6 @@
 
 export default function Blog() {
   return (
-    <div>Blog</div>
+    <div className="h-screen">Blog</div>
   )
 }

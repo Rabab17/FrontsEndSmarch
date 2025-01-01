@@ -10,10 +10,10 @@ export default function Header() {
 
       {/* القائمة في المنتصف مع زيادة التباعد بين العناصر */}
       <nav className="flex ">
-        <Link to="/" className="text-[#1A71FF] text-lg font-semibold ml-8">الرئيسية</Link>
-        <Link to="/about" className="text-[#1A71FF] text-lg font-semibold ml-8">من نحن</Link>
-        <Link to="/partners" className="text-[#1A71FF] text-lg font-semibold ml-8">شركاء النجاح</Link>
-        <Link to="/blog" className="text-[#1A71FF] text-lg font-semibold">المدونة</Link>
+        <Link to="/" className="text-[#101828] text-lg font-bold ml-8">الرئيسية</Link>
+        <Link to="/about" className="text-[#101828] text-lg  ml-8">من نحن</Link>
+        <Link to="/partners" className="text-[#101828] text-lg  ml-8">شركاء النجاح</Link>
+        <Link to="/blog" className="text-[#101828] text-lg ">المدونة</Link>
       </nav>
 
       {/* زر تسجيل الدخول على اليمين */}

@@ -1,6 +1,6 @@
 
 export default function Partners() {
   return (
-    <div>Partners</div>
+    <div className="h-screen">Partners</div>
   )
 }
