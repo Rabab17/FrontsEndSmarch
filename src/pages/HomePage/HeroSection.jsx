@@ -44,7 +44,7 @@ export default function HeroSection() {
                         </Link>
                     </nav>
 
-                    <button className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 start-button">
+                    <button className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                         تسجيل الدخول
                     </button>
                 </div>
