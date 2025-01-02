@@ -43,15 +43,17 @@ export default function OpinionSection() {
                             </p>
                         </div>
 
-                        <div className=" relative mt-6 flex items-center flex-col">
-                            <div className="absolute left-1/2 transform -translate-x-1/2 -top-9 w-6 h-6 bg-white rotate-45 "></div>
+                        <div className=" relative mt-6 me-6 flex items-center">
+                            <div className="absolute left-[25%] transform -translate-x-1/2 -top-9 w-6 h-6 bg-white rotate-45 "></div>
+                            <div className="ms-4" dir="ltr">
+                                <h4 className=" font-semibold">{opinion.name}</h4>
+                                <p className="text-gray-500 text-sm">Customer</p>
+                            </div>
                             <img
                                 src={opinion.image}
                                 alt="customer"
                                 className="w-16 h-16 rounded-full border-2 border-blue-200 shadow"
                             />
-                            <h4 className="text-blue-800 font-bold mt-2">{opinion.name}</h4>
-                            <p className="text-gray-500 text-sm">Customer</p>
                         </div>
                     </div>
                 ))}
