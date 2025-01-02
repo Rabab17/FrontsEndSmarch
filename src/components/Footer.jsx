@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <div className="bg-[#cfffe3]">
+    <div className="bg-blue-50 ">
       <div className="flex flex-col md:flex-row justify-around py-10">
 
         {/* الجزء الأول */}

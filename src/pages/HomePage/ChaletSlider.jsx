@@ -58,7 +58,7 @@ const ChaletSlider = () => {
                 spaceBetween={20}
                 slidesPerView={1}
                 breakpoints={{
-                    425: {
+                    500: {
                         slidesPerView: 2,
                     },
                     768: {
@@ -83,10 +83,8 @@ const ChaletSlider = () => {
                                     <HiOutlineLocationMarker className='me-2' />
                                     <p className='text-[#101828]'>{chalet.city}</p>
                                 </div>
-                                {/* <p className="mt-2 text-sm">المدينة: {chalet.city}</p> */}
-                                {/* <p className="mt-2 text-sm">السعر: {chalet.price}</p> */}
                                 <div className='flex justify-between mx-1 mt-3 items-center'>
-                                    <button className='bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-16 py-2 rounded-lg font-semibold  '>
+                                    <button className='bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 lg:px-16 py-2 rounded-lg font-semibold  '>
                                         المزيد
                                     </button>
                                     <h1 className='text-[#0061E0] text-2xl font-bold'>{chalet.price}</h1>

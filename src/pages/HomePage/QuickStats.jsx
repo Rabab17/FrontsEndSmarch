@@ -11,7 +11,7 @@ export default function QuickStats() {
         { icon: TbStars, value: "+2000", label: "حجز" },
     ];
     return (
-        <div className="mx-auto lg:w-[80%] w-[90%] bg-[#E9F3FF] py-4 rounded-3xl">
+        <div className="mx-auto lg:w-[80%] w-[90%] bg-blue-50 py-4 rounded-3xl">
             <div className="flex justify-evenly items-center flex-wrap md:flex-nowrap">
                 {statsData.map(({ icon: Icon, value, label }) => (
                     <div key={label} className="flex flex-col items-center w-[22%] md:w-auto">
