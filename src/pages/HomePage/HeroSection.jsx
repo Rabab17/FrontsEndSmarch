@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosMenu } from "react-icons/io";
 
 export default function HeroSection() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const nav = useNavigate();
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-
+    const SiginUpButtonClick = () => {
+        nav('/signup');
+      };
     return (
         <div
             className="bg-cover bg-center relative h-[500px] sm:h-[700px] lg:h-[900px]"
@@ -44,7 +46,7 @@ export default function HeroSection() {
                         </Link>
                     </nav>
 
-                    <button className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                    <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                         تسجيل الدخول
                     </button>
                 </div>
@@ -66,7 +68,7 @@ export default function HeroSection() {
                         className="h-[40px] w-auto"
                     />
 
-                    <button className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
+                    <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
                         تسجيل الدخول
                     </button>
                 </div>

@@ -1,18 +1,23 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../layouts/Layout";
-
-import Blog from "../pages/Blog";
-import About from "../pages/About";
-import Partners from "../pages/Partners";
 import HomePage from "../pages/HomePage/HomePage";
+import Blog from "../pages/BlogPage/Blog";
+import About from "../pages/AboutPage/About";
+import Partners from "../pages/PartnersPage/Partners";
+import Login from "../pages/LoginPage/Login";
+import SiginUp from "../pages/SignUpPage/SignUp";
+import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 
 export const router = createBrowserRouter([
   {
     path: "/", element: <Layout />, children: [
       { index: true, element: <HomePage /> },
       { path: "blog", element: <Blog /> },
-      { path: "about", element: <About/> },
+      { path: "about", element: <About /> },
       { path: "partners", element: <Partners /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <SiginUp/> },
+      { path: "ForgetPassword", element: <ForgetPassword/> },
 
     ],
   },

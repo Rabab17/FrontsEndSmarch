@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosMenu } from "react-icons/io";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const nav = useNavigate();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  const SiginUpButtonClick = () => {
+    nav('/signup');
+  };
   return (
     <header  className="h-[108px] w-full bg-white flex items-center justify-between px-2 lg:px-6 shadow-md">
       {/* اللوغو على اليسار */}
@@ -26,7 +28,7 @@ export default function Header() {
 
       {/* زر تسجيل الدخول على اليمين */}
       <div className="hidden md:flex items-center">
-        <button className="bg-gradient-to-l from-[#1A71FF] to-[#48BB78] text-white px-6 py-2 rounded-lg font-semibold shadow-lg">
+        <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg">
           تسجيل الدخول
         </button>
       </div>
@@ -45,7 +47,7 @@ export default function Header() {
         <img src="./src/assets/images/logo.png" alt="Logo" className="h-[40px] w-auto mx-auto" />
 
         {/* Mobile Login Button */}
-        <button className="bg-gradient-to-l from-[#1A71FF] to-[#48BB78] text-white px-4 py-1 rounded-lg font-semibold text-sm">
+        <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold text-sm">
           تسجيل الدخول
         </button>
       </div>
