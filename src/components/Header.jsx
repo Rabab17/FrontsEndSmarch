@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosMenu } from "react-icons/io";
-
+import logo from "../assets/images/logo.png"
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const nav = useNavigate();
@@ -11,14 +11,18 @@ export default function Header() {
   const SiginUpButtonClick = () => {
     nav('/signup');
   };
+  const GoToHome = () => {
+    nav('/');
+  };
   return (
-    <header  className="h-[108px] w-full bg-white flex items-center justify-between px-2 lg:px-6 shadow-md">
-      {/* اللوغو على اليسار */}
+    <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 lg:px-6 shadow-md">
       <div className="hidden lg:flex items-center">
-        <img src="./src/assets/images/logo.png" alt="Logo" className="h-[40px] w-auto" />
+        <img src={logo} alt="Logo"
+          className="h-[40px] w-auto"
+          onClick={GoToHome}
+        />
       </div>
 
-      {/* القائمة في المنتصف مع زيادة التباعد بين العناصر */}
       <nav className="hidden md:flex items-center ">
         <Link to="/" className="text-[#101828] text-lg ml-8 font-bold">الرئيسية</Link>
         <Link to="/about" className="text-[#101828] text-lg ml-8">من نحن</Link>
@@ -26,7 +30,6 @@ export default function Header() {
         <Link to="/blog" className="text-[#101828] text-lg">المدونة</Link>
       </nav>
 
-      {/* زر تسجيل الدخول على اليمين */}
       <div className="hidden md:flex items-center">
         <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg">
           تسجيل الدخول
@@ -44,7 +47,10 @@ export default function Header() {
         </div>
 
         {/* Logo in the Center for Mobile */}
-        <img src="./src/assets/images/logo.png" alt="Logo" className="h-[40px] w-auto mx-auto" />
+        <img src={logo} alt="Logo"
+          className="h-[40px] w-auto mx-auto"
+          onClick={GoToHome}
+        />
 
         {/* Mobile Login Button */}
         <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold text-sm">
