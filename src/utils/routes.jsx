@@ -7,6 +7,7 @@ import Partners from "../pages/PartnersPage/Partners";
 import Login from "../pages/LoginPage/Login";
 import SiginUp from "../pages/SignUpPage/SignUp";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
+import ChaletDetails from "../pages/ChaletDetails/ChaletDetails";
 
 export const router = createBrowserRouter([
   {
@@ -15,9 +16,10 @@ export const router = createBrowserRouter([
       { path: "blog", element: <Blog /> },
       { path: "about", element: <About /> },
       { path: "partners", element: <Partners /> },
+      { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },
-      { path: "signup", element: <SiginUp/> },
-      { path: "ForgetPassword", element: <ForgetPassword/> },
+      { path: "signup", element: <SiginUp /> },
+      { path: "ForgetPassword", element: <ForgetPassword /> },
 
     ],
   },
