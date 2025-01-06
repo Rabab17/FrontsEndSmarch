@@ -39,7 +39,7 @@ export default function ForgetPassword() {
             {/* image section */}
             <div className="hidden md:block w-full md:w-[40%]">
                 <img
-                    src="src/assets/images/login.png"
+                    src="/assets/images/login.png"
                     alt="Building"
                     className="w-full h-full object-contain"
                 />

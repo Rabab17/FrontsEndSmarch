@@ -14,7 +14,7 @@ export default function HeroSection() {
     return (
         <div
             className="bg-cover bg-center relative h-[500px] sm:h-[700px] lg:h-[900px]"
-            style={{ backgroundImage: "url('src/assets/images/home-image.png')" }}
+            style={{ backgroundImage: "url('/assets/images/home-image.png')" }}
         >
             {/* Overlay */}
             <div className="absolute inset-0 bg-[#101828] opacity-60"></div>
@@ -25,7 +25,7 @@ export default function HeroSection() {
                 <div className="hidden md:flex items-center w-full justify-between">
                     <div className="flex items-center">
                         <img
-                            src="./src/assets/images/logo.png"
+                            src="/assets/images/logo.png"
                             alt="Logo"
                             className="h-[40px] w-auto transition-transform duration-300 transform hover:scale-110"
                         />
@@ -63,7 +63,7 @@ export default function HeroSection() {
 
                     {/* Logo in the Center for Mobile */}
                     <img
-                        src="./src/assets/images/logo.png"
+                        src="/assets/images/logo.png"
                         alt="Logo"
                         className="h-[40px] w-auto"
                     />

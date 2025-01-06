@@ -11,25 +11,25 @@ export default function OpinionSection() {
             id: 1,
             name: 'Kira Wood',
             text: 'كانت تجربتي مع المنصة رائعة! كل شيء كان بسيطًا وسهل الاستخدام، وأنا الآن أستطيع إدارة شاليهتي بكل سهولة.',
-            image: 'src/assets/images/Ellipse 55.png',
+            image: '/assets/images/Ellipse 55.png',
         },
         {
             id: 2,
             name: 'Kira Wood',
             text: 'كانت تجربتي مع المنصة رائعة! كل شيء كان بسيطًا وسهل الاستخدام، وأنا الآن أستطيع إدارة شاليهتي بكل سهولة.',
-            image: 'src/assets/images/Ellipse 55.png',
+            image: '/assets/images/Ellipse 55.png',
         },
         {
             id: 3,
             name: 'Kira Wood',
             text: 'كانت تجربتي مع المنصة رائعة! كل شيء كان بسيطًا وسهل الاستخدام، وأنا الآن أستطيع إدارة شاليهتي بكل سهولة.',
-            image: 'src/assets/images/Ellipse 55.png',
+            image: '/assets/images/Ellipse 55.png',
         },
         {
             id: 4,
             name: 'Kira Wood',
             text: 'كانت تجربتي مع المنصة رائعة! كل شيء كان بسيطًا وسهل الاستخدام، وأنا الآن أستطيع إدارة شاليهتي بكل سهولة.',
-            image: 'src/assets/images/Ellipse 55.png',
+            image: '/assets/images/Ellipse 55.png',
         },
     ];
 

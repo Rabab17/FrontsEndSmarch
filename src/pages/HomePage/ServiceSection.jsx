@@ -4,22 +4,22 @@ export default function ServiceSection() {
         {
             id: 1,
             description: "تقويم الحجوزات الذكي: عرض شامل للمواعيد المتاحة.",
-            img: "src/assets/images/Featured icon.png"
+            img: "/assets/images/Featured icon.png"
         },
         {
             id: 2,
             description: "مراجعات العملاء: شاهد تقيمات العملاء لتحسين تجربتك.",
-            img: "src/assets/images/Featured icon (1).png"
+            img: "/assets/images/Featured icon (1).png"
         },
         {
             id: 3,
             description: "إدارة الحجوزات بسهولة: تحكم كامل في جميع التفاصيل.",
-            img: "src/assets/images/Featured icon (2).png"
+            img: "/assets/images/Featured icon (2).png"
         },
         {
             id: 4,
             description: "رفع صور الشاليهات: أضف صوراً عالية الجودة لشاليهاتك بكل سهولة",
-            img: "src/assets/images/Featured icon (3).png"
+            img: "/assets/images/Featured icon (3).png"
         },
 
 

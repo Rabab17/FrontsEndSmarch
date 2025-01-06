@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosMenu } from "react-icons/io";
-import logo from "../assets/images/logo.png"
+import logo from "/assets/images/logo.png"
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const nav = useNavigate();
