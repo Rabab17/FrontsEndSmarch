@@ -9,7 +9,7 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
   const SiginUpButtonClick = () => {
-    nav('/signup');
+    nav('/login');
   };
   const GoToHome = () => {
     nav('/');

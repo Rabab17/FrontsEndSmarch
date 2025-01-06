@@ -9,7 +9,7 @@ export default function HeroSection() {
         setIsMenuOpen(!isMenuOpen);
     };
     const SiginUpButtonClick = () => {
-        nav('/signup');
+        nav('/login');
       };
     return (
         <div
