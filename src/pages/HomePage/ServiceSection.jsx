@@ -25,7 +25,7 @@ export default function ServiceSection() {
 
     ]
     return (
-        <div className="my-5">
+        <div className="my-10">
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-[#101828] text-5xl">المزايا والخدمات</h1>
                 <h3 className="text-[#4F5A69] text-2xl pt-4"> كل ما تحتاجه في مكان واحد!</h3>

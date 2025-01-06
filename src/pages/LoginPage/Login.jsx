@@ -37,7 +37,7 @@ export default function Login() {
             type="submit"
             className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
           >
-            إنشاء حساب
+            تسجيل الدخول
           </button>
         </form>
         <p className="text-center text-sm mt-4">
