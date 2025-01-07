@@ -10,10 +10,11 @@ const AboutSection = () => {
     };
 
     return (
-        <section className="flex flex-col md:flex-row items-center justify-between p-6 md:p-12 bg-white rounded-lg shadow-lg">
+        <section id="about" className="flex flex-col md:flex-row items-center justify-between p-6 md:p-12 bg-white rounded-lg shadow-lg">
             <div className="w-full md:w-1/2 space-y-6">
                 {/*  about */}
                 <div
+                    
                     className={`p-6 md:py-12 rounded-lg shadow-md transition-all duration-300 ${openSection === "about"
                         ? "border-2 border-blue-500 bg-gradient-to-r from-blue-100 to-white"
                         : "bg-white"

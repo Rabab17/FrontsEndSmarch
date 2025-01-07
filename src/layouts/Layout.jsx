@@ -12,7 +12,7 @@ export default function Layout() {
                 <Header />
             }
             <Outlet />
-            {isDashboard &&
+            {!isDashboard &&
                 <Footer />
             }
         </>

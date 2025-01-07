@@ -10,7 +10,7 @@ export default function HeroSection() {
     };
     const SiginUpButtonClick = () => {
         nav('/login');
-      };
+    };
     return (
         <div
             className="bg-cover bg-center relative h-[500px] sm:h-[700px] lg:h-[900px]"
@@ -35,11 +35,14 @@ export default function HeroSection() {
                         <Link to="/" className="text-[#E9F3FF] text-xl font-semibold ml-8">
                             الرئيسية
                         </Link>
-                        <Link to="/about" className="text-[#E9F3FF] text-lg ml-8">
+                        <a href="#about" className="scroll-smooth text-[#E9F3FF] text-lg ml-8">
                             من نحن
-                        </Link>
+                        </a>
                         <Link to="/partners" className="text-[#E9F3FF] text-lg ml-8">
                             شركاء النجاح
+                        </Link>
+                        <Link to="/contactus" className="text-[#E9F3FF] text-lg ml-8">
+                            تواصل معنا
                         </Link>
                         <Link to="/blog" className="text-[#E9F3FF] text-lg">
                             المدونة
@@ -80,16 +83,19 @@ export default function HeroSection() {
                 >
                     <div className={`fixed right-0 top-0 bg-[#2c3e50] w-[250px] h-full p-6 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} transition-all duration-300`}>
                         <nav className="flex flex-col">
-                            <Link to="/" className="text-[#E9F3FF] text-xl font-semibold mb-6 nav-link">
+                            <Link to="/" className="text-[#E9F3FF] text-xl font-semibold mb-6 ">
                                 الرئيسية
                             </Link>
-                            <Link to="/about" className="text-[#E9F3FF] text-lg mb-6 nav-link">
+                            <a href="#about" className="text-[#E9F3FF] text-lg mb-6">
                                 من نحن
-                            </Link>
-                            <Link to="/partners" className="text-[#E9F3FF] text-lg mb-6 nav-link">
+                            </a>
+                            <Link to="/partners" className="text-[#E9F3FF] text-lg mb-6 ">
                                 شركاء النجاح
                             </Link>
-                            <Link to="/blog" className="text-[#E9F3FF] text-lg mb-6 nav-link">
+                            <Link to="/contactus" className="text-[#E9F3FF] text-lg mb-6">
+                                تواصل معنا
+                            </Link>
+                            <Link to="/blog" className="text-[#E9F3FF] text-lg mb-6 ">
                                 المدونة
                             </Link>
                         </nav>

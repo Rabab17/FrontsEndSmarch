@@ -12,6 +12,7 @@ import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import SignUpClient from "../pages/SignUpPage/SignUpClient";
 import SignUp from "../pages/SignUpPage/SignUp";
 import OwenerDashboard from "../pages/OwnerDashboard/layout/OwenerDashboard";
+import ContactUs from "../pages/ContactUs/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "blog", element: <Blog /> },
       { path: "about", element: <About /> },
+      { path: "ContactUs", element: <ContactUs/> },
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },

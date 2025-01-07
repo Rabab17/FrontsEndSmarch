@@ -64,7 +64,7 @@ export default function Footer() {
             <Link to="/about" className="text-[#101828] hover:text-blue-700">من نحن</Link>
             <Link to="/" className="text-[#101828] hover:text-blue-700">المزايا و الخدمات</Link>
             <Link to="/partners" className="text-[#101828] hover:text-blue-700">شركاء النجاح</Link>
-            <Link to="/" className="text-[#101828] hover:text-blue-700">اتصل بنا</Link>
+            <Link to="/ContactUs" className="text-[#101828] hover:text-blue-700">اتصل بنا</Link>
           </div>
         </div>
 

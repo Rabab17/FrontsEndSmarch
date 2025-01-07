@@ -1,3 +1,4 @@
+
 /* eslint-disable react/prop-types */
 import { AiFillPieChart } from "react-icons/ai";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
@@ -6,18 +7,16 @@ import { MdSupportAgent } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { useState } from "react";
 
-export default function SidebarDashboard({ onSelect }) {
-    // حالة لتتبع العنصر المحدد
+export default function SidebarDashboard({ onSelect, isOpen }) {
     const [selected, setSelected] = useState("controls");
 
-    // دالة لتغيير العنصر المحدد
     const handleSelect = (page) => {
         setSelected(page);
         onSelect(page);
     };
 
     return (
-        <aside className="hidden bg-blue-50 w-64 h-full p-4 md:flex flex-col justify-center">
+        <aside className={`bg-blue-50 w-64 h-full p-4 md:flex flex-col justify-center ${isOpen ? '' : 'hidden'}`}>
             <div className="mt-10 text-center">
                 <div className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${selected === "controls" ? "bg-[#0061E0] text-white py-2" : ""
                     }`}
@@ -29,11 +28,11 @@ export default function SidebarDashboard({ onSelect }) {
                 </div>
                 <div className="space-y-6">
                     <div
-                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${selected === "dashboard" ? "bg-[#0061E0] text-white py-2" : ""
+                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${selected === "BalanceRecharge" ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
-                        onClick={() => handleSelect("dashboard")}
+                        onClick={() => handleSelect("BalanceRecharge")}
                     >
-                        <FaMoneyBill1Wave size={22} className={`text-[#0061E0] ${selected === "dashboard" ? "text-white" : ""
+                        <FaMoneyBill1Wave size={22} className={`text-[#0061E0] ${selected === "BalanceRecharge" ? "text-white" : ""
                             }`} />
                         <h1>شحن الرصيد</h1>
                     </div>

@@ -1,23 +1,25 @@
 import { useState } from 'react';
 import { IoIosMenu } from "react-icons/io";
+import SidebarDashboard from './SidebarDashboard';
 
+// eslint-disable-next-line react/prop-types
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const toggleMenu = () => {
+
         setIsMenuOpen(!isMenuOpen);
     };
 
     return (
         <header className="bg-blue-50 shadow px-6 py-4 flex justify-between items-center">
             {/* Hamburger Icon only visible on small screens */}
-            <div className='md:hidden flex justify-between '>
+            <div className='md:hidden'>
                 {/* Hamburger Icon (positioned to the right) */}
-                <div className='w-[20%]'>
-                    <IoIosMenu
-                        onClick={toggleMenu}
-                        className="text-4xl md:text-3xl transition-transform duration-300"
-                    />
-                </div>
+                <IoIosMenu
+                    onClick={toggleMenu}
+                    className="text-4xl md:text-3xl transition-transform duration-300"
+                />
 
             </div>
             <div className="flex items-center gap-4">
@@ -45,9 +47,7 @@ export default function HeaderDashboard() {
                 className={`fixed inset-0 bg-[#00000080] z-20 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                 onClick={toggleMenu}
             >
-                <div className={`fixed right-0 top-0 bg-[#2c3e50] w-[250px] h-full p-6 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} transition-all duration-300`}>
-
-                </div>
+                <SidebarDashboard isOpen={isMenuOpen} />
             </div>
         </header>
     );

@@ -11,7 +11,7 @@ export default function ContentDashbiard({ page }) {
             case "controls":
                 return <ControlsPage/>;
             case "settings":
-            case "dashboard":
+            case "BalanceRecharge":
                 return <BalanceRechargePage/>;
             case "profile":
                 return <ProfilePage/>;
