@@ -107,7 +107,7 @@ const AboutSection = () => {
             {/* الجزء الخاص بالصورة */}
             <div className="w-full md:w-1/2 flex justify-center">
                 <img
-                    src="src/assets/images/whoIm.png"
+                    src="/assets/images/whoIm.png"
                     alt="Team Illustration"
                     className="w-3/4 md:w-full"
                 />

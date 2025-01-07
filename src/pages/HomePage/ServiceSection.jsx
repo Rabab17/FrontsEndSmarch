@@ -4,28 +4,28 @@ export default function ServiceSection() {
         {
             id: 1,
             description: "تقويم الحجوزات الذكي: عرض شامل للمواعيد المتاحة.",
-            img: "src/assets/images/Featured icon.png"
+            img: "/assets/images/Featured icon.png"
         },
         {
             id: 2,
             description: "مراجعات العملاء: شاهد تقيمات العملاء لتحسين تجربتك.",
-            img: "src/assets/images/Featured icon (1).png"
+            img: "/assets/images/Featured icon (1).png"
         },
         {
             id: 3,
             description: "إدارة الحجوزات بسهولة: تحكم كامل في جميع التفاصيل.",
-            img: "src/assets/images/Featured icon (2).png"
+            img: "/assets/images/Featured icon (2).png"
         },
         {
             id: 4,
             description: "رفع صور الشاليهات: أضف صوراً عالية الجودة لشاليهاتك بكل سهولة",
-            img: "src/assets/images/Featured icon (3).png"
+            img: "/assets/images/Featured icon (3).png"
         },
 
 
     ]
     return (
-        <div className="my-5">
+        <div className="my-10">
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-[#101828] text-5xl">المزايا والخدمات</h1>
                 <h3 className="text-[#4F5A69] text-2xl pt-4"> كل ما تحتاجه في مكان واحد!</h3>

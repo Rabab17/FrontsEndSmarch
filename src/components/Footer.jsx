@@ -16,7 +16,7 @@ export default function Footer() {
         {/* الجزء الأول */}
         <div className="w-full md:w-[35%]">
           <div>
-            <img src="src/assets/images/footer-frame.png" alt="" className="mx-auto md:mx-0" />
+            <img src="assets/images/logo.png" alt="" className="mx-auto md:mx-0" />
             <p className="text-[#101828] text-[20px] md:text-[25px] mt-4">
               أفضل منصة لحجز الشاليهات بسهولة وسرعة. استمتع بتجربة فريدة في اختيار شاليه أحلامك مع خدمة مميزة تناسب احتياجاتك
             </p>

@@ -5,9 +5,12 @@ import Blog from "../pages/BlogPage/Blog";
 import About from "../pages/AboutPage/About";
 import Partners from "../pages/PartnersPage/Partners";
 import Login from "../pages/LoginPage/Login";
-import SiginUp from "../pages/SignUpPage/SignUp";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 import ChaletDetails from "../pages/ChaletDetails/ChaletDetails";
+import NotFound from "../pages/NotFoundPage/NotFound";
+import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
+import SignUpClient from "../pages/SignUpPage/SignUpClient";
+import SignUp from "../pages/SignUpPage/SignUp";
 
 export const router = createBrowserRouter([
   {
@@ -18,9 +21,11 @@ export const router = createBrowserRouter([
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },
-      { path: "signup", element: <SiginUp /> },
+      { path: "signup", element: <SignUp/> },
+      { path: "signupOwner", element: <SignUpOwner />},
+      { path: "signupClient", element:<SignUpClient/> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
-
+      { path: '*', element: <NotFound /> }
     ],
   },
 ]);

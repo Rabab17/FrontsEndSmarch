@@ -37,7 +37,7 @@ export default function Login() {
             type="submit"
             className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
           >
-            إنشاء حساب
+            تسجيل الدخول
           </button>
         </form>
         <p className="text-center text-sm mt-4">
@@ -51,7 +51,7 @@ export default function Login() {
       {/* image section */}
       <div className="hidden md:block w-full md:w-[40%]">
         <img
-          src="src/assets/images/login.png"
+          src="/assets/images/login.png"
           alt="Building"
           className="w-full h-full object-contain"
         />
