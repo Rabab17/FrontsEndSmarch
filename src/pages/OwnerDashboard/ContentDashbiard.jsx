@@ -10,7 +10,6 @@ export default function ContentDashbiard({ page }) {
         switch (page) {
             case "controls":
                 return <ControlsPage/>;
-            case "settings":
             case "BalanceRecharge":
                 return <BalanceRechargePage/>;
             case "profile":
