@@ -135,3 +135,5 @@ export const Chalets = [
     img: "/assets/images/chalet-img.png",
   },
 ];
+
+

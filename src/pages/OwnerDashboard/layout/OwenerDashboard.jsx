@@ -11,7 +11,7 @@ export default function OwenerDashboard() {
 
         <div className="h-screen flex flex-col">
             {/* الهيدر */}
-            <HeaderDashboard onSelect={setSelectedPage} page={selectedPage}/>
+            <HeaderDashboard  />
             <div className="flex flex-1">
                 {/* الشريط الجانبي */}
                 <SidebarDashboard onSelect={setSelectedPage} />
