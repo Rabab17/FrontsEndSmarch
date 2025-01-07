@@ -15,8 +15,8 @@ export default function Header() {
     nav('/');
   };
   return (
-    <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 lg:px-6 shadow-md">
-      <div className="hidden lg:flex items-center">
+    <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 md:px-6 shadow-md">
+      <div className="hidden md:flex items-center">
         <img src={logo} alt="Logo"
           className="h-[40px] w-auto"
           onClick={GoToHome}

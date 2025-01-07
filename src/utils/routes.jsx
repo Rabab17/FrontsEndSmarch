@@ -11,6 +11,7 @@ import NotFound from "../pages/NotFoundPage/NotFound";
 import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import SignUpClient from "../pages/SignUpPage/SignUpClient";
 import SignUp from "../pages/SignUpPage/SignUp";
+import OwenerDashboard from "../pages/OwnerDashboard/layout/OwenerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: "signupOwner", element: <SignUpOwner />},
       { path: "signupClient", element:<SignUpClient/> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
+      { path: "OwenerDashboard", element: <OwenerDashboard/> },
       { path: '*', element: <NotFound /> }
     ],
   },
