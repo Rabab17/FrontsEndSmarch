@@ -136,4 +136,26 @@ export const Chalets = [
   },
 ];
 
-
+export const Packages = [
+  {
+    id: 1,
+    name: "المجانية",
+    chaletName: "شامله البحر",
+    startDate: "01-11-2024",
+    endDate: "01-12-2024",
+  },
+  {
+    id: 2,
+    name: "المميزة",
+    chaletName: "شامله الجبال",
+    startDate: "01-11-2024",
+    endDate: "01-12-2024",
+  },
+  {
+    id: 3,
+    name: "الاحترافيه",
+    chaletName: "شامله الزهور",
+    startDate: "01-11-2024",
+    endDate: "01-12-2024",
+  },
+];
