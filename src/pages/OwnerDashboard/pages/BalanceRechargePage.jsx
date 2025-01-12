@@ -35,7 +35,7 @@ export default function BalanceRechargePage() {
 
                                    </div>
 
-                                   <div className="flex flex-row mt-3 justify-center gap-10 mt-5">
+                                   <div className="flex flex-row justify-center gap-10 mt-5">
                                           <div className="">
                                                  <button className="bg-blue-500 text-white font-bold  border border-blue-500 rounded-xl w-[7vw]" style={{ fontSize: 20 }}>تعديل</button>
                                           </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaCheckSquare } from "react-icons/fa";
 
 export default function NotificationPage() {
