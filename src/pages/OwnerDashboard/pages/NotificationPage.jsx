@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { FaCheckSquare } from "react-icons/fa";
 
 export default function NotificationPage() {
-  const [selectedIndex, setSelectedIndex] = useState(null); // Track selected button index
-  const [currentDate, setCurrentDate] = useState(""); // Track the current date
-  const [currentTime, setCurrentTime] = useState(""); // Track the current time
+  const [selectedIndex, setSelectedIndex] = useState(null); 
+  const [currentDate, setCurrentDate] = useState(""); 
+  const [currentTime, setCurrentTime] = useState(""); 
 
   // Update date and time on button click
   const handleButtonClick = (index) => {
@@ -42,7 +42,7 @@ export default function NotificationPage() {
         ))}
       </div>
 
-      {/* Confirmation Section */}
+     
       {selectedIndex !== null && (
         <div className="bg-blue-100 border rounded-xl h-[22vh]" style={{ marginTop: 80 }}>
           <div className="flex flex-row">
