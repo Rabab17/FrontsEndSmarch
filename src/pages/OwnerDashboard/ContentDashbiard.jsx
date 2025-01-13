@@ -24,9 +24,9 @@ export default function ContentDashbiard({ page }) {
     };
 
     return (
-        <main className="mt-20 mx-auto text-3xl font-bold">
+        <div className="mt-20 w-[100%]">
             {renderContent()}
-        </main>
+        </div>
     );
 };
 
