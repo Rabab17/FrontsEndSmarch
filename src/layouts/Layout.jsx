@@ -4,14 +4,17 @@ import { Outlet, useLocation } from 'react-router-dom'
 export default function Layout() {
     const location = useLocation();
     const isHomePage = location.pathname === '/'
+    const isDashboard = location.pathname === '/OwenerDashboard'
     return (
         <>
-            {!isHomePage &&
+            {(!isHomePage && !isDashboard) &&
 
                 <Header />
             }
             <Outlet />
-            <Footer />
+            {!isDashboard &&
+                <Footer />
+            }
         </>
     )
 }

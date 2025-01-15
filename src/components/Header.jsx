@@ -15,8 +15,8 @@ export default function Header() {
     nav('/');
   };
   return (
-    <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 lg:px-6 shadow-md">
-      <div className="hidden lg:flex items-center">
+    <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 md:px-6 shadow-md">
+      <div className="hidden md:flex items-center">
         <img src={logo} alt="Logo"
           className="h-[40px] w-auto"
           onClick={GoToHome}
@@ -25,8 +25,8 @@ export default function Header() {
 
       <nav className="hidden md:flex items-center ">
         <Link to="/" className="text-[#101828] text-lg ml-8 font-bold">الرئيسية</Link>
-        <Link to="/about" className="text-[#101828] text-lg ml-8">من نحن</Link>
         <Link to="/partners" className="text-[#101828] text-lg ml-8">شركاء النجاح</Link>
+        <Link to="/contactus" className="text-[#101828] text-lg ml-8">تواصل معنا</Link>
         <Link to="/blog" className="text-[#101828] text-lg">المدونة</Link>
       </nav>
 
@@ -66,8 +66,8 @@ export default function Header() {
         <div className={`fixed right-0 top-0 bg-white w-[250px] h-full p-6 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} transition-all duration-300`}>
           <nav className="flex flex-col space-y-6">
             <Link to="/" className="text-[#101828] text-xl font-semibold">الرئيسية</Link>
-            <Link to="/about" className="text-[#101828] text-lg">من نحن</Link>
             <Link to="/partners" className="text-[#101828] text-lg">شركاء النجاح</Link>
+            <Link to="/contactus" className="text-[#101828] text-lg">تواصل معنا</Link>
             <Link to="/blog" className="text-[#101828] text-lg">المدونة</Link>
           </nav>
         </div>

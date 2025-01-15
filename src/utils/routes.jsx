@@ -11,13 +11,18 @@ import NotFound from "../pages/NotFoundPage/NotFound";
 import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import SignUpClient from "../pages/SignUpPage/SignUpClient";
 import SignUp from "../pages/SignUpPage/SignUp";
+import OwenerDashboard from "../pages/OwnerDashboard/layout/OwenerDashboard";
+import ContactUs from "../pages/ContactUs/ContactUs";
+import SinglePost from "../pages/SinglePost/SinglePost";
 
 export const router = createBrowserRouter([
   {
     path: "/", element: <Layout />, children: [
       { index: true, element: <HomePage /> },
       { path: "blog", element: <Blog /> },
+      { path: "blog/:id", element: <SinglePost /> },
       { path: "about", element: <About /> },
+      { path: "ContactUs", element: <ContactUs/> },
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },
@@ -25,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "signupOwner", element: <SignUpOwner />},
       { path: "signupClient", element:<SignUpClient/> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
+      { path: "OwenerDashboard", element: <OwenerDashboard/> },
       { path: '*', element: <NotFound /> }
     ],
   },
