@@ -8,12 +8,12 @@ import Login from "../pages/LoginPage/Login";
 import ForgetPassword from "../pages/ForgetPassword/ForgetPassword";
 import ChaletDetails from "../pages/ChaletDetails/ChaletDetails";
 import NotFound from "../pages/NotFoundPage/NotFound";
-import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
-import SignUpClient from "../pages/SignUpPage/SignUpClient";
 import SignUp from "../pages/SignUpPage/SignUp";
-import OwenerDashboard from "../pages/OwnerDashboard/layout/OwenerDashboard";
+import OwnerDashboard from "../pages/OwnerDashboard/layout/OwnerDashboard";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import SinglePost from "../pages/SinglePost/SinglePost";
+import SignUpUser from "../pages/SignUpPage/SignUpUser";
+import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 
 export const router = createBrowserRouter([
   {
@@ -27,10 +27,10 @@ export const router = createBrowserRouter([
       { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp/> },
-      { path: "signupOwner", element: <SignUpOwner />},
-      { path: "signupClient", element:<SignUpClient/> },
+      { path: "signupUser", element: <SignUpUser />},
+      { path: "signupOwner", element:<SignUpOwner/> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
-      { path: "OwenerDashboard", element: <OwenerDashboard/> },
+      { path: "OwnerDashboard", element: <OwnerDashboard/> },
       { path: '*', element: <NotFound /> }
     ],
   },
