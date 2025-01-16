@@ -23,13 +23,13 @@ export default function NotificationPage() {
 
   return (
     <>
-      <div className="flex flex-row gap-12">
+      <div className="flex flex-row gap-12 justify-center">
         {buttons.map((label, index) => (
           <div
             key={index}
             className={`${
               selectedIndex === index ? "bg-blue-500" : "bg-gray-700"
-            } border rounded-lg w-[13vw] text-center`}
+            } border rounded-lg w-[13vw] h-[6vh] text-center`}
           >
             <button
               className="font-normal text-white"
@@ -44,11 +44,11 @@ export default function NotificationPage() {
 
       {/* Confirmation Section */}
       {selectedIndex !== null && (
-        <div className="bg-blue-100 border rounded-xl h-[22vh]" style={{ marginTop: 80 }}>
+        <div className="bg-blue-100 border rounded-xl h-[22vh]  w-[50vw] " style={{ marginTop: 80,marginRight:35 }}>
           <div className="flex flex-row">
             <FaCheckSquare className="text-green-400 pt-4" style={{ fontSize: 60 }} />
-            <h2 className="font-normal pt-4 pr-1">تم تأكيد الحجز بنجاح</h2>
-            <div className="font-normal" style={{ fontSize: 18, paddingRight: 260 }}>
+            <h2 className="font-normal pt-4 pr-1" style={{ fontSize: 24 }}>تم تأكيد الحجز بنجاح</h2>
+            <div className="font-normal" style={{ fontSize: 18, paddingRight: 450 }}>
               <h3>{currentDate}</h3>
               <h3>{currentTime}</h3>
             </div>
