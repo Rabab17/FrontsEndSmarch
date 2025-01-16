@@ -4,7 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 export default function Layout() {
     const location = useLocation();
     const isHomePage = location.pathname === '/'
-    const isDashboard = location.pathname === '/OwenerDashboard'
+    const isDashboard = location.pathname === '/OwnerDashboard'
     return (
         <>
             {(!isHomePage && !isDashboard) &&

@@ -15,7 +15,7 @@ export default function SignUp() {
       </p>
       <div className="flex flex-col md:flex-row gap-6 items-center">
         {/* زر "أريد الحجز كعميل" */}
-        <div onClick={() => { nav('/signupclient') }} className="flex-1 bg-blue-600 text-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105 cursor-pointer w-64 h-64 md:w-80 md:h-80 flex flex-col justify-center">
+        <div onClick={() => { nav('/signupuser') }} className="flex-1 bg-blue-600 text-white rounded-lg shadow-md p-6 transition-transform transform hover:scale-105 cursor-pointer w-64 h-64 md:w-80 md:h-80 flex flex-col justify-center">
           <h1 className="text-xl md:text-3xl font-bold mb-4">أريد الحجز كعميل</h1>
           <p className="text-sm md:text-xl text-center">
             تصفح الشاليهات واحجز بسهولة للاستمتاع بعطلتك المثالية.

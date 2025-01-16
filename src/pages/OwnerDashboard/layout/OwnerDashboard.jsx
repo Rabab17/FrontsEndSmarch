@@ -3,7 +3,7 @@ import ContentDashbiard from "../ContentDashbiard";
 import HeaderDashboard from "./HeaderDashboard";
 import SidebarDashboard from "./SidebarDashboard";
 
-export default function OwenerDashboard() {
+export default function OwnerDashboard() {
     const [selectedPage, setSelectedPage] = useState("");
 
     return (
