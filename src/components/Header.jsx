@@ -48,8 +48,9 @@ export default function Header() {
       </nav>
 
       <div className="hidden md:flex items-center">
-        {token ? <h1 className='md:text-xl'> مرحبا {username} </h1> :
-          <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
+        {token ? <h1 className='text-[#E9F3FF] text-xl'> مرحبا {username} </h1> :
+
+          <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
             تسجيل الدخول
           </button>
         }
