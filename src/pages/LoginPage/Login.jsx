@@ -42,7 +42,7 @@ export default function Login() {
     <div className="flex flex-col md:flex-row justify-around py-10 items-center bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
       {/* form section */}
       <div className="w-full md:w-1/3 p-8">
-        <h1 className="text-4xl font-bold text-[#1E293B] mb-4">مرحبًا بعودتك!</h1>
+        <h1 className="text-4xl font-bold text-[#1E293B] mb-4" >مرحبًا بعودتك!</h1>
         <p className="text-2xl text-[#718096] mb-6">
           سجّل دخولك للوصول إلى حسابك واستمتع بخدماتنا.
         </p>
