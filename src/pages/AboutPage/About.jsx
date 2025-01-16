@@ -8,7 +8,7 @@ export default function About() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendUrl}article`); // استدعاء API
+        const response = await fetch(`${backendUrl}chalet/users`); // استدعاء API
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -50,20 +50,20 @@ export default function About() {
           <div key={chalet._id} className="bg-white shadow-md rounded-lg border border-blue-500 mx-6 my-10">
             <img
 
-              src={chalet.image}
+              src={chalet.img}
               alt={chalet.name}
             />
             <div className='p-3'>
-              <h1 className=" text-2xl font-medium text-[#363A3D]">{chalet.subTitel}</h1>
+              <h1 className=" text-2xl font-medium text-[#363A3D]">{chalet.name}</h1>
               <div className='flex items-center mt-3'>
                 <HiOutlineLocationMarker className='me-2' />
-                <p className='text-[#101828]'>{chalet.city}</p>
+                <p className='text-[#101828]'>{chalet.location.city}, {chalet.location.street}</p>
               </div>
               <div className='flex justify-between mx-1 mt-3 items-center'>
                 <button className='bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 lg:px-16 py-2 rounded-lg font-semibold  '>
                   المزيد
                 </button>
-                <h1 className='text-[#0061E0] text-2xl font-bold'>{chalet.price}</h1>
+                <h1 className='text-[#0061E0] text-2xl font-bold'>{chalet.price} رس</h1>
               </div>
             </div>
           </div>
