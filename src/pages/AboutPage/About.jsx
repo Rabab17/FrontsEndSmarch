@@ -2,7 +2,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import useFetchData from "../../hooks/useFetchData";
 
 export default function About() {
-  const { data, error, loading } = useFetchData('https://smarch-back-end-nine.vercel.app/chalet/users');
+  const { data, error, loading } = useFetchData(`${import.meta.env.VITE_URL_BACKEND}chalet/users`);
 
   if (loading) return <p className="text-center">جاري تحميل البيانات...</p>;
   if (error) return <p className="text-center text-red-500">حدث خطأ: {error}</p>;

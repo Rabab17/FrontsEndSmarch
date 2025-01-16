@@ -234,4 +234,4 @@ export const Plans = [
   },
 ];
 
-// export const backendUrl = import.meta.env.VITE_URL_BACKEND;
+export const backendUrl = import.meta.env.VITE_URL_BACKEND;
