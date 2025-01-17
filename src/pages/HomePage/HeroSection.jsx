@@ -1,16 +1,35 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoIosMenu } from "react-icons/io";
+import { jwtDecode } from 'jwt-decode';
+
 
 export default function HeroSection() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const nav = useNavigate();
+    const token = localStorage.getItem("token");
+
+    var username;
+
+    if (token) {
+        const decoded = jwtDecode(token);
+
+        username = decoded.username;
+
+        console.log(`مرحبًا ${username}`);
+        console.log(decoded);
+    }
+
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
     const SiginUpButtonClick = () => {
         nav('/login');
     };
+    const SiginOutButtonClick = () => {
+        localStorage.removeItem("token");
+        nav('/');
+    }
     return (
         <div
             className="bg-cover bg-center relative h-[500px] sm:h-[700px] lg:h-[900px]"
@@ -48,10 +67,12 @@ export default function HeroSection() {
                             المدونة
                         </Link>
                     </nav>
+                    {token ? <h1 className='text-[#E9F3FF] text-xl'> مرحبا {username} </h1> :
 
-                    <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                        تسجيل الدخول
-                    </button>
+                        <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                            تسجيل الدخول
+                        </button>
+                    }
                 </div>
 
                 {/* Mobile Header */}
@@ -70,10 +91,11 @@ export default function HeroSection() {
                         alt="Logo"
                         className="h-[40px] w-auto"
                     />
-
-                    <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
-                        تسجيل الدخول
-                    </button>
+                    {token ? <h1 className='text-[#E9F3FF] md:text-xl'> مرحبا {username} </h1> :
+                        <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
+                            تسجيل الدخول
+                        </button>
+                    }
                 </div>
 
                 {/* Mobile Menu Drawer */}
@@ -82,23 +104,36 @@ export default function HeroSection() {
                     onClick={toggleMenu}
                 >
                     <div className={`fixed right-0 top-0 bg-[#2c3e50] w-[250px] h-full p-6 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} transition-all duration-300`}>
-                        <nav className="flex flex-col">
-                            <Link to="/" className="text-[#E9F3FF] text-xl font-semibold mb-6 ">
-                                الرئيسية
-                            </Link>
-                            <a href="#about" className="text-[#E9F3FF] text-lg mb-6">
-                                من نحن
-                            </a>
-                            <Link to="/partners" className="text-[#E9F3FF] text-lg mb-6 ">
-                                شركاء النجاح
-                            </Link>
-                            <Link to="/contactus" className="text-[#E9F3FF] text-lg mb-6">
-                                تواصل معنا
-                            </Link>
-                            <Link to="/blog" className="text-[#E9F3FF] text-lg mb-6 ">
-                                المدونة
-                            </Link>
-                        </nav>
+                        <div className='flex flex-col justify-between h-screen py-10'>
+                            <nav className="flex flex-col">
+                                <Link to="/" className="text-[#E9F3FF] text-xl font-semibold mb-6 ">
+                                    الرئيسية
+                                </Link>
+                                <a href="#about" className="text-[#E9F3FF] text-lg mb-6">
+                                    من نحن
+                                </a>
+                                <Link to="/partners" className="text-[#E9F3FF] text-lg mb-6 ">
+                                    شركاء النجاح
+                                </Link>
+                                <Link to="/contactus" className="text-[#E9F3FF] text-lg mb-6">
+                                    تواصل معنا
+                                </Link>
+                                <Link to="/blog" className="text-[#E9F3FF] text-lg mb-6 ">
+                                    المدونة
+                                </Link>
+                            </nav>
+                            {token ?
+
+                                <button onClick={SiginOutButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
+                                    تسجيل الخروج
+                                </button>
+                                :
+
+                                <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                                    تسجيل الدخول
+                                </button>
+                            }
+                        </div>
                     </div>
                 </div>
             </header>

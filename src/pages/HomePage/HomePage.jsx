@@ -24,7 +24,7 @@ export default function HomePage() {
       <ChaletSection />
       <ServiceSection />
       <AboutSection />
-      <OpinionSection/>
+      <OpinionSection />
     </>
   );
 }
