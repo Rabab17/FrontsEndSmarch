@@ -1,14 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { backendUrl } from "../../api/data";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null); // لتخزين الأخطاء
   const navigate = useNavigate();
-  const url = backendUrl
+  const url = 'https://smarch-back-end-nine.vercel.app/'; 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -19,12 +19,15 @@ export default function Login() {
       // التأكد من نجاح الاستجابة
       if (response.status === 200) {
         const user = response.data;
+      
 
         console.log("تم تسجيل الدخول بنجاح:", user);
 
         // حفظ حالة تسجيل الدخول في Local Storage
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
+        localStorage.setItem("user", user);
+       
 
         // التوجيه إلى صفحة أخرى بعد تسجيل الدخول
         navigate("/");
@@ -33,10 +36,14 @@ export default function Login() {
       }
     } catch (err) {
       console.error("خطأ أثناء تسجيل الدخول:", err);
-      setError(err.response.data.message);
+      // تحقق مما إذا كانت err.response موجودة
+      if (err.response) {
+        setError(err.response.data.message || "حدث خطأ غير متوقع");
+      } else {
+        setError("حدث خطأ في الاتصال بالخادم");
+      }
     }
   };
-
 
   return (
     <div className="flex flex-col md:flex-row justify-around py-10 items-center bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
