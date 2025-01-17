@@ -44,10 +44,11 @@ export default function SignUpOwner() {
                 password,
                 role: "owner",
             });
+
             console.log("Response:", response.data);
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("token", response.data.token);
-            nav('/');
+            navigate("/");
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);
             setError(error.response?.data?.message || "حدث خطأ ما.");
