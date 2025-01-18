@@ -14,6 +14,8 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import SinglePost from "../pages/SinglePost/SinglePost";
 import SignUpUser from "../pages/SignUpPage/SignUpUser";
 import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
+import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
+import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
 
 export const router = createBrowserRouter([
   {
@@ -22,15 +24,20 @@ export const router = createBrowserRouter([
       { path: "blog", element: <Blog /> },
       { path: "blog/:id", element: <SinglePost /> },
       { path: "about", element: <About /> },
-      { path: "ContactUs", element: <ContactUs/> },
+      { path: "ContactUs", element: <ContactUs /> },
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
       { path: "login", element: <Login /> },
-      { path: "signup", element: <SignUp/> },
-      { path: "signupUser", element: <SignUpUser />},
-      { path: "signupOwner", element:<SignUpOwner/> },
+      { path: "signup", element: <SignUp /> },
+      { path: "signupUser", element: <SignUpUser /> },
+      { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
-      { path: "OwnerDashboard", element: <OwnerDashboard/> },
+      {
+        path: "OwnerDashboard", element: <OwnerDashboard />, children: [
+          {path:'Controls',element:<ControlsPage/>},
+          {path:'profile',element:<ProfilePage/>},
+        ]
+      },
       { path: '*', element: <NotFound /> }
     ],
   },

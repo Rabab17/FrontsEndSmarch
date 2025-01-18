@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(null); 
-  const [userName, setName] = useState(""); 
-  const [email, setEmail] = useState(""); 
-  const [phone, setPhone] = useState(""); 
-  const [birthdate, setBirthdate] = useState(""); 
-  const token = localStorage.getItem("token"); 
+  const [user, setUser] = useState(null);
+  const [userName, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const token = localStorage.getItem("token");
+  const nav = useNavigate();
   console.log("too");
   console.log("token", token);
 
@@ -16,30 +18,32 @@ export default function ProfilePage() {
     if (token) {
       console.log("decodedToken");
       const decoded = jwtDecode(token);
-      const id = decoded.id; 
-     
-      console.log("userID من الـ token:", id); 
+      const id = decoded.id;
+
+      console.log("userID من الـ token:", id);
 
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`https://smarch-back-end-nine.vercel.app/user/${id}`, {
-           
+
           });
-          console.log("بيانات المستخدم:", response.data); 
-          const userData = response.data.data; 
-          setUser(userData); 
-      
+          console.log("بيانات المستخدم:", response.data);
+          const userData = response.data.data;
+          setUser(userData);
+
           setName(userData.userName);
           setEmail(userData.email);
-          setPhone(userData.phoneNumber); 
+          setPhone(userData.phoneNumber);
           setBirthdate(userData.birthdate);
-         
+
         } catch (error) {
           console.error("خطأ في استرجاع بيانات المستخدم:", error);
         }
       };
 
-      fetchUserData(); 
+      fetchUserData();
+    } else {
+      nav('/')
     }
   }, [token]);
 
@@ -47,15 +51,15 @@ export default function ProfilePage() {
     const updatedData = {
       userName,
       email,
-      phoneNumber: phone, 
+      phoneNumber: phone,
       birthdate,
     };
     const token = localStorage.getItem("token");
-    console.log("tok",token)
-  if (!token) {
-    console.error("لا يوجد توثيق. يرجى تسجيل الدخول.");
-    return; 
-  }
+    console.log("tok", token)
+    if (!token) {
+      console.error("لا يوجد توثيق. يرجى تسجيل الدخول.");
+      return;
+    }
 
     try {
       const response = await axios.put(`https://smarch-back-end-nine.vercel.app/user/UpdateData`, updatedData, {
@@ -70,24 +74,24 @@ export default function ProfilePage() {
   };
 
   if (!user) {
-    return <div>جاري تحميل البيانات...</div>; 
+    return <div>جاري تحميل البيانات...</div>;
   }
 
   return (
     <>
-   
+
       <div className="text-end sm:px-10 ">
         <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
           🔒 تغيير كلمة السر
         </button>
       </div>
-     
+
       <div className="mx-4 sm:mx-8 bg-white rounded-lg shadow-md border border-blue-300 mt-6 pb-8">
-   
+
         <div className="flex flex-wrap items-center justify-between px-6 sm:px-10 py-6 gap-4">
-          <button 
+          <button
             className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-            onClick={handleUpdate} 
+            onClick={handleUpdate}
           >
             تعديل
           </button>
@@ -104,15 +108,15 @@ export default function ProfilePage() {
           </div>
         </div>
 
-      
+
         <div className="flex flex-wrap justify-evenly gap-4 px-6 sm:px-10">
           {/* الاسم */}
           <div className="w-[80%] sm:w-[40%]">
             <label className="block text-sm font-medium text-gray-700 mb-2">الاسم</label>
             <input
               type="text"
-              value={userName} 
-              onChange={(e) => setName(e.target.value)} 
+              value={userName}
+              onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -123,8 +127,8 @@ export default function ProfilePage() {
             </label>
             <input
               type="email"
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
@@ -133,23 +137,23 @@ export default function ProfilePage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">الهاتف</label>
             <input
               type="text"
-              value={phone} 
-              onChange={(e) => setPhone(e.target.value)} 
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring focus:ring-blue-200"
             />
           </div>
-         
+
           <div className="w-[80%] sm:w-[40%]">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               تاريخ الميلاد
             </label>
             <select
               className="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring focus:ring-blue-200"
-              value={birthdate} 
-              onChange={(e) => setBirthdate(e.target.value)} 
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
             >
               <option>اختر التاريخ</option>
-            
+
             </select>
           </div>
         </div>
