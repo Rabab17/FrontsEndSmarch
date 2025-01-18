@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { IoIosMenu } from "react-icons/io";
 import SidebarDashboard from './SidebarDashboard';
+import { useNavigate } from 'react-router-dom';
 
-// eslint-disable-next-line react/prop-types
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const nav = useNavigate();
     const toggleMenu = () => {
 
         setIsMenuOpen(!isMenuOpen);
     };
+
 
     return (
         <header className="bg-blue-50 shadow px-6 py-4 flex justify-between items-center">
@@ -23,7 +24,12 @@ export default function HeaderDashboard() {
 
             </div>
             <div className="flex items-center gap-4">
-                <img src="/assets/images/logo.png" alt="Logo" className="w-24" />
+                <img
+                    src="/assets/images/logo.png"
+                    alt="Logo"
+                    className="w-24"
+                    onClick={()=>{nav('/')}}
+                />
             </div>
 
             {/* Show search input only on larger screens */}
