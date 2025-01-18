@@ -16,6 +16,11 @@ import SignUpUser from "../pages/SignUpPage/SignUpUser";
 import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
 import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
+import BalanceRechargePage from "../pages/OwnerDashboard/pages/BalanceRechargePage";
+import SupportPage from "../pages/OwnerDashboard/pages/SupportPage";
+import NotificationPage from "../pages/OwnerDashboard/pages/NotificationPage";
+import ChaletManagement from "../pages/OwnerDashboard/pages/ChaletManagement";
+import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations";
 
 export const router = createBrowserRouter([
   {
@@ -34,8 +39,13 @@ export const router = createBrowserRouter([
       { path: "ForgetPassword", element: <ForgetPassword /> },
       {
         path: "OwnerDashboard", element: <OwnerDashboard />, children: [
-          {path:'Controls',element:<ControlsPage/>},
-          {path:'profile',element:<ProfilePage/>},
+          { index: true, element: <ControlsPage /> },
+          { path: 'profile', element: <ProfilePage /> },
+          { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
+          { path: 'support', element: <SupportPage /> },
+          { path: 'notifications', element: <NotificationPage /> },
+          { path: 'ChaletManagement', element: <ChaletManagement /> },
+          { path: 'ManageReservations', element: <ManageReservations /> },
         ]
       },
       { path: '*', element: <NotFound /> }
