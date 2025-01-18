@@ -26,7 +26,7 @@ export default function Login() {
         // حفظ حالة تسجيل الدخول في Local Storage
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
-        localStorage.setItem("user", user);
+      
        
 
         // التوجيه إلى صفحة أخرى بعد تسجيل الدخول
