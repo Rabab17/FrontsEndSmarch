@@ -17,7 +17,7 @@ export default function ContentDashbiard() {
         } else {
             nav('/')
         }
-    }, [token]);
+    }, [token, nav]);
 
 
     return (
