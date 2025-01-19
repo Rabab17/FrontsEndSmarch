@@ -1,7 +1,9 @@
 
 
 import { useNavigate, useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
+// eslint-disable-next-line react/prop-types
 export default function SidebarDashboard({ isOpen }) {
     const nav = useNavigate();
     const location = useLocation();
@@ -9,6 +11,23 @@ export default function SidebarDashboard({ isOpen }) {
     const isExactMatch = (path) => location.pathname === path;
 
     const isPartialMatch = (path) => location.pathname.includes(path);
+
+    const SignOutButtonClick = () => {
+        Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: 'هل تريد تسجيل الخروج؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم، تسجيل الخروج',
+            cancelButtonText: 'إلغاء',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                nav('/login');
+            }
+        });
+    };
+
 
     return (
         <aside className={`bg-blue-50 w-64 h-full p-4 md:flex flex-col justify-between ${isOpen ? '' : 'hidden'}`}>
@@ -31,10 +50,10 @@ export default function SidebarDashboard({ isOpen }) {
                     </svg>
 
 
-                 <h1>نظره عامه</h1>
+                    <h1>نظره عامه</h1>
                 </div>
                 <div className="space-y-6 md:space-y-8">
-                    
+
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/profile") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
@@ -51,8 +70,8 @@ export default function SidebarDashboard({ isOpen }) {
                         </svg>
                         <h1>الملف الشخصي</h1>
                     </div>
-                 
-                  
+
+
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/support") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
@@ -82,7 +101,7 @@ export default function SidebarDashboard({ isOpen }) {
             </div>
 
             <div className="mt-auto">
-                <button className="w-full px-4 py-2 mt-4 bg-[#0061E0] rounded text-white text-2xl">
+                <button onClick={SignOutButtonClick} className="w-full px-4 py-2 mt-4 bg-[#0061E0] rounded text-white text-2xl">
                     تسجيل خروج
                 </button>
             </div>

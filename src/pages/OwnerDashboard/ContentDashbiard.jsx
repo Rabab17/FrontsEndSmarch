@@ -13,7 +13,9 @@ export default function ContentDashbiard() {
             console.log("decodedToken");
             const decoded = jwtDecode(token);
             const id = decoded.id;
+            const role = decoded.role;
             id ? '' : nav('/')
+            role == 'owner' ? '':nav('/')
         } else {
             nav('/')
         }

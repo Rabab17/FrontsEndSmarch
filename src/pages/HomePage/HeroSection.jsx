@@ -10,11 +10,13 @@ export default function HeroSection() {
     const token = localStorage.getItem("token");
 
     var username;
+    var role;
 
     if (token) {
         const decoded = jwtDecode(token);
-
+        console.log(decoded);
         username = decoded.username;
+        role = decoded.role;
 
     }
 
@@ -29,7 +31,7 @@ export default function HeroSection() {
         nav('/');
     }
     const GotoDashboard = () => {
-        nav('/ownerdashboard');
+        role == 'user' ? nav('/userdashboard') : nav('/ownerdashboard');
     }
     return (
         <div
