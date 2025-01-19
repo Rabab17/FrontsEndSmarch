@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUp() {
   const nav = useNavigate()
   return (
-    <div className="min-h-screen flex flex-col items-center pt-10 md:pt-20 bg-blue-50 text-center px-4">
+    <div className="min-h-screen flex flex-col items-center mb-10 pt-10 md:pt-20 bg-blue-50 text-center px-4">
       <h1 className="text-2xl md:text-3xl font-bold mb-4">
         ابدأ رحلتك معنا! اختر نوع الحساب الذي يناسب احتياجاتك.
       </h1>

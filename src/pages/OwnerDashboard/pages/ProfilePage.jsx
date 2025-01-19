@@ -72,6 +72,12 @@ export default function ProfilePage() {
       });
     } catch (error) {
       console.error("خطأ في تحديث البيانات:", error.response ? error.response.data : error.message);
+      Swal.fire({
+        title: " خطأ ",
+        text: "حدث خطأ اثناء تحديث البيانات ",
+        icon: "erorr",
+        confirmButtonText: "حسناً",
+      });
     }
   };
 

@@ -21,7 +21,7 @@ export default function ContentDashbiard() {
 
 
     return (
-        <div className="mt-20 w-[100%]">
+        <div className="mt-10 w-[100%]">
             {/* {renderContent()} */}
             <Outlet />
         </div>
