@@ -1,10 +1,11 @@
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import useFetchData from "../../hooks/useFetchData";
+import Splash from "../../components/Splash";
 
 export default function About() {
   const { data, error, loading } = useFetchData(`${import.meta.env.VITE_URL_BACKEND}chalet/users`);
 
-  if (loading) return <p className="text-center">جاري تحميل البيانات...</p>;
+  if (loading) return <Splash/>;
   if (error) return <p className="text-center text-red-500">حدث خطأ: {error}</p>;
 
   return (

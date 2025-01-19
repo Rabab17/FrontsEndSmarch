@@ -1,45 +1,61 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { backendUrl } from "../../api/data";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null); // لتخزين الأخطاء
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // حالة اللودر
   const navigate = useNavigate();
-  const url = backendUrl
+  const url = 'https://smarch-back-end-nine.vercel.app/';
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true); // تشغيل اللودر
 
     try {
-      // إرسال البريد الإلكتروني وكلمة المرور إلى الخادم
       const response = await axios.post(`${url}user/login`, { email, password });
 
-      // التأكد من نجاح الاستجابة
       if (response.status === 200) {
         const user = response.data;
 
         console.log("تم تسجيل الدخول بنجاح:", user);
 
-        // حفظ حالة تسجيل الدخول في Local Storage
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
+        localStorage.setItem("user", JSON.stringify(user));
 
-        // التوجيه إلى صفحة أخرى بعد تسجيل الدخول
-        navigate("/");
+        Swal.fire({
+          title: "تم تسجيل الدخول بنجاح!",
+          text: "مرحباً بك! سيتم تحويلك إلى الصفحة الرئيسية.",
+          icon: "success",
+          confirmButtonText: "حسناً",
+        }).then(() => {
+          navigate("/");
+        });
       } else {
         setError("بيانات تسجيل الدخول غير صحيحة");
       }
     } catch (err) {
-      console.error("خطأ أثناء تسجيل الدخول:", err);
-      setError(err.response.data.message);
+      Swal.fire({
+        title: "خطأ في تسجيل الدخول",
+        text: "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى إعادة المحاولة.",
+        icon: "error",
+        confirmButtonText: "حسنًا",
+      });
+
+      setError(
+        err.response?.data.message || "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا"
+      );
+    } finally {
+      setIsLoading(false); // إيقاف اللودر
     }
   };
 
-
   return (
-    <div className="flex flex-col md:flex-row justify-around py-10 items-center bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
+    <div className="flex flex-col md:flex-row justify-around mb-10 py-10 items-center bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
       {/* form section */}
       <div className="w-full md:w-1/3 p-8">
         <h1 className="text-4xl font-bold text-[#1E293B] mb-4">مرحبًا بعودتك!</h1>
@@ -76,10 +92,21 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
+            className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg flex items-center justify-center gap-2"
+            disabled={isLoading} // تعطيل الزر أثناء التحميل
           >
-            تسجيل الدخول
+            {isLoading ? (
+              <>
+                <p className="mx-5">
+                  جاري المعالجة
+                </p>
+                <div className="w-5 h-5 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+              </>
+            ) : (
+              "تسجيل الدخول"
+            )}
           </button>
+
         </form>
         <p className="text-center text-sm mt-4">
           ليس لديك حساب؟{" "}

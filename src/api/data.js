@@ -207,30 +207,104 @@ export const Posts = [
 
 export const Plans = [
   {
+    id: 1,
     title: "المجانية",
     price: "مجانا",
-    features: ["دخول لوحة المالك", "دعم تقني 24/7", "10 حجوزات شهريًا"],
+    features: ["دخول لوحة المالك", "دعم تقني 24/7", "15 حجوزات شهريًا"],
   },
   {
+    id: 2,
     title: "المميزة",
     price: "600 ريال / شهر",
     features: [
       "دخول لوحة المالك",
       "دعم تقني 24/7",
-      "10 حجوزات شهريًا",
-      "ميزات إضافية أخرى",
+      "30 حجوزات شهريًا",
+      "أولوية في دعم العملاء",
     ],
   },
   {
+    id: 3,
     title: "الاحترافية",
     price: "1200 ريال / شهر",
     features: [
       "دخول لوحة المالك",
-      "أولوية في دعم العملاء",
+      "دعم تقني 24/7",
       "حجوزات غير محدودة شهريًا",
-      "دعم شخصي عبر مدير حساب مخصص",
-      "تقارير شاملة مع تحليلات متقدمة",
+      "أولوية في دعم العملاء",
+      "تحليل شخصي عبر حساب مخصص",
+      "تقارير أسبوعية مع استشارات متخصصة",
     ],
+  },
+];
+
+
+export const Bookings = [
+  {
+      id: "12345",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه الزهور",
+      phone: "01094976357",
+      bookingDate: "01-12-2024",
+      departureDate: "07-12-2024",
+      amount: "1500",
+      status: "مؤكد",
+      statusColor: "bg-[#48BB78]", // اللون الخاص بالحالة
+  },
+  {
+      id: "12346",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه الجبل",
+      phone: "01094976357",
+      bookingDate: "02-12-2024",
+      departureDate: "08-12-2024",
+      amount: "2000",
+      status: "قيد المراجعة",
+      statusColor: "bg-[#ECC94B]",
+  },
+  {
+      id: "12347",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه البحر",
+      phone: "01094976357",
+      bookingDate: "03-12-2024",
+      departureDate: "09-12-2024",
+      amount: "4000",
+      status: "ملغي",
+      statusColor: "bg-[#FF0000]",
+  },
+  {
+      id: "12348",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه الزهور",
+      phone: "01094976357",
+      bookingDate: "01-12-2024",
+      departureDate: "07-12-2024",
+      amount: "1500",
+      status: "مؤكد",
+      statusColor: "bg-[#48BB78]", // اللون الخاص بالحالة
+  },
+  {
+      id: "12349",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه الجبل",
+      phone: "01094976357",
+      bookingDate: "02-12-2024",
+      departureDate: "08-12-2024",
+      amount: "2000",
+      status: "قيد المراجعة",
+      statusColor: "bg-[#ECC94B]",
+  },
+  {
+      id: "12351",
+      clientName: " محمد فتحي ",
+      chaletName: "شاليه البحر",
+      phone: "01094976357",
+      bookingDate: "03-12-2024",
+      departureDate: "09-12-2024",
+      amount: "4000",
+      status: "ملغي",
+      statusColor: "bg-[#FF0000]",
   },
 ];
 
