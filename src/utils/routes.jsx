@@ -21,6 +21,10 @@ import SupportPage from "../pages/OwnerDashboard/pages/SupportPage";
 import NotificationPage from "../pages/OwnerDashboard/pages/NotificationPage";
 import ChaletManagement from "../pages/OwnerDashboard/pages/ChaletManagement";
 import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations";
+import UserDashboard from "../pages/UserDashboard/layout/UserDashboard";
+import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
+import UpdatePassword from "../pages/updatePassword/updatePassword";
+// import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +41,7 @@ export const router = createBrowserRouter([
       { path: "signupUser", element: <SignUpUser /> },
       { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
+      { path: "UpdatePassword", element: <UpdatePassword /> },
       {
         path: "OwnerDashboard", element: <OwnerDashboard />, children: [
           { index: true, element: <ControlsPage /> },
@@ -46,6 +51,12 @@ export const router = createBrowserRouter([
           { path: 'notifications', element: <NotificationPage /> },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
+        ]
+      },
+      {
+        path: "UserDashboard", element: <UserDashboard />, children: [
+          { path: 'profile', element: <ProfileUser /> },
+         
         ]
       },
       { path: '*', element: <NotFound /> }

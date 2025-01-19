@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function SignUpOwner() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState(""); // State لرقم الهاتف
+    const [phone, setPhone] = useState(""); 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(null);

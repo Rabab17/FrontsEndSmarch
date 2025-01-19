@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,18 +20,25 @@ export default function Login() {
       // التأكد من نجاح الاستجابة
       if (response.status === 200) {
         const user = response.data;
-      
 
         console.log("تم تسجيل الدخول بنجاح:", user);
 
         // حفظ حالة تسجيل الدخول في Local Storage
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
-      
-       
 
-        // التوجيه إلى صفحة أخرى بعد تسجيل الدخول
-        navigate("/");
+        // فك تشفير الـ token واستخراج الـ role
+        const decodedToken = jwtDecode(user.token);
+        const role = decodedToken.role;
+
+        // التوجيه إلى صفحة مختلفة بناءً على الدور
+        if (role === 'user') {
+          navigate("/UserDashboard");
+        } else if (role === 'owner') {
+          navigate("/OwnerDashboard");
+        } else {
+          navigate("/"); // Default redirect if role is not recognized
+        }
       } else {
         setError("بيانات تسجيل الدخول غير صحيحة");
       }
