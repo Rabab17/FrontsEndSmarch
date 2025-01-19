@@ -28,7 +28,7 @@ export default function Blog() {
         {blogPosts.map((post) => (
           <div
             key={post.id}
-            className="bg-white p-4 w-full  sm:w-[48%] lg:w-[25%] rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out"
+            className="bg-white p-4 w-full  sm:w-[48%] lg:w-[25%] rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out cursor-pointer !important"
             onClick={() => GoToPost(post.id)}
           >
             <img
