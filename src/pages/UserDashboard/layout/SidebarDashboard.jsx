@@ -33,9 +33,9 @@ export default function SidebarDashboard({ isOpen }) {
         <aside className={`bg-blue-50 w-64 h-full p-4 md:flex flex-col justify-between ${isOpen ? '' : 'hidden'}`}>
             <div className="mt-5 text-center">
                 <div
-                    className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${isExactMatch("/UserDashboard") ? "bg-[#0061E0] text-white py-2" : ""
+                    className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${isExactMatch("/Overview") ? "bg-[#0061E0] text-white py-2" : ""
                         }`}
-                    onClick={() => nav('/UserDashboard')}
+                    onClick={() => nav('Overview')}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,9 @@ export default function SidebarDashboard({ isOpen }) {
                         height="28"
                         viewBox="0 0 32 32"
                         fill="currentColor"
-                        className={`text-[#0061E0] ${isExactMatch("/UserDashboard") ? "text-white" : ""}`}
+                        className={`text-[#0061E0] ${isExactMatch("/Overview") ? "text-white" : ""}`
+                    }
+                  
                     >
                         <path d="M28.2267 13.7732H19.3334C18.7222 13.7732 18.2267 13.2777 18.2267 12.6665V3.77317C18.2267 3.16198 18.7222 2.6665 19.3334 2.6665C24.8562 2.6665 29.3334 7.14366 29.3334 12.6665C29.3334 13.2777 28.8379 13.7732 28.2267 13.7732ZM27.0267 11.5598C26.5354 8.14623 23.8536 5.46448 20.44 4.97317V11.5598H27.0267Z" />
                         <path d="M28.1067 15.9998H17.24C16.9182 15.9998 16.6096 15.872 16.3821 15.6444C16.1545 15.4169 16.0267 15.1083 16.0267 14.7865V3.89312C16.0288 3.54331 15.8814 3.20926 15.6216 2.97497C15.3619 2.74067 15.0144 2.62843 14.6667 2.66646C7.70661 3.4055 2.50275 9.40047 2.74951 16.3953C2.99627 23.3902 8.60964 29.0035 15.6045 29.2503C22.5993 29.4971 28.5943 24.2932 29.3334 17.3331C29.3633 16.9897 29.2474 16.6496 29.0141 16.3959C28.7807 16.1423 28.4514 15.9985 28.1067 15.9998Z" />

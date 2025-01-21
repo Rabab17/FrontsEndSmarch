@@ -14,7 +14,7 @@ export default function ForgetPassword() {
         setSuccess(null);
 
         try {
-            const response = await axios.post('https://smarch-back-end-nine.vercel.app/user/forgotPassword', {
+            const response = await axios.post('http://localhost:8000/user/forgotPassword', {
                 email,
             });
 

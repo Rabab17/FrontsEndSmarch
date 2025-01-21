@@ -24,6 +24,8 @@ import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations
 import UserDashboard from "../pages/UserDashboard/layout/UserDashboard";
 import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
 import UpdatePassword from "../pages/updatePassword/updatePassword";
+import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
+import Overview from "../pages/UserDashboard/pages/Overview";
 // import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
@@ -42,6 +44,7 @@ export const router = createBrowserRouter([
       { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
       { path: "UpdatePassword", element: <UpdatePassword /> },
+      { path: "ResetPassword/:token", element: <ResetPassword /> },
       {
         path: "OwnerDashboard", element: <OwnerDashboard />, children: [
           { index: true, element: <ControlsPage /> },
@@ -56,6 +59,7 @@ export const router = createBrowserRouter([
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
           { path: 'profile', element: <ProfileUser /> },
+          { path: 'Overview', element: <Overview /> },
          
         ]
       },
