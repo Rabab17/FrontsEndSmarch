@@ -1,32 +1,41 @@
 import { Outlet, useNavigate } from "react-router-dom";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Splash from "../../components/Splash";
 import { jwtDecode } from "jwt-decode";
 
-export default function ContentDashbiard() {
+export default function ContentDashboard() {
     const token = localStorage.getItem("token");
-    const nav = useNavigate();
-
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (token) {
-            console.log("decodedToken");
-            const decoded = jwtDecode(token);
-            const id = decoded.id;
-            const role = decoded.role;
-            id ? '' : nav('/')
-            role == 'owner' ? '':nav('/')
-        } else {
-            nav('/')
-        }
-    }, [token, nav]);
+            try {
+                const decoded = jwtDecode(token);
+                const id = decoded.id;
+                const role = decoded.role;
 
+                if (!id || role !== "owner") {
+                    navigate("/");
+                }
+            } catch (error) {
+                console.error("خطأ في فك تشفير التوكين:", error);
+                navigate("/");
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            navigate("/");
+        }
+    }, [token, navigate]);
+
+    if (loading) {
+        return <Splash />;
+    }
 
     return (
         <div className="mt-10 w-[100%]">
-            {/* {renderContent()} */}
             <Outlet />
         </div>
     );
-};
-
+}

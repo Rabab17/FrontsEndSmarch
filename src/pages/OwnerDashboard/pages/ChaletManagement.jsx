@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 
 export default function ChaletManagement() {
+    const nav = useNavigate();
     const chalets = [
         {
             id: 1,
@@ -27,13 +29,13 @@ export default function ChaletManagement() {
                         key={chalet.id}
                         className="w-96 border rounded-lg shadow-lg overflow-hidden"
                     >
-                        {/* صورة الشاليه */}
+
                         <img
                             src={chalet.image}
                             alt={chalet.name}
                             className="w-full h-48 object-cover"
                         />
-                        {/* تفاصيل الشاليه */}
+
                         <div className="p-4 text-right">
                             <h2 className="text-xl font-bold mb-2 flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 22" fill="none">
@@ -89,7 +91,7 @@ export default function ChaletManagement() {
                                 )}
                                 {chalet.isActive ? "نشط" : "غير نشط"}
                             </p>
-                            {/* الأزرار */}
+
                             <div className="flex gap-2 mt-4">
                                 <button className="flex-1 bg-gray-500 text-white py-2 rounded-lg">
                                     عرض الصفحة
@@ -106,7 +108,10 @@ export default function ChaletManagement() {
                 ))}
             </div>
             {/* زر إضافة شاليه جديد */}
-            <button className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg">
+            <button
+                className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
+                onClick={() => nav('/ownerdashboard/subscription')}
+            >
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
                     <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />

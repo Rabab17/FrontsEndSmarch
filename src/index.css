@@ -4,6 +4,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: 'Tagwal';
 }
 
 
@@ -27,3 +28,5 @@ html {
     transform: scale(1);
   }
 }
+
+

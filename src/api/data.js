@@ -249,7 +249,7 @@ export const Bookings = [
       departureDate: "07-12-2024",
       amount: "1500",
       status: "مؤكد",
-      statusColor: "bg-[#48BB78]", // اللون الخاص بالحالة
+      statusColor: "bg-[#48BB78]", 
   },
   {
       id: "12346",
@@ -281,8 +281,8 @@ export const Bookings = [
       bookingDate: "01-12-2024",
       departureDate: "07-12-2024",
       amount: "1500",
-      status: "مؤكد",
-      statusColor: "bg-[#48BB78]", // اللون الخاص بالحالة
+      status: "مُؤكدِ",
+      statusColor: "bg-[#48BB78]", 
   },
   {
       id: "12349",

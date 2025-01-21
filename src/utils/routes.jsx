@@ -26,6 +26,8 @@ import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
 import UpdatePassword from "../pages/updatePassword/updatePassword";
 import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
+import Subscription from "../pages/OwnerDashboard/pages/subscription";
+import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 // import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
@@ -54,13 +56,15 @@ export const router = createBrowserRouter([
           { path: 'notifications', element: <NotificationPage /> },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
+          { path: 'subscription', element: <Subscription /> },
+          { path: 'addChalet', element: <AddChalet /> },
         ]
       },
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
           { path: 'profile', element: <ProfileUser /> },
           { path: 'Overview', element: <Overview /> },
-         
+
         ]
       },
       { path: '*', element: <NotFound /> }

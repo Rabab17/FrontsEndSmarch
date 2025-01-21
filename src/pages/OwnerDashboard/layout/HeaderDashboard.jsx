@@ -12,22 +12,22 @@ export default function HeaderDashboard() {
     const [userName, setName] = useState("");
 
     const token = localStorage.getItem("token");
-    console.log("token", token);
+    // console.log("token", token);
 
     useEffect(() => {
         if (token) {
-            console.log("decodedToken");
+            // console.log("decodedToken");
             const decoded = jwtDecode(token);
             const id = decoded.id;
 
-            console.log("userID من الـ token:", id);
+            // console.log("userID من الـ token:", id);
 
             const fetchUserData = async () => {
                 try {
                     const response = await axios.get(`https://smarch-back-end-nine.vercel.app/user/${id}`, {
 
                     });
-                    console.log("بيانات المستخدم:", response.data);
+                    // console.log("بيانات المستخدم:", response.data);
                     const userData = response.data.data;
 
                     setName(userData.userName);
