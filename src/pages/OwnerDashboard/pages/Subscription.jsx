@@ -11,7 +11,7 @@ export default function Subscription() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/subscription/user/subscriptions`,
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}subscription/user/subscriptions`,
                     {
                         headers: {
                             Authorization: token,

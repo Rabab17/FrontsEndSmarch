@@ -24,7 +24,7 @@ export default function HeaderDashboard() {
 
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get(`https://smarch-back-end-nine.vercel.app/user/${id}`, {
+                    const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
 
                     });
                     // console.log("بيانات المستخدم:", response.data);

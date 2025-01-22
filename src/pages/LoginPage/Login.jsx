@@ -10,7 +10,7 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // حالة اللودر
   const navigate = useNavigate();
-  const url = 'https://smarch-back-end-nine.vercel.app/';
+  const url = import.meta.env.VITE_URL_BACKEND;
 
   const handleSubmit = async (event) => {
     event.preventDefault();

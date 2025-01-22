@@ -38,7 +38,7 @@ export default function SignUpOwner() {
         }
 
         try {
-            const response = await axios.post("https://smarch-back-end-nine.vercel.app/user", {
+            const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}user`, {
                 userName: username,
                 email,
                 phoneNumber: phone, // إرسال رقم الهاتف

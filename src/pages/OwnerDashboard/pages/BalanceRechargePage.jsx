@@ -20,7 +20,7 @@ export default function BalanceRechargePage() {
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/package`);
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}package`);
                 // console.log("بيانات المستخدم:", response.data);
                 setPackage(response.data.data);
             } catch (error) {
@@ -46,7 +46,7 @@ export default function BalanceRechargePage() {
             if (result.isConfirmed) {
                 try {
                     const response = await axios.post(
-                        "https://smarch-back-end-nine.vercel.app/subscription",
+                        `${import.meta.env.VITE_URL_BACKEND}subscription`,
                         {
                             packageId: id,
                         },

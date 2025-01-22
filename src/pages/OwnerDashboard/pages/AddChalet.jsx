@@ -119,7 +119,7 @@ export default function AddChalet() {
 
             // Send the updated formData to the backend
             console.log(updatedFormData)
-            const response = await axios.post("https://smarch-back-end-nine.vercel.app/chalet/addChalet", updatedFormData, {
+            const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}chalet/addChalet`, updatedFormData, {
                 headers: {
                     Authorization: token,
                 },

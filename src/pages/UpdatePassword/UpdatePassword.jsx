@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -31,7 +31,7 @@ const UpdatePassword = () => {
 
     try {
       const response = await axios.patch(
-        'https://smarch-back-end-nine.vercel.app/user/updatePassword', 
+        `${import.meta.env.VITE_URL_BACKEND}user/updatePassword`, 
         {
           currentPassword,
           newPassword, 
