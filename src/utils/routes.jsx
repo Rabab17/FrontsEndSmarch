@@ -28,6 +28,7 @@ import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
 import Subscription from "../pages/OwnerDashboard/pages/subscription";
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
+import Datapicker from "../pages/datepicker/Datepicker";
 // import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
       { path: "ContactUs", element: <ContactUs /> },
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
+      { path: "Datapicker/:id", element: <Datapicker /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "signupUser", element: <SignUpUser /> },

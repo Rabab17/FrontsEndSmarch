@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import { GrSwim } from "react-icons/gr";
@@ -10,30 +10,37 @@ import Splash from "../../components/Splash";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
-  const [loading, setLoading] = useState(true)
-  const { id } = useParams()
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const navigate = useNavigate(); // استخدام useNavigate
+
   useEffect(() => {
     const fetchChalet = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/${id}`);
-        console.log("بيانات المستخدم:", response.data);
+        console.log("بيانات الشاليه:", response.data);
         const chaletData = response.data.data;
         setChalet(chaletData);
       } catch (error) {
-        console.error("خطأ في استرجاع بيانات المستخدم:", error);
+        console.error("خطأ في استرجاع بيانات الشاليه:", error);
       } finally {
-
-        setLoading(false)
+        setLoading(false);
       }
     };
 
     fetchChalet();
-  }, []);
+  }, [id]);
+
   const [openSection, setOpenSection] = useState("المرافق");
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
+
+  const handleBooking = () => {
+    navigate(`/Datapicker/${id}`); // توجيه المستخدم إلى Datapicker
+  };
+
   return (
     <>
       {loading ? (
@@ -159,17 +166,16 @@ export default function ChaletDetails() {
             </div>
           </div>
 
-
-
           <div className="my-6 sm:my-8 px-4 sm:px-8 ">
-            <button className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-lg hover:from-[#38a169] hover:to-[#1a5de8]">
+            <button 
+              onClick={handleBooking} 
+              className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-lg hover:from-[#38a169] hover:to-[#1a5de8]"
+            >
               احجز الآن واستمتع بتجربة فريدة
             </button>
           </div>
         </div>
       )}
     </>
-
-
-  )
+  );
 }

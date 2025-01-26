@@ -1,0 +1,56 @@
+/* styles.css */
+
+/* تخصيص مظهر الخلفية */
+.date-picker-container {
+    background-color: #EFF6FF; /* لون الخلفية */
+    padding: 20px; /* إضافة بعض الحشوة */
+    border-radius: 0.5rem; /* زوايا مستديرة */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    position: relative; /* تأكد من أن العنصر يحتوي على position */
+  }
+  
+
+
+  
+  /* تأثير عند التمرير على الزر */
+  .confirm-button:hover {
+    background-color: #45a049; /* لون الزر عند التمرير */
+  }
+  
+  /* تخصيص مظهر التقويم */
+  .custom-calendar {
+    background-color: #ffffff; /* لون خلفية التقويم */
+    border-radius: 0.5rem; /* زوايا مستديرة */
+  }
+  
+  /* تخصيص مظهر الأيام المحددة */
+  .custom-calendar .react-datepicker__day--selected {
+    background-color: #4CAF50; /* لون الخلفية للأيام المحددة */
+    color: white; /* لون النص للأيام المحددة */
+  }
+  
+  /* تخصيص مظهر الأيام عند التمرير عليها */
+  .custom-calendar .react-datepicker__day:hover {
+    background-color: #45a049; /* لون الخلفية عند التمرير */
+    color: white; /* لون النص عند التمرير */
+  }
+  
+  /* تخصيص مظهر رأس التقويم */
+  .custom-calendar .react-datepicker__header {
+    background-color: #4CAF50; /* لون خلفية الرأس */
+    color: white; /* لون النص في الرأس */
+  }
+  /* styles.css */
+
+/* تخصيص مظهر الزر */
+.confirm-button {
+    margin-top: 300px; /* إضافة مسافة أعلى الزر */
+    background-color: #4CAF50; /* لون الزر */
+    color: white; /* لون النص */
+    border: none; /* إزالة الحدود */
+    border-radius: 0.5rem; /* زوايا مستديرة */
+    padding: 10px 20px; /* إضافة حشوة */
+    cursor: pointer; /* تغيير المؤشر عند التمرير */
+    z-index: 10; /* تعيين z-index أعلى */
+    position: relative; /* تأكد من أن الزر في موضع صحيح */
+  }

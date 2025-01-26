@@ -8,18 +8,20 @@ export default function Overview() {
 
     useEffect(() => {
         const fetchBookings = async () => {
-            const token = localStorage.getItem("token"); 
+            const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/user`, {
+                const response = await axios.get("https://smarch-back-end-nine.vercel.app/reservation/user", {
                     headers: {
                         Authorization: token,
                     },
                 });
-              
-                
+
+
                 if (response.data.status === "success") {
-                    setBookings(response.data.data); 
+                    setBookings(response.data.data);
+                    console.log("response.data.data", response.data.data);
+
                 } else {
                     setError("فشل في استرجاع البيانات.");
                 }
@@ -27,7 +29,7 @@ export default function Overview() {
                 console.error("Error fetching bookings:", err);
                 setError("حدث خطأ أثناء استرجاع البيانات.");
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
@@ -35,11 +37,11 @@ export default function Overview() {
     }, []);
 
     if (loading) {
-        return <div>جاري تحميل البيانات...</div>; 
+        return <div>جاري تحميل البيانات...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>; 
+        return <div>{error}</div>;
     }
 
     return (
@@ -60,13 +62,15 @@ export default function Overview() {
                     <tbody>
                         {bookings.map((booking) => (
                             <tr key={booking._id}>
-                                <td className="py-5 px-2 text-center text-lg">{booking.chaletID.name}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.city || "غير محدد"}</td>
-                                <td className="py-5 px-2 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString()}</td>
-                                <td className="py-5 px-2 text-center text-lg">{1}</td> {/* عدد المرات، هنا افترضنا أنه 1 لكل حجز */}
+                                <td className="py-5 px-2 text-center text-lg">{booking.finalReservation.chaletID.name}</td>
                                 <td className="py-5 px-2 text-center text-lg">
-                                    <span className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
-                                        {booking.status}
+                                    {booking.finalReservation.chaletID.location.city || "غير محدد"}
+                                </td>
+                                <td className="py-5 px-2 text-center text-lg">{new Date(booking.finalReservation.checkInDate).toLocaleDateString()}</td>
+                                <td className="py-5 px-2 text-center text-lg">{booking.numberOfReservations}</td>
+                                <td className="py-5 px-2 text-center text-lg">
+                                    <span className={`px-3 py-1 text-white ${booking.finalReservation.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
+                                        {booking.finalReservation.status === "pending" ? "قيد الانتظار" : "مكتمل"}
                                     </span>
                                 </td>
                                 <td className="p-2 text-center">
