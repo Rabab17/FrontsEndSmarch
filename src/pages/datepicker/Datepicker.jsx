@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom"; // استيراد useParams
+import { useParams, useNavigate } from "react-router-dom"; // استيراد useParams و useNavigate
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2"; 
@@ -8,6 +8,7 @@ import "./style.css";
 
 export default function Datapicker() { 
   const { id } = useParams(); 
+  const navigate = useNavigate(); // استخدام useNavigate
   console.log("id", id);
   const [dateRange, setDateRange] = useState([null, null]); 
   const [isOpen, setIsOpen] = useState(true); 
@@ -39,20 +40,15 @@ export default function Datapicker() {
     try {
         const token = localStorage.getItem("token"); 
         console.log(token);
-        const response = await axios.post('https://smarch-back-end-nine.vercel.app/reservation/create', 
-          { 
-            
-            checkInDate: checkInDate.toISOString(), 
-            checkOutDate: checkOutDate.toISOString(), 
-            id: id 
+        const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}reservation/create`, {
+            checkInDate: checkInDate.toISOString(),
+            checkOutDate: checkOutDate.toISOString(),
+            chaletID: id 
         }, {
             headers: {
                 Authorization: token, 
             },
         });
-       
-
-   
         console.log("Response:", response); 
 
         Swal.fire({
@@ -60,9 +56,13 @@ export default function Datapicker() {
           text: response.data.message,
           icon: 'success',
           confirmButtonText: 'العودة إلى الصفحة الرئيسية',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/UserDashboard/Overview'); 
+          }
         });
     } catch (error) {
-      console.error("Error response:", error); 
+      console.error("Error response:", error.response ? error.response.data : error.message); 
       if (error.response) {
         Swal.fire({
           title: 'خطأ',
@@ -73,7 +73,7 @@ export default function Datapicker() {
       } else if (error.request) {
         Swal.fire({
           title: 'خطأ',
-          text: error.message,
+          text: 'لم يتم تلقي استجابة من الخادم.',
           icon: 'error',
           confirmButtonText: 'حسناً',
         });
@@ -87,7 +87,6 @@ export default function Datapicker() {
       }
     }
   };
-
 
   return (
     <div className="date-picker-container flex flex-col items-center mb-8">
