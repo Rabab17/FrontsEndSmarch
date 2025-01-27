@@ -7,12 +7,13 @@ import { MdCancel, MdLocationOn } from "react-icons/md";
 import { BsInfoCircle } from "react-icons/bs";
 import axios from "axios";
 import Splash from "../../components/Splash";
+import Swal from "sweetalert2";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const navigate = useNavigate(); // استخدام useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchChalet = async () => {
@@ -38,7 +39,25 @@ export default function ChaletDetails() {
   };
 
   const handleBooking = () => {
-    navigate(`/Datapicker/${id}`); // توجيه المستخدم إلى Datapicker
+     const token=localStorage.getItem("token")
+    console.log(token);
+    
+    if(!token){
+      Swal.fire({
+        title: 'خطأ',
+        text: 'يجب تسجيل الدخول اولا ',
+        icon: 'error',
+        confirmButtonText: 'حسناً',
+       
+        
+      }).then(() => {
+        navigate("/login"); 
+    });
+    } else{
+
+      navigate(`/Datapicker/${id}`); 
+    }
+
   };
 
   return (

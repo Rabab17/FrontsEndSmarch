@@ -1,17 +1,55 @@
-import { Bookings } from "../../../api/data";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Splash from "../../../components/Splash";
 
 export default function ManageReservations() {
-    const bookings = Bookings
+    const token = localStorage.getItem("token");
+    const [bookings, setBookings] = useState([]); // حالة للحجوزات
+    const [revenue, setRevenue] = useState(0); // حالة للإيرادات
+    const [numberOfReservations, setNumberOfReservations] = useState(0); // عدد الحجوزات
+    const [numberOfClients, setNumberOfClients] = useState(0); // عدد العملاء
+    const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
+    const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
+    const [loading, setLoading] = useState(true);
 
+    const fetchUserData = async (page) => {
+        setLoading(true); 
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/owner`, {
+                headers: {
+                    authorization: token
+                },
+                params: { page }
+            });
+            console.log("بيانات المستخدم:", response.data);
+            const userData = response.data.data;
+
+            setBookings(userData);
+            setRevenue(response.data.Revenue);
+            setNumberOfReservations(response.data.numberOfReservations);
+            setNumberOfClients(response.data.numberOfClients);
+            setTotalPages(response.data.pagination.totalPages);
+        } catch (error) {
+            console.error("خطأ في استرجاع بيانات المستخدم:", error);
+        } finally {
+            setLoading(false); 
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData(currentPage);
+    }, [currentPage]);
+
+    if (loading) return <Splash />; 
     return (
         <div className="p-6 space-y-6">
             <div className="flex flex-wrap gap-4 justify-between">
-                <div className="flex justify-between p-4 rounded-lg w-full sm:w-[48%] md:w-[22%]  flex-shrink-0 border border-[#1A71FF] bg-white shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)]">
+                <div className="flex justify-between p-4 rounded-lg w-full sm:w-[48%] md:w-[22%] flex-shrink-0 border border-[#1A71FF] bg-white shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)]">
                     <div className="w-full">
                         <div className="flex justify-between mb-6">
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-700 mb-3">الإيرادات</h3>
-                                <p className="text-2xl font-semibold text-[#101828]">25,000 رس</p>
+                                <p className="text-2xl font-semibold text-[#101828]">{revenue} رس</p>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61" fill="none">
                                 <path opacity="0.21" d="M0 30.9067V37.9067C0 50.6093 10.2975 60.9067 23 60.9067H30H37C49.7025 60.9067 60 50.6093 60 37.9067V30.9067V23.9067C60 11.2042 49.7025 0.906738 37 0.906738H30H23C10.2975 0.906738 0 11.2042 0 23.9067V30.9067Z" fill="#4AD991" />
@@ -19,19 +57,13 @@ export default function ManageReservations() {
                                 <path opacity="0.5" d="M24.9126 35.0817C24.325 35.7085 23.3406 35.7402 22.7138 35.1526C22.0871 34.5651 22.0553 33.5806 22.6429 32.9539L28.4762 26.7317C29.0445 26.1255 29.9888 26.073 30.6208 26.6123L35.2248 30.5411L41.2235 22.9428C41.7558 22.2685 42.734 22.1534 43.4083 22.6858C44.0826 23.2181 44.1977 24.1963 43.6653 24.8706L36.6653 33.7373C36.1186 34.4298 35.1059 34.5294 34.4347 33.9567L29.7306 29.9425L24.9126 35.0817Z" fill="#4AD991" />
                             </svg>
                         </div>
-                        <div className="text-xs flex gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-                                <path d="M16 6.3479L18.29 8.6379L13.41 13.5179L9.41 9.5179L2 16.9379L3.41 18.3479L9.41 12.3479L13.41 16.3479L19.71 10.0579L22 12.3479V6.3479H16Z" fill="#3A9660" />
-                            </svg>
-                            <p>ارتفعت بنسبة 18.5% عن الشهر الماضي</p>
-                        </div>
                     </div>
                 </div>
-
+                
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
                         <h3 className="text-lg font-semibold text-gray-700 mb-3">الشاليهات المؤجرة</h3>
-                        <p className="text-2xl font-semibold text-[#101828]">2</p>
+                        <p className="text-2xl font-semibold text-[#101828]">{numberOfReservations}</p>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                         <path opacity="0.21" d="M0.166504 30V37C0.166504 49.7025 10.464 60 23.1665 60H30.1665H37.1665C49.8691 60 60.1665 49.7025 60.1665 37V30V23C60.1665 10.2975 49.8691 0 37.1665 0H30.1665H23.1665C10.464 0 0.166504 10.2975 0.166504 23V30Z" fill="#FEC53D" />
@@ -40,81 +72,98 @@ export default function ManageReservations() {
                     </svg>
                 </div>
 
+
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">الحجوزات</h3>
-                        <p className="text-2xl font-semibold text-[#101828]">500</p>
+                        <h3 className="text-lg font-semibold text-gray-700 mb-3">عدد الحجوزات</h3>
+                        <p className="text-2xl font-semibold text-[#101828]">{numberOfReservations}</p>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="61" height="61" viewBox="0 0 61 61" fill="none">
-                        <path opacity="0.3" d="M0.833496 30.4722V37.4722C0.833496 50.1747 11.1309 60.4722 23.8335 60.4722H30.8335H37.8335C50.536 60.4722 60.8335 50.1747 60.8335 37.4722V30.4722V23.4722C60.8335 10.7696 50.536 0.472168 37.8335 0.472168H30.8335H23.8335C11.1309 0.472168 0.833496 10.7696 0.833496 23.4722V30.4722Z" fill="#FF9066" />
-                        <path opacity="0.78" d="M29.4644 24.281C29.4845 24.0205 29.7017 23.8193 29.9629 23.8193H30.3808C30.6376 23.8193 30.8527 24.014 30.8783 24.2696L31.4999 30.486L35.9147 33.0087C36.0705 33.0977 36.1666 33.2634 36.1666 33.4428V33.8314C36.1666 34.1611 35.8531 34.4005 35.535 34.3138L29.2319 32.5947C29.0005 32.5316 28.8466 32.3131 28.865 32.074L29.4644 24.281Z" fill="#FF9066" />
-                        <path opacity="0.901274" d="M23.5553 15.4565C23.2911 15.1418 22.7812 15.2622 22.6859 15.6619L21.0524 22.51C20.9747 22.8357 21.2328 23.1442 21.5671 23.1252L28.6118 22.726C29.0227 22.7027 29.2311 22.2207 28.9665 21.9054L27.1651 19.7586C28.33 19.3605 29.5652 19.1526 30.8335 19.1526C37.0927 19.1526 42.1668 24.2267 42.1668 30.486C42.1668 36.7452 37.0927 41.8193 30.8335 41.8193C24.5743 41.8193 19.5002 36.7452 19.5002 30.486C19.5002 29.4352 19.6425 28.4061 19.9199 27.4169L17.3523 26.6967C17.0143 27.9019 16.8335 29.1728 16.8335 30.486C16.8335 38.218 23.1015 44.486 30.8335 44.486C38.5655 44.486 44.8335 38.218 44.8335 30.486C44.8335 22.754 38.5655 16.486 30.8335 16.486C28.8886 16.486 27.0364 16.8826 25.3532 17.5993L23.5553 15.4565Z" fill="#FF9066" />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
+                        <path opacity="0.21" d="M0.166504 30V37C0.166504 49.7025 10.464 60 23.1665 60H30.1665H37.1665C49.8691 60 60.1665 49.7025 60.1665 37V30V23C60.1665 10.2975 49.8691 0 37.1665 0H30.1665H23.1665C10.464 0 0.166504 10.2975 0.166504 23V30Z" fill="#FEC53D" />
+                        <path d="M15.1665 24.3164L28.067 31.7645C28.2059 31.8447 28.3516 31.9026 28.4998 31.9394V46.3846L16.0866 39.0385C15.5163 38.701 15.1665 38.0875 15.1665 37.4248V24.3164ZM45.1665 24.1184V37.4248C45.1665 38.0875 44.8167 38.701 44.2464 39.0385L31.8332 46.3846V31.8129C31.8634 31.7978 31.8934 31.7816 31.9231 31.7645L45.1665 24.1184Z" fill="#FEC53D" />
                     </svg>
                 </div>
 
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">العملاء</h3>
-                        <p className="text-2xl font-semibold text-[#101828]">800</p>
+                        <h3 className="text-lg font-semibold text-gray-700 mb-3">عدد العملاء</h3>
+                        <p className="text-2xl font-semibold text-[#101828]">{numberOfClients}</p>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                         <path opacity="0.21" d="M0.5 30V37C0.5 49.7025 10.7975 60 23.5 60H30.5H37.5C50.2025 60 60.5 49.7025 60.5 37V30V23C60.5 10.2975 50.2025 0 37.5 0H30.5H23.5C10.7975 0 0.5 10.2975 0.5 23V30Z" fill="#8280FF" />
                         <path opacity="0.587821" d="M21.1665 23.3333C21.1665 26.2789 23.5543 28.6667 26.4998 28.6667C29.4454 28.6667 31.8332 26.2789 31.8332 23.3333C31.8332 20.3878 29.4454 18 26.4998 18C23.5543 18 21.1665 20.3878 21.1665 23.3333ZM34.4998 28.6667C34.4998 30.8758 36.2907 32.6667 38.4998 32.6667C40.709 32.6667 42.4998 30.8758 42.4998 28.6667C42.4998 26.4575 40.709 24.6667 38.4998 24.6667C36.2907 24.6667 34.4998 26.4575 34.4998 28.6667Z" fill="#8280FF" />
-                        <path d="M26.4778 31.3333C20.1826 31.3333 15.0177 34.5686 14.5009 40.9322C14.4727 41.2788 15.1356 41.9999 15.47 41.9999H37.4956C38.4972 41.9999 38.5128 41.1939 38.4972 40.9333C38.1065 34.3908 32.8616 31.3333 26.4778 31.3333ZM45.7746 41.9999L40.6333 41.9999C40.6333 38.9987 39.6417 36.229 37.9683 34.0007C42.5103 34.0504 46.2189 36.3468 46.498 41.1999C46.5092 41.3954 46.498 41.9999 45.7746 41.9999Z" fill="#8280FF" />
                     </svg>
                 </div>
             </div>
             {/* الجدول */}
             <div className="bg-white p-4 rounded-lg shadow">
-                <table className="w-full">
-                    <thead>
-                        <tr className="text-[#0061E0] p-2 text-xl">
-                            <th>رقم الحجز</th>
-                            <th>اسم العميل</th>
-                            <th>اسم الشاليه</th>
-                            <th>رقم الهاتف</th>
-                            <th>تاريخ الحجز</th>
-                            <th>تاريخ المغادرة</th>
-                            <th>مبلغ الحجز</th>
-                            <th>حالة الحجز</th>
-                            <th>خيارات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings.map((booking) => (
-                            <tr key={booking.id}>
-                                <td className="py-5 px-2 text-center text-lg">{booking.id}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.clientName}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.chaletName}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.phone}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.bookingDate}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.departureDate}</td>
-                                <td className="py-5 px-2 text-center text-lg">{`${booking.amount} ريال`}</td>
-                                <td className="py-5 px-2 text-center text-lg">
-                                    <span
-                                        className={`px-3 py-1 text-white ${booking.statusColor} rounded-lg`}
-                                    >
-                                        {booking.status}
-                                    </span>
-                                </td>
-                                <td className="p-2 text-center">
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                            <path d="M12 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12" stroke="#0061E0" />
-                                            <path d="M18.3751 2.62523C18.7729 2.2274 19.3125 2.00391 19.8751 2.00391C20.4377 2.00391 20.9773 2.2274 21.3751 2.62523C21.7729 3.02305 21.9964 3.56262 21.9964 4.12523C21.9964 4.68784 21.7729 5.2274 21.3751 5.62523L12.3621 14.6392C12.1246 14.8765 11.8313 15.0501 11.5091 15.1442L8.63609 15.9842C8.55005 16.0093 8.45883 16.0108 8.372 15.9886C8.28517 15.9663 8.20592 15.9212 8.14254 15.8578C8.07916 15.7944 8.03398 15.7151 8.01174 15.6283C7.98949 15.5415 7.991 15.4503 8.01609 15.3642L8.85609 12.4912C8.95062 12.1693 9.12463 11.8763 9.36209 11.6392L18.3751 2.62523Z" stroke="#0061E0" />
-                                        </svg>
-                                    </button>
-                                    <span className="text-3xl">/</span>
-                                    <button>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none">
-                                            <path d="M8.1665 24.5C7.52484 24.5 6.97573 24.2717 6.51917 23.8152C6.06261 23.3586 5.83395 22.8091 5.83317 22.1667V7H4.6665V4.66667H10.4998V3.5H17.4998V4.66667H23.3332V7H22.1665V22.1667C22.1665 22.8083 21.9382 23.3578 21.4817 23.8152C21.0251 24.2725 20.4756 24.5008 19.8332 24.5H8.1665ZM10.4998 19.8333H12.8332V9.33333H10.4998V19.8333ZM15.1665 19.8333H17.4998V9.33333H15.1665V19.8333Z" fill="#FF0000" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    <table className="w-full">
+        <thead>
+            <tr className="text-[#0061E0] p-2 text-xl">
+                <th >رقم الحجز</th>
+                <th >اسم العميل</th>
+                <th >اسم الشاليه</th>
+                <th >تاريخ الدخول</th>
+                <th >تاريخ المغادرة</th>
+                <th>مبلغ الحجز</th>
+                <th >حالة الحجز</th>
+                <th>خيارات</th>
+            </tr>
+        </thead>
+        <tbody>
+    {bookings.map((booking,index) => (
+        <tr key={booking._id}>
+           
+           <td className="py-2 px-1 text-center text-lg">{index + 1}</td>
+            <td className="py-2 px-1 text-center text-lg">{booking.userID.userName}</td>
+            <td className="py-2 px-1 text-center text-lg">{booking.chaletID.name}</td>
+            <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString()}</td>
+            <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+            <td className="py-2 px-1 text-center text-lg">{`${booking.chaletID.price} ريال`}</td>
+            <td className="py-2 px-1 text-center text-lg">
+                <span
+                    className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
+                    {booking.status === "pending" ? "قيد الانتظار" : "مكتمل"}
+                </span>
+                
+            </td>
+            <td className="p-2 text-center">
+                  <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22 16" fill="none">
+                      <path d="M11 5C10.2044 5 9.44129 5.31607 8.87868 5.87868C8.31607 6.44129 8 7.20435 8 8C8 8.79565 8.31607 9.55871 8.87868 10.1213C9.44129 10.6839 10.2044 11 11 11C11.7956 11 12.5587 10.6839 13.1213 10.1213C13.6839 9.55871 14 8.79565 14 8C14 7.20435 13.6839 6.44129 13.1213 5.87868C12.5587 5.31607 11.7956 5 11 5ZM11 13C9.67392 13 8.40215 12.4732 7.46447 11.5355C6.52678 10.5979 6 9.32608 6 8C6 6.67392 6.52678 5.40215 7.46447 4.46447C8.40215 3.52678 9.67392 3 11 3C12.3261 3 13.5979 3.52678 14.5355 4.46447C15.4732 5.40215 16 6.67392 16 8C16 9.32608 15.4732 10.5979 14.5355 11.5355C13.5979 12.4732 12.3261 13 11 13ZM11 0.5C6 0.5 1.73 3.61 0 8C1.73 12.39 6 15.5 11 15.5C16 15.5 20.27 12.39 22 8C20.27 3.61 16 0.5 11 0.5Z" fill="#0061E0" />
+                    </svg>
+                  </button>
+                  <span className="text-3xl">/</span>
+                  <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none">
+                      <path d="M8.1665 24.5C7.52484 24.5 6.97573 24.2717 6.51917 23.8152C6.06261 23.3586 5.83395 22.8091 5.83317 22.1667V7H4.6665V4.66667H10.4998V3.5H17.4998V4.66667H23.3332V7H22.1665V22.1667C22.1665 22.8083 21.9382 23.3578 21.4817 23.8152C21.0251 24.2725 20.4756 24.5008 19.8332 24.5H8.1665ZM10.4998 19.8333H12.8332V9.33333H10.4998V19.8333ZM15.1665 19.8333H17.4998V9.33333H15.1665V19.8333Z" fill="#FF0000" />
+                    </svg>
+                  </button>
+                </td>
+        </tr>
+    ))}
+</tbody>
+    </table>
+
+                
+            </div>
+            {/* عناصر التحكم في الصفحات */}
+            <div className="flex justify-between mt-4">
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                >
+                    الصفحة السابقة
+                </button>
+                <span>الصفحة {currentPage} من {totalPages}</span>
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                >
+                    الصفحة التالية
+                </button>
             </div>
         </div>
     );

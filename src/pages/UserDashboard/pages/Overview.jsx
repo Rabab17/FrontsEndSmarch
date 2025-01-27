@@ -11,7 +11,7 @@ export default function Overview() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get("https://smarch-back-end-nine.vercel.app/reservation/user", {
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/user`, {
                     headers: {
                         Authorization: token,
                     },

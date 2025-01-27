@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom"; // استيراد useParams
+import { useNavigate, useParams } from "react-router-dom"; 
+import Swal from 'sweetalert2';
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -31,8 +32,12 @@ const ResetPassword = () => {
       console.log("res",response)
 
       if (response.status === 200) {
-        setSuccessMessage("تم إعادة تعيين كلمة المرور بنجاح."); 
-        window.alert("تم إعادة تعيين كلمة المرور بنجاح.");
+        Swal.fire({
+          title: "تم التحديث بنجاح",
+          text: "تم حفظ بياناتك بنجاح.",
+          icon: "success",
+          confirmButtonText: "حسناً",
+        });
         navigate("/login");
       }
     } catch (error) {
