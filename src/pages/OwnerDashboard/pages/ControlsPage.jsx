@@ -1,51 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Splash from "../../../components/Splash";
+import { useNavigate } from 'react-router-dom';
 export default function ControlsPage() {
-    const [packages, setPackages] = useState([]); 
-    const [loading, setLoading] = useState(true); 
-
+    const [packages, setPackages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const nav = useNavigate()
     const fetchPackages = async () => {
         const token = localStorage.getItem("token");
         try {
-            const response = await axios.get('https://smarch-back-end-nine.vercel.app/chalet/owner', {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/owner`, {
                 headers: {
-                    Authorization:  token 
+                    Authorization: token
                 }
             });
             if (response.data.status === "success") {
-                setPackages(response.data.data); 
+                setPackages(response.data.data);
             }
         } catch (error) {
             console.error("Error fetching packages:", error);
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchPackages(); 
+        fetchPackages();
     }, []);
 
-    if (loading) return  <Splash />;
+    const navToAddPackage = () => {
+        nav('BalanceRecharge')
+    };
+
+    const navToSingleMang = (chaletId) => {
+        nav('SingleChaletManagement', { state: { chaletId } })
+    }
+
+    if (loading) return <Splash />;
 
     return (
         <div className="px-4">
             <div className="flex mb-4">
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <button
+                    onClick={navToAddPackage}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                     اضافة باقة +
                 </button>
             </div>
             <div className="space-y-4">
-                {packages.map((pkg,index) => (
+                {packages.map((pkg, index) => (
                     <div
-                        key={index}
+                        key={pkg._id}
                         className="flex flex-col md:flex-row bg-blue-100 p-4 rounded-lg shadow-md items-center md:justify-between"
                     >
                         {/* رقم الباقة */}
                         <div className="text-center md:w-1/6">
                             <p className="text-gray-800 pb-5">رقم الباقة</p>
-                            <p className="font-bold text-blue-600">{index+1}</p>
+                            <p className="font-bold text-blue-600">{index + 1}</p>
                         </div>
 
                         {/* اسم الباقة */}
@@ -74,7 +86,10 @@ export default function ControlsPage() {
 
                         {/* زر الإدارة والتحكم */}
                         <div className="text-center md:w-1/6">
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                            <button
+                                onClick={() => navToSingleMang(pkg._id)}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
                                 الإدارة والتحكم
                             </button>
                         </div>
