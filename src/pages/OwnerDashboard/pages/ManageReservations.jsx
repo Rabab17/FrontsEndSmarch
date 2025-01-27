@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Splash from "../../../components/Splash";
 
 export default function ManageReservations() {
     const token = localStorage.getItem("token");
@@ -9,32 +10,37 @@ export default function ManageReservations() {
     const [numberOfClients, setNumberOfClients] = useState(0); // عدد العملاء
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
+    const [loading, setLoading] = useState(true);
 
     const fetchUserData = async (page) => {
+        setLoading(true); 
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/owner`, {
                 headers: {
                     authorization: token
                 },
-                params: { page } 
+                params: { page }
             });
             console.log("بيانات المستخدم:", response.data);
             const userData = response.data.data;
 
-            setBookings(userData); 
-            setRevenue(response.data.Revenue); 
-            setNumberOfReservations(response.data.numberOfReservations); 
-            setNumberOfClients(response.data.numberOfClients); 
+            setBookings(userData);
+            setRevenue(response.data.Revenue);
+            setNumberOfReservations(response.data.numberOfReservations);
+            setNumberOfClients(response.data.numberOfClients);
             setTotalPages(response.data.pagination.totalPages);
         } catch (error) {
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
+        } finally {
+            setLoading(false); 
         }
     };
 
     useEffect(() => {
-        fetchUserData(currentPage); // تحميل البيانات عند تغيير الصفحة
-    }, [currentPage]); // تأكد من وضع مصفوفة الاعتماد بشكل صحيح
+        fetchUserData(currentPage);
+    }, [currentPage]);
 
+    if (loading) return <Splash />; 
     return (
         <div className="p-6 space-y-6">
             <div className="flex flex-wrap gap-4 justify-between">
@@ -53,6 +59,19 @@ export default function ManageReservations() {
                         </div>
                     </div>
                 </div>
+                
+                <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-700 mb-3">الشاليهات المؤجرة</h3>
+                        <p className="text-2xl font-semibold text-[#101828]">{numberOfReservations}</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
+                        <path opacity="0.21" d="M0.166504 30V37C0.166504 49.7025 10.464 60 23.1665 60H30.1665H37.1665C49.8691 60 60.1665 49.7025 60.1665 37V30V23C60.1665 10.2975 49.8691 0 37.1665 0H30.1665H23.1665C10.464 0 0.166504 10.2975 0.166504 23V30Z" fill="#FEC53D" />
+                        <path d="M15.1665 24.3164L28.067 31.7645C28.2059 31.8447 28.3516 31.9026 28.4998 31.9394V46.3846L16.0866 39.0385C15.5163 38.701 15.1665 38.0875 15.1665 37.4248V24.3164ZM45.1665 24.1184V37.4248C45.1665 38.0875 44.8167 38.701 44.2464 39.0385L31.8332 46.3846V31.8129C31.8634 31.7978 31.8934 31.7816 31.9231 31.7645L45.1665 24.1184Z" fill="#FEC53D" />
+                        <path opacity="0.499209" d="M15.5718 20.7014C15.7294 20.5024 15.9282 20.3343 16.1601 20.2108L29.2851 13.2201C29.8361 12.9266 30.497 12.9266 31.048 13.2201L44.173 20.2108C44.3517 20.306 44.5109 20.4277 44.6466 20.5697L30.2564 28.8778C30.1618 28.9325 30.0746 28.995 29.9951 29.064C29.9156 28.995 29.8283 28.9325 29.7337 28.8778L15.5718 20.7014Z" fill="#FEC53D" />
+                    </svg>
+                </div>
+
 
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
@@ -78,43 +97,53 @@ export default function ManageReservations() {
             </div>
             {/* الجدول */}
             <div className="bg-white p-4 rounded-lg shadow">
-                <table className="w-full">
-                    <thead>
-                        <tr className="text-[#0061E0] p-2 text-xl">
-                            <th>رقم الحجز</th>
-                            <th>اسم العميل</th>
-                            <th>اسم الشاليه</th>
-                            <th>تاريخ الدخول</th>
-                            <th>تاريخ المغادرة</th>
-                            <th>حالة الحجز</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings.map((booking) => (
-                            <tr key={booking._id}>
-                                <td className="py-5 px-2 text-center text-lg">{booking._id}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.userID.userName}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.chaletID.name}</td>
-                                <td className="py-5 px-2 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString()}</td>
-                                <td className="py-5 px-2 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
-                                <td className="py-5 px-2 text-center text-lg">{booking.status}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    <table className="w-full">
+        <thead>
+            <tr className="text-[#0061E0] p-2 text-xl">
+                <th >رقم الحجز</th>
+                <th >اسم العميل</th>
+                <th >اسم الشاليه</th>
+                <th >تاريخ الدخول</th>
+                <th >تاريخ المغادرة</th>
+                <th>مبلغ الحجز</th>
+                <th >حالة الحجز</th>
+            </tr>
+        </thead>
+        <tbody>
+    {bookings.map((booking,index) => (
+        <tr key={booking._id}>
+           
+           <td className="py-2 px-1 text-center text-lg">{index + 1}</td>
+            <td className="py-2 px-1 text-center text-lg">{booking.userID.userName}</td>
+            <td className="py-2 px-1 text-center text-lg">{booking.chaletID.name}</td>
+            <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString()}</td>
+            <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+            <td className="py-2 px-1 text-center text-lg">{`${booking.chaletID.price} ريال`}</td>
+            <td className="py-2 px-1 text-center text-lg">
+                <span
+                    className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
+                    {booking.status === "pending" ? "قيد الانتظار" : "مكتمل"}
+                </span>
+            </td>
+        </tr>
+    ))}
+</tbody>
+    </table>
+
+                
             </div>
             {/* عناصر التحكم في الصفحات */}
             <div className="flex justify-between mt-4">
-                <button 
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} 
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                     className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
                 >
                     الصفحة السابقة
                 </button>
                 <span>الصفحة {currentPage} من {totalPages}</span>
-                <button 
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} 
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
                 >
