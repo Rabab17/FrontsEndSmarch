@@ -40,6 +40,7 @@ export default function SingleChaletManagement() {
 
     useEffect(() => {
         fetchBookings(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     const updateStatus = async (id, newStatus) => {
