@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Splash from "../../../components/Splash";
 import Swal from "sweetalert2";
-
+import * as XLSX from "xlsx";
 export default function SingleChaletManagement() {
     const location = useLocation();
     const { chaletId } = location.state || {};
-    console.log(chaletId)
     const token = localStorage.getItem("token");
     const [bookings, setBookings] = useState([]); // حالة للحجوزات
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
     const [Reservations, setReservations] = useState(0)
+    const [clients, setClients] = useState(0)
     const [loading, setLoading] = useState(true);
 
 
@@ -27,8 +27,10 @@ export default function SingleChaletManagement() {
                 }
             );
             setBookings(response.data.data);
+            console.log(response.data)
+            setClients(response.data.numberOfClients);
+            setReservations(response.data.numberOfReservations);
             setTotalPages(response.data.pagination.totalPages);
-            setReservations(response.data.pagination.totalItems);
         } catch (error) {
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
         } finally {
@@ -108,6 +110,34 @@ export default function SingleChaletManagement() {
     };
 
 
+    const downloadExcel = () => {
+        if (bookings.length === 0) {
+            alert("لا توجد بيانات متاحة للتنزيل!");
+            return;
+        }
+
+        // تحويل البيانات إلى مصفوفة قابلة للتحميل
+        const formattedData = bookings.map((booking) => ({
+            "اسم الشاليه": booking.chaletID.name,
+            "سعر الشاليه": booking.chaletID.price,
+            "تاريخ الدخول": new Date(booking.checkInDate).toLocaleDateString(),
+            "تاريخ الخروج": new Date(booking.checkOutDate).toLocaleDateString(),
+            "حالة الحجز": booking.status,
+            "السعر الإجمالي": booking.totalPrice,
+            "اسم المستخدم": booking.userID.userName,
+            "الإيميل": booking.userID.email,
+        }));
+
+        // تحويل المصفوفة إلى ورقة عمل
+        const worksheet = XLSX.utils.json_to_sheet(formattedData);
+
+        // إنشاء ملف Excel جديد
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "الحجوزات");
+
+        // تحميل الملف
+        XLSX.writeFile(workbook, "الحجوزات.xlsx");
+    };
 
 
     if (loading) return <Splash />;
@@ -149,7 +179,7 @@ export default function SingleChaletManagement() {
                         <div className="flex justify-between items-center p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-700 mb-3">عدد العملاء</h3>
-                                <p className="text-2xl font-semibold text-[#101828]">{bookings.length}</p>
+                                <p className="text-2xl font-semibold text-[#101828]">{clients}</p>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="61" height="60" viewBox="0 0 61 60" fill="none">
                                 <path opacity="0.21" d="M0.5 30V37C0.5 49.7025 10.7975 60 23.5 60H30.5H37.5C50.2025 60 60.5 49.7025 60.5 37V30V23C60.5 10.2975 50.2025 0 37.5 0H30.5H23.5C10.7975 0 0.5 10.2975 0.5 23V30Z" fill="#8280FF" />
@@ -159,6 +189,12 @@ export default function SingleChaletManagement() {
                         </div>
                     </div>
                     {/* الجدول */}
+                    <button
+                        onClick={() => { downloadExcel() }}
+                        className="m-5 p-5 text-3xl bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
+                    >
+                        تحميل الداتا
+                    </button>
                     <div className="bg-white p-4 rounded-lg shadow">
                         <table className="w-full">
                             <thead>
@@ -235,11 +271,11 @@ export default function SingleChaletManagement() {
                 </div>
                 : <div className="text-center w-full">
                     <h1 className="text-3xl">
-                        برجاء اختيار شاليه اولا لعرض التفاصيل 
+                        برجاء اختيار شاليه اولا لعرض التفاصيل
                     </h1>
                     <Link to="/ownerdashboard">
                         <button className="m-5 p-5 text-3xl bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg">
-                            ارجع الى الشاليهات 
+                            ارجع الى الشاليهات
                         </button>
                     </Link>
                 </div>
