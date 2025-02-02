@@ -20,8 +20,11 @@ export default function BalanceRechargePage() {
 
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}package`);
-                // console.log("بيانات المستخدم:", response.data);
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}package`,{
+                    headers: {
+                        Authorization: token,
+                    },
+                });
                 setPackage(response.data.data);
             } catch (error) {
                 console.error("خطأ في استرجاع بيانات المستخدم:", error);
