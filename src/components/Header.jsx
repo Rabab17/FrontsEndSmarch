@@ -9,12 +9,12 @@ export default function Header() {
   const token = localStorage.getItem("token");
 
   var username;
-
+  var role;
   if (token) {
     const decoded = jwtDecode(token);
 
     username = decoded.username;
-
+    role = decoded.role;
     console.log(`مرحبًا ${username}`);
     console.log(decoded);
   }
@@ -30,6 +30,9 @@ export default function Header() {
   const SiginOutButtonClick = () => {
     localStorage.removeItem("token");
     nav('/');
+  }
+  const GotoDashboard = () => {
+    role == 'user' ? nav('/userdashboard') : nav('/ownerdashboard');
   }
   return (
     <header className="h-[108px] w-full bg-white flex items-center justify-between px-2 md:px-6 shadow-md">
@@ -48,7 +51,7 @@ export default function Header() {
       </nav>
 
       <div className="hidden md:flex items-center">
-        {token ? <h1 className='text-[#E9F3FF] text-xl'> مرحبا {username} </h1> :
+        {token ? <h1 onClick={GotoDashboard} className=' text-xl cursor-pointer hover:text-blue-600'> مرحبا {username} </h1> :
 
           <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
             تسجيل الدخول

@@ -14,6 +14,23 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import SinglePost from "../pages/SinglePost/SinglePost";
 import SignUpUser from "../pages/SignUpPage/SignUpUser";
 import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
+import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
+import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
+import BalanceRechargePage from "../pages/OwnerDashboard/pages/BalanceRechargePage";
+import SupportPage from "../pages/OwnerDashboard/pages/SupportPage";
+import NotificationPage from "../pages/OwnerDashboard/pages/NotificationPage";
+import ChaletManagement from "../pages/OwnerDashboard/pages/ChaletManagement";
+import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations";
+import UserDashboard from "../pages/UserDashboard/layout/UserDashboard";
+import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
+import UpdatePassword from "../pages/updatePassword/updatePassword";
+import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
+import Overview from "../pages/UserDashboard/pages/Overview";
+import Subscription from "../pages/OwnerDashboard/pages/subscription";
+import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
+import Datapicker from "../pages/datepicker/Datepicker";
+import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
+// import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
   {
@@ -22,15 +39,38 @@ export const router = createBrowserRouter([
       { path: "blog", element: <Blog /> },
       { path: "blog/:id", element: <SinglePost /> },
       { path: "about", element: <About /> },
-      { path: "ContactUs", element: <ContactUs/> },
+      { path: "ContactUs", element: <ContactUs /> },
       { path: "partners", element: <Partners /> },
       { path: "partners/:id", element: <ChaletDetails /> },
+      { path: "Datapicker/:id", element: <Datapicker /> },
       { path: "login", element: <Login /> },
-      { path: "signup", element: <SignUp/> },
-      { path: "signupUser", element: <SignUpUser />},
-      { path: "signupOwner", element:<SignUpOwner/> },
+      { path: "signup", element: <SignUp /> },
+      { path: "signupUser", element: <SignUpUser /> },
+      { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
-      { path: "OwnerDashboard", element: <OwnerDashboard/> },
+      { path: "UpdatePassword", element: <UpdatePassword /> },
+      { path: "ResetPassword/:token", element: <ResetPassword /> },
+      {
+        path: "OwnerDashboard", element: <OwnerDashboard />, children: [
+          { index: true, element: <ControlsPage /> },
+          { path: 'profile', element: <ProfilePage /> },
+          { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
+          { path: 'support', element: <SupportPage /> },
+          { path: 'notifications', element: <NotificationPage /> },
+          { path: 'ChaletManagement', element: <ChaletManagement /> },
+          { path: 'ManageReservations', element: <ManageReservations /> },
+          { path: 'subscription', element: <Subscription /> },
+          { path: 'addChalet', element: <AddChalet /> },
+          { path: 'SingleChaletManagement', element: <SingleChaletManagement /> },
+        ]
+      },
+      {
+        path: "UserDashboard", element: <UserDashboard />, children: [
+          { path: 'profile', element: <ProfileUser /> },
+          { path: 'Overview', element: <Overview /> },
+
+        ]
+      },
       { path: '*', element: <NotFound /> }
     ],
   },

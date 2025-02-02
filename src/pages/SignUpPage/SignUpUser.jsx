@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function SignUpUser() {
     const [username, setUsername] = useState("");
@@ -35,7 +36,7 @@ export default function SignUpUser() {
         }
 
         try {
-            const response = await axios.post("https://smarch-back-end-nine.vercel.app/user", {
+            const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}user`, {
                 userName: username,
                 email,
                 password,
@@ -44,15 +45,28 @@ export default function SignUpUser() {
             console.log("Response:", response.data);
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("token", response.data.token);
-            nav('/')
+            Swal.fire({
+                title: "تم التسجيل بنجاح!",
+                text: "تم إنشاء حسابك بنجاح. سيتم تحويلك إلى الصفحة الرئيسية.",
+                icon: "success",
+                confirmButtonText: "حسناً",
+            }).then(() => {
+                nav("/");
+            });
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);
+            Swal.fire({
+                title: "خطأ",
+                text: "حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+                icon: "error",
+                confirmButtonText: "حسناً",
+            });
         }
 
     };
 
     return (
-        <div className="flex flex-col md:flex-row justify-around items-center py-10 bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
+        <div className="flex flex-col md:flex-row justify-around mb-10 items-center py-10 bg-blue-50 rounded-lg shadow-lg overflow-hidden w-full">
             {/* form section */}
             <div className="w-full md:w-1/3 p-8">
                 <h1 className="text-4xl font-bold text-[#1E293B] mb-4">

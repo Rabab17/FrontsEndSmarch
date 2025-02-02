@@ -1,14 +1,16 @@
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import useFetchData from "../../hooks/useFetchData";
+import Splash from "../../components/Splash";
 
 export default function About() {
   const { data, error, loading } = useFetchData(`${import.meta.env.VITE_URL_BACKEND}chalet/users`);
 
-  if (loading) return <p className="text-center">جاري تحميل البيانات...</p>;
+  if (loading) return <Splash />;
   if (error) return <p className="text-center text-red-500">حدث خطأ: {error}</p>;
 
   return (
     <div className="bg-blue-50  py-12">
+      {console.log(data)}
       <div className="text-center">
         <h1 className="text-[#0061E0] text-3xl font-bold mb-6">
           اكتشف أفضل الشاليهات
@@ -25,8 +27,15 @@ export default function About() {
       </div>
       <div className="flex flex-wrap justify-center">
         {data.map((chalet) => (
-          <div key={chalet._id} className="bg-white shadow-md rounded-lg border border-blue-500 mx-6 my-10">
-            <img src={chalet.img} alt={chalet.name} />
+          <div
+            key={chalet._id}
+            className="bg-white w-full sm:w-[48%] md:w-[30%] lg:w-[20%] shadow-md rounded-lg border border-blue-500 mx-3 my-5"
+          >
+            <img
+              src={chalet.img}
+              alt={chalet.name}
+              className="w-full h-64 object-cover rounded-t-lg"
+            />
             <div className="p-3">
               <h1 className="text-2xl font-medium text-[#363A3D]">{chalet.name}</h1>
               <div className="flex items-center mt-3">
@@ -43,6 +52,7 @@ export default function About() {
               </div>
             </div>
           </div>
+
         ))}
       </div>
     </div>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; // تأكد من استخدام jwt-decode بشكل صحيح
+import {jwtDecode} from 'jwt-decode'; 
 import Splash from "../../../components/Splash";
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom'; // استيراد useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 export default function ProfilePage() {
   const navigate = useNavigate(); // تعريف navigate
@@ -77,12 +77,6 @@ export default function ProfilePage() {
       });
     } catch (error) {
       console.error("خطأ في تحديث البيانات:", error.response ? error.response.data : error.message);
-      Swal.fire({
-        title: " خطأ ",
-        text: "حدث خطأ اثناء تحديث البيانات ",
-        icon: "erorr",
-        confirmButtonText: "حسناً",
-      });
     }
   };
 

@@ -10,14 +10,14 @@ export default function HeroSection() {
     const token = localStorage.getItem("token");
 
     var username;
+    var role;
 
     if (token) {
         const decoded = jwtDecode(token);
-
-        username = decoded.username;
-
-        console.log(`مرحبًا ${username}`);
         console.log(decoded);
+        username = decoded.username;
+        role = decoded.role;
+
     }
 
     const toggleMenu = () => {
@@ -29,6 +29,9 @@ export default function HeroSection() {
     const SiginOutButtonClick = () => {
         localStorage.removeItem("token");
         nav('/');
+    }
+    const GotoDashboard = () => {
+        role == 'user' ? nav('/userdashboard') : nav('/ownerdashboard');
     }
     return (
         <div
@@ -67,7 +70,7 @@ export default function HeroSection() {
                             المدونة
                         </Link>
                     </nav>
-                    {token ? <h1 className='text-[#E9F3FF] text-xl'> مرحبا {username} </h1> :
+                    {token ? <h1 className='text-[#E9F3FF] text-xl cursor-pointer hover:text-blue-400' onClick={GotoDashboard}> مرحبا {username} </h1> :
 
                         <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
                             تسجيل الدخول

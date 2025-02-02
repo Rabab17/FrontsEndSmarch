@@ -1,32 +1,41 @@
-import BalanceRechargePage from "./pages/BalanceRechargePage";
-import ControlsPage from "./pages/ControlsPage";
-import NotificationPage from "./pages/NotificationPage";
-import ProfilePage from "./pages/ProfilePage";
-import SupportPage from "./pages/SupportPage";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Splash from "../../components/Splash";
+import { jwtDecode } from "jwt-decode";
 
-// eslint-disable-next-line react/prop-types
-export default function ContentDashbiard({ page }) {
-    const renderContent = () => {
-        switch (page) {
-            case "controls":
-                return <ControlsPage/>;
-            case "BalanceRecharge":
-                return <BalanceRechargePage/>;
-            case "profile":
-                return <ProfilePage/>;
-            case "support":
-                return <SupportPage/>;
-            case "notifications":
-                return <NotificationPage/>;
-            default:
-                return <ControlsPage/>
+export default function ContentDashboard() {
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                const id = decoded.id;
+                const role = decoded.role;
+
+                if (!id || role !== "owner") {
+                    navigate("/");
+                }
+            } catch (error) {
+                console.error("خطأ في فك تشفير التوكين:", error);
+                navigate("/");
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            navigate("/");
         }
-    };
+    }, [token, navigate]);
+
+    if (loading) {
+        return <Splash />;
+    }
 
     return (
-        <div className="mt-20 w-[100%]">
-            {renderContent()}
+        <div className="mt-10 w-[100%]">
+            <Outlet />
         </div>
     );
-};
-
+}

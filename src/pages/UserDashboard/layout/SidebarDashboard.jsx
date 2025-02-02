@@ -1,8 +1,9 @@
-/* eslint-disable react/prop-types */
+
 
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 
+// eslint-disable-next-line react/prop-types
 export default function SidebarDashboard({ isOpen }) {
     const nav = useNavigate();
     const location = useLocation();
@@ -10,7 +11,6 @@ export default function SidebarDashboard({ isOpen }) {
     const isExactMatch = (path) => location.pathname === path;
 
     const isPartialMatch = (path) => location.pathname.includes(path);
-
 
     const SignOutButtonClick = () => {
         Swal.fire({
@@ -33,9 +33,9 @@ export default function SidebarDashboard({ isOpen }) {
         <aside className={`bg-blue-50 w-64 h-full p-4 md:flex flex-col justify-between ${isOpen ? '' : 'hidden'}`}>
             <div className="mt-5 text-center">
                 <div
-                    className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${isExactMatch("/ownerdashboard") ? "bg-[#0061E0] text-white py-2" : ""
+                    className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${isExactMatch("/Overview") ? "bg-[#0061E0] text-white py-2" : ""
                         }`}
-                    onClick={() => nav('/ownerdashboard')}
+                    onClick={() => nav('Overview')}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -43,36 +43,19 @@ export default function SidebarDashboard({ isOpen }) {
                         height="28"
                         viewBox="0 0 32 32"
                         fill="currentColor"
-                        className={`text-[#0061E0] ${isExactMatch("/ownerdashboard") ? "text-white" : ""}`}
+                        className={`text-[#0061E0] ${isExactMatch("/Overview") ? "text-white" : ""}`
+                    }
+                  
                     >
                         <path d="M28.2267 13.7732H19.3334C18.7222 13.7732 18.2267 13.2777 18.2267 12.6665V3.77317C18.2267 3.16198 18.7222 2.6665 19.3334 2.6665C24.8562 2.6665 29.3334 7.14366 29.3334 12.6665C29.3334 13.2777 28.8379 13.7732 28.2267 13.7732ZM27.0267 11.5598C26.5354 8.14623 23.8536 5.46448 20.44 4.97317V11.5598H27.0267Z" />
                         <path d="M28.1067 15.9998H17.24C16.9182 15.9998 16.6096 15.872 16.3821 15.6444C16.1545 15.4169 16.0267 15.1083 16.0267 14.7865V3.89312C16.0288 3.54331 15.8814 3.20926 15.6216 2.97497C15.3619 2.74067 15.0144 2.62843 14.6667 2.66646C7.70661 3.4055 2.50275 9.40047 2.74951 16.3953C2.99627 23.3902 8.60964 29.0035 15.6045 29.2503C22.5993 29.4971 28.5943 24.2932 29.3334 17.3331C29.3633 16.9897 29.2474 16.6496 29.0141 16.3959C28.7807 16.1423 28.4514 15.9985 28.1067 15.9998Z" />
                     </svg>
 
 
-                    <h1>لوحة التحكم</h1>
+                    <h1>نظره عامه</h1>
                 </div>
                 <div className="space-y-6 md:space-y-8">
-                    <div
-                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/BalanceRecharge") ? "bg-[#0061E0] text-white py-2" : ""
-                            }`}
-                        onClick={() => nav("BalanceRecharge")}
-                    >
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="28"
-                            height="28"
-                            viewBox="0 0 32 32"
-                            fill="currentColor"
-                            className={`text-[#0061E0] ${isPartialMatch("/BalanceRecharge") ? "text-white" : ""}`}
-                        >
-                            <path d="M16 16.6665C14.7623 16.6665 13.5753 17.1582 12.7001 18.0333C11.825 18.9085 11.3333 20.0955 11.3333 21.3332C11.3333 22.5708 11.825 23.7578 12.7001 24.633C13.5753 25.5082 14.7623 25.9998 16 25.9998C17.2377 25.9998 18.4246 25.5082 19.2998 24.633C20.175 23.7578 20.6666 22.5708 20.6666 21.3332C20.6666 20.0955 20.175 18.9085 19.2998 18.0333C18.4246 17.1582 17.2377 16.6665 16 16.6665ZM14 21.3332C14 20.8027 14.2107 20.294 14.5858 19.919C14.9608 19.5439 15.4695 19.3332 16 19.3332C16.5304 19.3332 17.0391 19.5439 17.4142 19.919C17.7893 20.294 18 20.8027 18 21.3332C18 21.8636 17.7893 22.3723 17.4142 22.7474C17.0391 23.1225 16.5304 23.3332 16 23.3332C15.4695 23.3332 14.9608 23.1225 14.5858 22.7474C14.2107 22.3723 14 21.8636 14 21.3332Z" />
-                            <path d="M23.368 6.82157L19.1293 0.878906L3.544 13.3296L2.68 13.3202V13.3336H2V29.3336H30V13.3336H28.7173L26.1653 5.86824L23.368 6.82157ZM25.9 13.3336H12.5293L22.488 9.93891L24.5173 9.28957L25.9 13.3336ZM20.7333 7.72024L10.4533 11.2242L18.5947 4.72024L20.7333 7.72024ZM4.66667 24.2256V18.4389C5.22957 18.2402 5.74087 17.9181 6.16308 17.4961C6.58528 17.0742 6.90769 16.563 7.10667 16.0002H24.8933C25.0921 16.5633 25.4145 17.0747 25.8367 17.4969C26.2589 17.9191 26.7703 18.2414 27.3333 18.4402V24.2269C26.7703 24.4257 26.2589 24.748 25.8367 25.1703C25.4145 25.5925 25.0921 26.1039 24.8933 26.6669H7.10933C6.90958 26.1038 6.58662 25.5924 6.16403 25.1701C5.74143 24.7477 5.22987 24.425 4.66667 24.2256Z" />
-                        </svg>
-
-                        <h1>شحن الرصيد</h1>
-                    </div>
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/profile") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
@@ -89,31 +72,8 @@ export default function SidebarDashboard({ isOpen }) {
                         </svg>
                         <h1>الملف الشخصي</h1>
                     </div>
-                    <div
-                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/ChaletManagement") ? "bg-[#0061E0] text-white py-2" : ""
-                            }`}
-                        onClick={() => nav("ChaletManagement")}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32"
-                            className={`text-[#0061E0] ${isPartialMatch("/ChaletManagement") ? "text-white" : ""}`}
-                            fill="currentColor">
-                            <path d="M5.33331 25.3332V13.3332C5.33331 12.9109 5.42798 12.5109 5.61731 12.1332C5.80665 11.7554 6.06754 11.4443 6.39998 11.1998L14.4 5.19984C14.8666 4.84428 15.4 4.6665 16 4.6665C16.6 4.6665 17.1333 4.84428 17.6 5.19984L25.6 11.1998C25.9333 11.4443 26.1946 11.7554 26.384 12.1332C26.5733 12.5109 26.6675 12.9109 26.6666 13.3332V25.3332C26.6666 26.0665 26.4053 26.6945 25.8826 27.2172C25.36 27.7398 24.7324 28.0007 24 27.9998H20C19.6222 27.9998 19.3058 27.8718 19.0506 27.6158C18.7955 27.3598 18.6675 27.0434 18.6666 26.6665V19.9998C18.6666 19.6221 18.5386 19.3056 18.2826 19.0505C18.0266 18.7954 17.7102 18.6674 17.3333 18.6665H14.6666C14.2889 18.6665 13.9724 18.7945 13.7173 19.0505C13.4622 19.3065 13.3342 19.6229 13.3333 19.9998V26.6665C13.3333 27.0443 13.2053 27.3612 12.9493 27.6172C12.6933 27.8732 12.3769 28.0007 12 27.9998H7.99998C7.26665 27.9998 6.63909 27.7389 6.11731 27.2172C5.59553 26.6954 5.3342 26.0674 5.33331 25.3332Z" />
-                        </svg>
-                        <h1>إدارة الشاليهات </h1>
-                    </div>
-                    <div
-                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/ManageReservations") ? "bg-[#0061E0] text-white py-2" : ""
-                            }`}
-                        onClick={() => nav("ManageReservations")}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
-                            className={`text-[#0061E0] ${isPartialMatch("/ManageReservations") ? "text-white" : ""}`}
-                            fill="currentColor">
 
-                            <path d="M22.6667 5.33317H24C26.2091 5.33317 28 7.12403 28 9.33317V25.3332C28 27.5423 26.2091 29.3332 24 29.3332H8C5.79086 29.3332 4 27.5423 4 25.3332V9.33317C4 7.12403 5.79086 5.33317 8 5.33317H9.33333V3.99984C9.33333 3.26346 9.93029 2.6665 10.6667 2.6665C11.403 2.6665 12 3.26346 12 3.99984V5.33317H20V3.99984C20 3.26346 20.597 2.6665 21.3333 2.6665C22.0697 2.6665 22.6667 3.26346 22.6667 3.99984V5.33317ZM9.33333 21.3332C9.33333 22.0696 9.93029 22.6665 10.6667 22.6665C11.403 22.6665 12 22.0696 12 21.3332C12 20.5968 11.403 19.9998 10.6667 19.9998C9.93029 19.9998 9.33333 20.5968 9.33333 21.3332ZM21.3333 22.6665H16C15.2636 22.6665 14.6667 22.0696 14.6667 21.3332C14.6667 20.5968 15.2636 19.9998 16 19.9998H21.3333C22.0697 19.9998 22.6667 20.5968 22.6667 21.3332C22.6667 22.0696 22.0697 22.6665 21.3333 22.6665ZM6.66667 14.6665H25.3333V9.33317C25.3333 8.59679 24.7364 7.99984 24 7.99984H22.6667V9.33317C22.6667 10.0696 22.0697 10.6665 21.3333 10.6665C20.597 10.6665 20 10.0696 20 9.33317V7.99984H12V9.33317C12 10.0696 11.403 10.6665 10.6667 10.6665C9.93029 10.6665 9.33333 10.0696 9.33333 9.33317V7.99984H8C7.26362 7.99984 6.66667 8.59679 6.66667 9.33317V14.6665Z" />
-                        </svg>
-                        <h1> إدارة الحجوزات </h1>
-                    </div>
+
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/support") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
