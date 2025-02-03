@@ -1,37 +1,61 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Splash from "../../../components/Splash";
 
 export default function ChaletManagement() {
     const nav = useNavigate();
-    const chalets = [
-        {
-            id: 1,
-            name: "شاليه الجبال",
-            location: "الرياض",
-            isActive: false,
-            bookings: 25,
-            image: "https://s3-alpha-sig.figma.com/img/d7ae/e909/77704203cbdd648366220d9f2dd1a9b6?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gr8xsypC0Umu-Y1iU6321XpbZBz3-Dn5LvadVcQwY6~GZjsE42BvicIhzjbOyvoCDEHkZP4WW2vRRv1BRp4dyy5CaOXMONBZ7ykdM0LzVYF5Z3FrsjGrOI2gTM00rMGv1ptfJxZX6HJWAdV3GxzxgZu3QqCH~NLjelGVEYxAtCWvss7aNdT1LHRg4ZYd4~2gbfYaahYZIi-FY4fkk1N5y41P0hWuKUYbJ2g7vCesIhXypBlQNSYin3j0a-1DxT~buVMdfrIBkgz9PJX4Pa8AiWIpgxxN~-k5h9o08xLcnT3gw8TxihfaYDXvMFuJ0gqILUjueSGOJQjgCnMii-NENQ__",
-        },
-        {
-            id: 2,
-            name: "شاليه الجبال",
-            location: "الرياض",
-            isActive: true,
-            bookings: 40,
-            image: "https://s3-alpha-sig.figma.com/img/d7ae/e909/77704203cbdd648366220d9f2dd1a9b6?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=gr8xsypC0Umu-Y1iU6321XpbZBz3-Dn5LvadVcQwY6~GZjsE42BvicIhzjbOyvoCDEHkZP4WW2vRRv1BRp4dyy5CaOXMONBZ7ykdM0LzVYF5Z3FrsjGrOI2gTM00rMGv1ptfJxZX6HJWAdV3GxzxgZu3QqCH~NLjelGVEYxAtCWvss7aNdT1LHRg4ZYd4~2gbfYaahYZIi-FY4fkk1N5y41P0hWuKUYbJ2g7vCesIhXypBlQNSYin3j0a-1DxT~buVMdfrIBkgz9PJX4Pa8AiWIpgxxN~-k5h9o08xLcnT3gw8TxihfaYDXvMFuJ0gqILUjueSGOJQjgCnMii-NENQ__",
-        },
-    ];
+
+    const [chalets, setChalets] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const fetchPackages = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/owner`, {
+                headers: {
+                    Authorization: token
+                }
+            });
+            if (response.data.status === "success") {
+                setChalets(response.data.data);
+            }
+        } catch (error) {
+            console.error("Error fetching packages:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchPackages();
+    }, []);
+
+
+    const GoToChalet = (id) => {
+        nav(`/partners/${id}`)
+    }
+
+    const editChlet = (id) => {
+        nav('/ownerdashboard/editChlet', { state: { id } })
+    }
+
+
+    if (loading) return <Splash />
+
+
     return (
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
+            {console.log(chalets)}
             <div className="flex flex-wrap justify-center gap-4">
                 {chalets.map((chalet) => (
                     <div
-                        key={chalet.id}
+                        key={chalet._id}
                         className="w-96 border rounded-lg shadow-lg overflow-hidden"
                     >
 
                         <img
-                            src={chalet.image}
+                            src={chalet.img}
                             alt={chalet.name}
                             className="w-full h-48 object-cover"
                         />
@@ -47,7 +71,7 @@ export default function ChaletManagement() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M12 2C14.3869 2 16.6761 2.94821 18.364 4.63604C20.0518 6.32387 21 8.61305 21 11C21 14.074 19.324 16.59 17.558 18.395C16.6757 19.2871 15.7129 20.0958 14.682 20.811L14.256 21.101L14.056 21.234L13.679 21.474L13.343 21.679L12.927 21.921C12.6446 22.0822 12.3251 22.1669 12 22.1669C11.6749 22.1669 11.3554 22.0822 11.073 21.921L10.657 21.679L10.137 21.359L9.945 21.234L9.535 20.961C8.42283 20.2085 7.3869 19.3491 6.442 18.395C4.676 16.589 3 14.074 3 11C3 8.61305 3.94821 6.32387 5.63604 4.63604C7.32387 2.94821 9.61305 2 12 2ZM12 8C11.606 8 11.2159 8.0776 10.8519 8.22836C10.488 8.37913 10.1573 8.6001 9.87868 8.87868C9.6001 9.15726 9.37913 9.48797 9.22836 9.85195C9.0776 10.2159 9 10.606 9 11C9 11.394 9.0776 11.7841 9.22836 12.1481C9.37913 12.512 9.6001 12.8427 9.87868 13.1213C10.1573 13.3999 10.488 13.6209 10.8519 13.7716C11.2159 13.9224 11.606 14 12 14C12.7956 14 13.5587 13.6839 14.1213 13.1213C14.6839 12.5587 15 11.7956 15 11C15 10.2044 14.6839 9.44129 14.1213 8.87868C13.5587 8.31607 12.7956 8 12 8Z" fill="#0061E0" />
                                 </svg>
-                                {chalet.location}
+                                {chalet.location.city}
                             </p>
                             <p className="text-gray-600 flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -56,7 +80,7 @@ export default function ChaletManagement() {
                                 عدد الحجوزات: {chalet.bookings}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
-                                {chalet.isActive ? (
+                                {chalet.status == 'active' ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3480)">
                                             <path
@@ -89,17 +113,25 @@ export default function ChaletManagement() {
                                         </defs>
                                     </svg>
                                 )}
-                                {chalet.isActive ? "نشط" : "غير نشط"}
+                                {chalet.status == 'active' ? "نشط" : "غير نشط"}
                             </p>
 
                             <div className="flex gap-2 mt-4">
-                                <button className="flex-1 bg-gray-500 text-white py-2 rounded-lg">
+                                <button
+                                    onClick={() => { GoToChalet(chalet._id) }}
+                                    className="flex-1 bg-gray-500 text-white py-2 rounded-lg"
+                                >
                                     عرض الصفحة
                                 </button>
-                                <button className="flex-1 bg-blue-500 text-white py-2 rounded-lg">
+                                <button
+                                    onClick={() => { editChlet(chalet._id) }}
+                                    className="flex-1 bg-blue-500 text-white py-2 rounded-lg"
+                                >
                                     تعديل
                                 </button>
-                                <button className="flex-1 bg-red-500 text-white py-2 rounded-lg">
+                                <button
+                                    className="flex-1 bg-red-500 text-white py-2 rounded-lg"
+                                >
                                     حذف
                                 </button>
                             </div>
