@@ -21,7 +21,6 @@ export default function EditChalet() {
     });
     const token = localStorage.getItem('token');
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     // جلب البيانات من API عند تحميل الصفحة
     useEffect(() => {
@@ -36,7 +35,6 @@ export default function EditChalet() {
                 setLoading(false);
             } catch (err) {
                 console.log(err)
-                setError('حدث خطأ أثناء جلب بيانات الشاليه');
                 setLoading(false);
             }
         };
@@ -67,7 +65,6 @@ export default function EditChalet() {
                 confirmButtonText: 'موافق',
             });
             console.log(err)
-            setError('حدث خطأ أثناء إرسال البيانات');
         }
     };
 

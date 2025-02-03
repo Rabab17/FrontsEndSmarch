@@ -77,7 +77,7 @@ export default function ChaletManagement() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M9 18H4V10H9V18ZM15 18H10V6H15V18ZM21 18H16V2H21V18ZM22 22H3V20H22V22Z" fill="#0061E0" />
                                 </svg>
-                                عدد الحجوزات: {chalet.bookings}
+                                عدد الحجوزات: {chalet.numOfReservation}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
                                 {chalet.status == 'active' ? (
@@ -112,7 +112,7 @@ export default function ChaletManagement() {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                )}
+                                )}  
                                 {chalet.status == 'active' ? "نشط" : "غير نشط"}
                             </p>
 

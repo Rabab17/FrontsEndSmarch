@@ -105,7 +105,7 @@ export default function ChaletDetails() {
               </button>
             </div> : ''
           }
-          <div className="bg-blue-50 flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
+          <div className="bg-blue-50 py-10 flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
             <div className="w-full md:w-[60%] px-2 sm:px-4">
               <h1 className="text-3xl font-bold my-4 sm:my-6">{chalet.title}</h1>
               <p className="text-xl font-normal">{chalet.description}</p>
