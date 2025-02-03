@@ -79,10 +79,12 @@ export default function AddChalet() {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
 
+                
                 if (responseImg.status === 200) {
                     uploadedImgUrl = responseImg.data.secure_url;
                     console.log("Uploaded main image URL:", uploadedImgUrl);
                 } else {
+                    
                     throw new Error("Error uploading main image");
                 }
             }
