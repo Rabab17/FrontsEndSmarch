@@ -84,6 +84,7 @@ export default function AddChalet() {
                     uploadedImgUrl = responseImg.data.secure_url;
                     console.log("Uploaded main image URL:", uploadedImgUrl);
                 } else {
+                    
                     throw new Error("Error uploading main image");
                 }
             }
