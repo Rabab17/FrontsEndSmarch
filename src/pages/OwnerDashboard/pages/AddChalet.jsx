@@ -20,12 +20,14 @@ export default function AddChalet() {
         },
         rooms: "",
         price: "",
+        facilities: [],
+        reservationPolicy: [],
         img: null,
         gallery: [],
-        // phoneOfChalet: "",
+        phoneOfChalet: "",
         instagram: "",
         facebook: "",
-        // whatsapp: "",
+        whatsapp: "",
         tiktok: ''
     });
 
