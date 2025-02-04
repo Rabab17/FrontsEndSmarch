@@ -8,6 +8,7 @@ export default function AddChalet() {
     const { packageId } = location.state || {};
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         subscriptionID: packageId,
         name: "",
@@ -21,6 +22,11 @@ export default function AddChalet() {
         price: "",
         img: null,
         gallery: [],
+        // phoneOfChalet: "",
+        instagram: "",
+        facebook: "",
+        // whatsapp: "",
+        tiktok: ''
     });
 
     const token = localStorage.getItem('token');
@@ -63,7 +69,7 @@ export default function AddChalet() {
         event.preventDefault();
         setError(null);
         setSuccess(null);
-
+        setLoading(true)
         try {
             let uploadedImgUrl = null;
             let uploadedGalleryUrls = [];
@@ -79,12 +85,12 @@ export default function AddChalet() {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
 
-                
+
                 if (responseImg.status === 200) {
                     uploadedImgUrl = responseImg.data.secure_url;
                     console.log("Uploaded main image URL:", uploadedImgUrl);
                 } else {
-                    
+
                     throw new Error("Error uploading main image");
                 }
             }
@@ -146,10 +152,12 @@ export default function AddChalet() {
         } catch (error) {
             console.log(error)
             Swal.fire({
-                title: `ايرور ${error.response.data.message}`,
+                title: `${error.response.data.message}`,
                 icon: 'error',
                 confirmButtonText: 'موافق',
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -260,6 +268,71 @@ export default function AddChalet() {
                                 />
                             </div>
                             <div className="text-right">
+                                <label htmlFor="phoneOfChalet" className="block text-black text-xl mb-2">
+                                    رقم الهاتف الخاص بالشاليه
+                                </label>
+                                <input
+                                    type="number"
+                                    id="phoneOfChalet"
+                                    name="phoneOfChalet"
+                                    value={formData.phoneOfChalet}
+                                    onChange={handleChange}
+                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <label htmlFor="whatsapp" className="block text-black text-xl mb-2">
+                                    رقم الواتساب الخاص بالشاليه
+                                </label>
+                                <input
+                                    type="number"
+                                    id="whatsapp"
+                                    name="whatsapp"
+                                    value={formData.whatsapp}
+                                    onChange={handleChange}
+                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <label htmlFor="facebook" className="block text-black text-xl mb-2">
+                                    رابط صفحة الفيس بوك
+                                </label>
+                                <input
+                                    type="text"
+                                    id="facebook"
+                                    name="facebook"
+                                    value={formData.location.facebook}
+                                    onChange={handleChange}
+                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <label htmlFor="instagram" className="block text-black text-xl mb-2">
+                                    رابط صفحة الانستجرام
+                                </label>
+                                <input
+                                    type="text"
+                                    id="instagram"
+                                    name="instagram"
+                                    value={formData.location.instagram}
+                                    onChange={handleChange}
+                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <label htmlFor="tiktok" className="block text-black text-xl mb-2">
+                                    رابط صفحة التيك توك
+                                </label>
+                                <input
+                                    type="text"
+                                    id="tiktok"
+                                    name="tiktok"
+                                    value={formData.location.tiktok}
+                                    onChange={handleChange}
+                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                />
+                            </div>
+                            <div className="text-right">
                                 <label htmlFor="img" className="block text-black text-xl mb-2">
                                     صورة الشاليه الرئيسية
                                 </label>
@@ -288,7 +361,20 @@ export default function AddChalet() {
                                 type="submit"
                                 className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
                             >
-                                إضافة الشاليه
+                                {loading ? (
+                                    <>
+                                        <p className="mx-5">
+                                            جاري المعالجة
+                                        </p>
+                                        <div className="w-5 h-5 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+                                    </>
+                                ) : (
+
+                                    <p>
+                                        إضافة الشاليه
+
+                                    </p>
+                                )}
                             </button>
                         </form>
                     </div >

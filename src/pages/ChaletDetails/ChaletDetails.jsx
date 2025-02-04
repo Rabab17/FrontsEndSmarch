@@ -8,13 +8,15 @@ import { BsInfoCircle } from "react-icons/bs";
 import axios from "axios";
 import Splash from "../../components/Splash";
 import Swal from "sweetalert2";
+import { jwtDecode } from "jwt-decode";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
   const { id } = useParams();
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token")
   useEffect(() => {
     const fetchChalet = async () => {
       try {
@@ -28,9 +30,21 @@ export default function ChaletDetails() {
         setLoading(false);
       }
     };
-
     fetchChalet();
   }, [id]);
+
+  useEffect(() => {
+    if (!loading && chalet && token) {
+      const decoded = jwtDecode(token);
+      const ownerid = decoded.id;
+      console.log(chalet);
+      if (ownerid === chalet.ownerID._id) {
+        setIsOwner(true);
+      }
+    }
+  }, [loading, chalet, token]);
+
+
 
   const [openSection, setOpenSection] = useState("المرافق");
 
@@ -39,34 +53,59 @@ export default function ChaletDetails() {
   };
 
   const handleBooking = () => {
-     const token=localStorage.getItem("token")
-    console.log(token);
-    
-    if(!token){
+
+    if (!token) {
       Swal.fire({
         title: 'خطأ',
         text: 'يجب تسجيل الدخول اولا ',
         icon: 'error',
         confirmButtonText: 'حسناً',
-       
-        
-      }).then(() => {
-        navigate("/login"); 
-    });
-    } else{
 
-      navigate(`/Datapicker/${id}`); 
+
+      }).then(() => {
+        navigate("/login");
+      });
+    } else {
+
+      navigate(`/Datapicker/${id}`);
     }
 
   };
+
+  const editChlet = () => {
+    navigate('/ownerdashboard/editChlet', { state: { id } })
+}
 
   return (
     <>
       {loading ? (
         <Splash />
       ) : (
-        <div className="bg-blue-50 my-10 mx-4 sm:mx-8">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
+        <div className=" my-10 mx-4 sm:mx-8">
+          {isOwner ?
+            <div dir="ltr" className="my-6 sm:my-8 px-4 sm:px-8 ">
+              <button
+                onClick={()=>{editChlet()} }
+                className="flex items-center gap-5 bg-[#0061E0] text-white py-2 px-6 sm:px-16 rounded-lg text-sm sm:text-2xl font-semibold"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                  <path
+                    d="M12.5 3H5.5C4.96957 3 4.46086 3.21071 4.08579 3.58579C3.71071 3.96086 3.5 4.46957 3.5 5V19C3.5 19.5304 3.71071 20.0391 4.08579 20.4142C4.46086 20.7893 4.96957 21 5.5 21H19.5C20.0304 21 20.5391 20.7893 20.9142 20.4142C21.2893 20.0391 21.5 19.5304 21.5 19V12"
+                    stroke="#E9F3FF"
+                    style={{ strokeWidth: 2 }}
+                  />
+                  <path
+                    d="M18.8751 2.62498C19.2729 2.22716 19.8125 2.00366 20.3751 2.00366C20.9377 2.00366 21.4773 2.22716 21.8751 2.62498C22.2729 3.02281 22.4964 3.56237 22.4964 4.12498C22.4964 4.68759 22.2729 5.22716 21.8751 5.62498L12.8621 14.639C12.6246 14.8762 12.3313 15.0499 12.0091 15.144L9.13609 15.984C9.05005 16.0091 8.95883 16.0106 8.872 15.9883C8.78517 15.9661 8.70592 15.9209 8.64254 15.8575C8.57916 15.7942 8.53398 15.7149 8.51174 15.6281C8.48949 15.5412 8.491 15.45 8.51609 15.364L9.35609 12.491C9.45062 12.169 9.62463 11.876 9.86209 11.639L18.8751 2.62498Z"
+                    stroke="#E9F3FF"
+                    style={{ strokeWidth: 2 }}
+                  />
+                </svg>
+
+                تعديل
+              </button>
+            </div> : ''
+          }
+          <div className="bg-blue-50 py-10 flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
             <div className="w-full md:w-[60%] px-2 sm:px-4">
               <h1 className="text-3xl font-bold my-4 sm:my-6">{chalet.title}</h1>
               <p className="text-xl font-normal">{chalet.description}</p>
@@ -186,8 +225,8 @@ export default function ChaletDetails() {
           </div>
 
           <div className="my-6 sm:my-8 px-4 sm:px-8 ">
-            <button 
-              onClick={handleBooking} 
+            <button
+              onClick={handleBooking}
               className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-lg hover:from-[#38a169] hover:to-[#1a5de8]"
             >
               احجز الآن واستمتع بتجربة فريدة
