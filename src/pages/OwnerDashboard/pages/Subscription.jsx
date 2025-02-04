@@ -60,7 +60,9 @@ export default function Subscription() {
                         </div>
                         <button
                             onClick={() => handleSelectPackage(plan._id)} // إرسال الـ id عند النقر
-                            className="bg-blue-600 text-white py-2 px-8 rounded-lg hover:bg-blue-700 transition"
+                            disabled={plan.remainChalets === 0}
+                            className={`bg-blue-600 text-white py-2 px-8 rounded-lg hover:bg-blue-700 transition ${plan.remainChalets === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
                         >
                             اختيار
                         </button>

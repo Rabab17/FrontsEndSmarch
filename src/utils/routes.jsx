@@ -29,6 +29,8 @@ import Overview from "../pages/UserDashboard/pages/Overview";
 import Subscription from "../pages/OwnerDashboard/pages/subscription";
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
+import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
+import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
 // import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
@@ -60,6 +62,8 @@ export const router = createBrowserRouter([
           { path: 'ManageReservations', element: <ManageReservations /> },
           { path: 'subscription', element: <Subscription /> },
           { path: 'addChalet', element: <AddChalet /> },
+          { path: 'SingleChaletManagement', element: <SingleChaletManagement /> },
+          { path: 'editchlet', element: <EditChalet /> },
         ]
       },
       {
