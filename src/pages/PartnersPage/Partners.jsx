@@ -34,6 +34,7 @@ export default function Partners() {
   return (
     <div className="bg-blue-50 mb-5 py-12">
       <div className="text-center">
+        
         <h1 className="text-[#0061E0] text-3xl font-bold mb-6">
           اكتشف أفضل الشاليهات
         </h1>
