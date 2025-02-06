@@ -9,6 +9,8 @@ import axios from "axios";
 import Splash from "../../components/Splash";
 import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode";
+import { FaFacebook } from "react-icons/fa";
+import { FaSquareInstagram } from "react-icons/fa6";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
@@ -74,7 +76,7 @@ export default function ChaletDetails() {
 
   const editChlet = () => {
     navigate('/ownerdashboard/editChlet', { state: { id } })
-}
+  }
 
   return (
     <>
@@ -85,7 +87,7 @@ export default function ChaletDetails() {
           {isOwner ?
             <div dir="ltr" className="my-6 sm:my-8 px-4 sm:px-8 ">
               <button
-                onClick={()=>{editChlet()} }
+                onClick={() => { editChlet() }}
                 className="flex items-center gap-5 bg-[#0061E0] text-white py-2 px-6 sm:px-16 rounded-lg text-sm sm:text-2xl font-semibold"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
@@ -199,6 +201,52 @@ export default function ChaletDetails() {
                     </div>
                   </div>
                 )}
+                {(chalet.facebook || chalet.instagram || chalet.tiktok || chalet.whatsapp) && (
+
+                  <div className="p-4 rounded-lg shadow-md transition-all duration-300 bg-[#0061E0]">
+                    <div
+                      className="flex justify-between items-center cursor-pointer"
+                      onClick={() => toggleSection("وسائل التواصل")}
+                    >
+                      <h2 className="text-lg sm:text-2xl text-white">وسائل التواصل</h2>
+                      {openSection === "وسائل التواصل" ? (
+                        <IoIosArrowBack className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+                      ) : (
+                        <IoIosArrowDown className="w-5 sm:w-6 h-5 sm:h-6 text-white" />
+                      )}
+                    </div>
+                  </div>
+                )}
+                {openSection === "وسائل التواصل" && (
+                  <div className="mt-2 sm:mt-4 text-[#101828] bg-white p-4 sm:p-6 rounded-lg">
+                    <div className="flex items-center">
+
+                      {chalet.facebook && (
+                        <a href={chalet.facebook} target="_blank" className="me-4">
+                          <FaFacebook className="text-3xl text-blue-800" />
+                        </a>
+                      )}
+
+                      {chalet.instagram && (
+                        <a href={chalet.instagram} target="_blank" className="me-4">
+                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                        </a>
+                      )}
+                      {chalet.whatsapp && (
+                        <a href={chalet.whatsapp} target="_blank" className="me-4">
+                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                        </a>
+                      )}
+
+                      {chalet.tiktok && (
+                        <a href={chalet.tiktok} target="_blank" className="me-4">
+                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                        </a>
+                      )}
+
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -232,8 +280,9 @@ export default function ChaletDetails() {
               احجز الآن واستمتع بتجربة فريدة
             </button>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

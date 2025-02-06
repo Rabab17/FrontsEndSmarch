@@ -98,12 +98,12 @@ export default function Datapicker() {
   };
 
   return (
-    <div className="date-picker-container flex flex-col items-center mb-8">
-      <h2 className="text-2xl font-bold mb-4">تفاصيل الحجز</h2>
+    <div className="date-picker-container bg-blue-50 flex flex-col items-center mb-8">
+      <h2 className="text-3xl font-extrabold  mb-4">تفاصيل الحجز</h2>
       {console.log(bookedDates)}
-      <label className="mb-2 text-gray-700">اختر النطاق الزمني:</label>
+      <label className="mb-2 text-gray-700 text-xl">اختر النطاق الزمني:</label>
 
-      <div onClick={() => setIsOpen(true)} className="cursor-pointer border border-gray-300 rounded-lg p-3 text-center w-64 mb-4">
+      <div onClick={() => setIsOpen(true)} className="cursor-pointer border border-gray-300 rounded-lg p-3 text-center w-64 ">
         {dateRange[0] && dateRange[1]
           ? `${dateRange[0].toLocaleDateString()} - ${dateRange[1].toLocaleDateString()}`
           : "اختر النطاق الزمني:"}
@@ -118,14 +118,14 @@ export default function Datapicker() {
         calendarClassName="custom-calendar"
         minDate={new Date()}
         open={isOpen}
-        excludeDates={bookedDates} // استبعاد الأيام المحجوزة
-        highlightDates={bookedDates} 
+        excludeDates={bookedDates}
+        highlightDates={bookedDates}
         onCalendarClose={() => setIsOpen(false)}
       />
 
       <button
         onClick={handleConfirm}
-        className="confirm-button"
+        className="w-44 bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-6 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 mt-80"
       >
         تأكيد الحجز
       </button>
