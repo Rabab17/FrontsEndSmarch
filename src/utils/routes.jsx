@@ -31,6 +31,7 @@ import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
 import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
 import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
+import SupportUser from "../pages/UserDashboard/pages/supportUser";
 // import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
@@ -69,8 +70,9 @@ export const router = createBrowserRouter([
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
         
+          {path: 'Overview', element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
-          {index: true, element: <Overview /> },
+          { path: 'SupportUser', element: <SupportUser /> },
 
         ]
       },

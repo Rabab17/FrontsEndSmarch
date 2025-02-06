@@ -1,26 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import TicketModal from "../TicketModal"; 
+import TicketModal from "./TicketModal";
 
-export default function SupportPage() {
+export default function SupportUser() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
     const [loading, setLoading] = useState(true); // حالة لتحميل البيانات
     const [error, setError] = useState(null); // حالة لتخزين الأخطاء
 
     useEffect(() => {
         const fetchTickets = async () => {
-            const token = localStorage.getItem('token'); 
-            console.log(token);
-
+            const token = localStorage.getItem('token'); // استرجاع التوكن من localStorage
             try {
-                const response = await axios.get('https://smarch-back-end-nine.vercel.app/ticket/owner', {
+                const response = await axios.get('https://smarch-back-end-nine.vercel.app/ticket/user', {
                     headers: {
                         'Authorization': token 
                     }
                 });
-console.log(response.data);
-
-                
                 // تعيين التذاكر إلى response.data
                 if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                     setTickets(response.data.data); 
@@ -44,7 +40,16 @@ console.log(response.data);
 
     return (
         <div className="p-6 space-y-6">
-           
+            <div>
+                <button
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    onClick={() => setIsModalOpen(true)}
+                >
+                    + ارسال تذكره
+                </button>
+
+                <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            </div>
             <div className="p-4 rounded-lg shadow">
                 <table className="w-full">
                     <thead>
@@ -62,13 +67,13 @@ console.log(response.data);
                             tickets.map((ticket, index) => (
                                 <tr key={ticket._id}>
                                     <td className="py-5 px-2 text-center text-lg">{index + 1}</td>
-                                    <td className="py-5 px-2 text-center text-lg">{ticket.sender.userName}</td>
+                                    <td className="py-5 px-2 text-center text-lg">{ticket.recipient.userName}</td>
                                     <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td> {/* تحويل التاريخ إلى تنسيق محلي */}
                                     <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
                                     <td className="py-5 px-2 text-center text-lg">
-                                        <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
-                                            {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
-                                        </span>
+                                    <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
+        {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
+    </span>
                                     </td>
                                     <td className="p-2 text-center">
                                         <button>
