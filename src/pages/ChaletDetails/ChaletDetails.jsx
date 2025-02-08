@@ -93,6 +93,7 @@ export default function ChaletDetails() {
         });
       }
     } catch (err) {
+      console.error("خطأ في تسجيل الدخول:", err);
       Swal.fire({
         title: "خطأ في تسجيل الدخول",
         text: "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى إعادة المحاولة.",
