@@ -23,7 +23,6 @@ import ChaletManagement from "../pages/OwnerDashboard/pages/ChaletManagement";
 import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations";
 import UserDashboard from "../pages/UserDashboard/layout/UserDashboard";
 import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
-import UpdatePassword from "../pages/updatePassword/updatePassword";
 import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
 import Subscription from "../pages/OwnerDashboard/pages/subscription";
@@ -31,7 +30,8 @@ import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
 import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
 import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
-// import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
+import SupportUser from "../pages/UserDashboard/pages/supportUser";
+import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 
 export const router = createBrowserRouter([
   {
@@ -68,8 +68,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
+        
+          {path: 'Overview', element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
-          { path: 'Overview', element: <Overview /> },
+          { path: 'SupportUser', element: <SupportUser /> },
 
         ]
       },

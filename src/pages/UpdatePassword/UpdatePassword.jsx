@@ -24,6 +24,8 @@ const UpdatePassword = () => {
     setError(null);
     setSuccess(null);
 
+    
+
     if (newPassword !== confirmPassword) {
       setError("كلمة السر الجديدة غير مطابقة");
       return;

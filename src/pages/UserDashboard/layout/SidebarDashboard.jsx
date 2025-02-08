@@ -77,7 +77,7 @@ export default function SidebarDashboard({ isOpen }) {
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/support") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
-                        onClick={() => nav("support")}
+                        onClick={() => nav("SupportUser")}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32"
                             className={`text-[#0061E0] ${isPartialMatch("/support") ? "text-white" : ""}`}

@@ -31,6 +31,8 @@ export default function AddChalet() {
         tiktok: ''
     });
 
+    
+
     const token = localStorage.getItem('token');
 
     const handleChange = (e) => {

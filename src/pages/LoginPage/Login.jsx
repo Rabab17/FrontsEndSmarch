@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-// import { jwtDecode } from 'jwt-decode';
 import Swal from "sweetalert2";
+import {jwtDecode} from "jwt-decode"; // تأكد من استيراد jwtDecode
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,13 +28,29 @@ export default function Login() {
         localStorage.setItem("token", user.token);
         localStorage.setItem("user", JSON.stringify(user));
 
+        
+        const decoded = jwtDecode(user.token);
+        const role = decoded.role; 
+        console.log("role",role)
+
+        // عرض SweetAlert للسؤال عن الصفحة التي يرغب في الانتقال إليها
         Swal.fire({
           title: "تم تسجيل الدخول بنجاح!",
-          text: "مرحباً بك! سيتم تحويلك إلى الصفحة الرئيسية.",
+          text: "أين تريد الذهاب؟",
           icon: "success",
-          confirmButtonText: "حسناً",
-        }).then(() => {
-          navigate("/");
+          showCancelButton: true,
+          confirmButtonText: "الذهاب إلى الداشبورد",
+          cancelButtonText: "الذهاب إلى الصفحة الرئيسية",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (role === 'user') {
+              navigate('/userdashboard'); 
+            } else if (role === 'owner') {
+              navigate('/OwnerDashboard'); 
+            }
+          } else {
+            navigate("/"); 
+          }
         });
       } else {
         setError("بيانات تسجيل الدخول غير صحيحة");
@@ -107,7 +123,6 @@ export default function Login() {
               "تسجيل الدخول"
             )}
           </button>
-
         </form>
         <p className="text-center text-sm mt-4">
           ليس لديك حساب؟{" "}
