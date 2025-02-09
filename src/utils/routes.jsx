@@ -26,6 +26,8 @@ import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
 import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
 // import Subscription from "../pages/OwnerDashboard/pages/subscription";
+import Subscription from "src/pages/OwnerDashboard/pages/Subscription.jsx"
+
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
 import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
@@ -60,7 +62,7 @@ export const router = createBrowserRouter([
           { path: 'notifications', element: <NotificationPage /> },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
-          // { path: 'subscription', element: <Subscription /> },
+          { path: 'subscription', element: <Subscription /> },
           { path: 'addChalet', element: <AddChalet /> },
           { path: 'SingleChaletManagement', element: <SingleChaletManagement /> },
           { path: 'editchlet', element: <EditChalet /> },
