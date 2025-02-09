@@ -415,6 +415,7 @@ export default function ChaletDetails() {
               className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 rounded-lg" // Reduced button padding
             >
               إنشاء حساب
+              
             </button>
          
             </form>
