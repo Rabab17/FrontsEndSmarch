@@ -14,7 +14,12 @@ export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false); // State to control modal visibility
+  const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal visibility
+  const [showSignUpModal, setShowSignUpModal] = useState(false); // State to control sign-up modal visibility
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -80,7 +85,7 @@ export default function ChaletDetails() {
           icon: "success",
           confirmButtonText: "حسناً",
         }).then(() => {
-          navigate("/");
+          navigate(`/Datapicker/${id}`);
         });
       } else {
         Swal.fire({
@@ -96,6 +101,48 @@ export default function ChaletDetails() {
         text: "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى إعادة المحاولة.",
         icon: "error",
         confirmButtonText: "حسنًا",
+      });
+    }
+  };
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    // Validate input
+    if (password !== confirmPassword) {
+      Swal.fire({
+        title: "خطأ",
+        text: "كلمتا المرور غير متطابقتين.",
+        icon: "error",
+        confirmButtonText: "حسناً",
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}user`, {
+        userName: username,
+        email,
+        password,
+        role: "user",
+      });
+      console.log("Response:", response.data);
+      localStorage.setItem("isLoggedIn", true);
+      localStorage.setItem("token", response.data.token);
+      Swal.fire({
+        title: "تم التسجيل بنجاح!",
+        text: "تم إنشاء حسابك بنجاح. سيتم تحويلك إلى الصفحة الرئيسية.",
+        icon: "success",
+        confirmButtonText: "حسناً",
+      }).then(() => {
+        navigate(`/Datapicker/${id}`);
+      });
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+      Swal.fire({
+        title: "خطأ",
+        text: "حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+        icon: "error",
+        confirmButtonText: "حسناً",
       });
     }
   };
@@ -303,11 +350,84 @@ export default function ChaletDetails() {
             </form>
             <p className="text-center text-sm mt-4">
               ليس لديك حساب؟{" "}
-              <Link to="/signup" className="text-[#0061E0] font-semibold hover:underline">
+              <button onClick={() => {
+                setShowLoginModal(false); // Close login modal
+                setShowSignUpModal(true); // Open sign-up modal
+              }} className="text-[#0061E0] font-semibold hover:underline">
                 إنشاء حساب جديد
-              </Link>
+              </button>
             </p>
             <button onClick={() => setShowLoginModal(false)} className="mt-4 text-red-500">إغلاق</button>
+          </div>
+        </div>
+      )}
+      {showSignUpModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-lg p-4 w-3/4 sm:w-1/4"> {/* Reduced padding and width further */}
+          <h1 className="text-3xl font-bold text-[#1E293B] mb-4">إنشاء حساب جديد</h1>
+          <form className="space-y-4" onSubmit={handleSignUp}>
+            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="اسم المستخدم"
+                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                required
+              />
+            </div>
+            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="بريد إلكتروني"
+                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                required
+              />
+            </div>
+            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="كلمة مرور"
+                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                required
+              />
+            </div>
+            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="تأكيد كلمة المرور"
+                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                required
+              />
+            </div>
+            <label className="flex items-center text-sm">
+              <input type="checkbox" className="ml-2" required />
+              أوافق على اتفاقية المستخدم
+            </label>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 rounded-lg" // Reduced button padding
+            >
+              إنشاء حساب
+            </button>
+         
+            </form>
+            <p className="text-center text-sm mt-4">
+              لديك حساب بالفعل؟{" "}
+              <button onClick={() => {
+                setShowSignUpModal(false); // Close sign-up modal
+                setShowLoginModal(true); // Open login modal
+              }} className="text-[#0061E0] font-semibold hover:underline">
+                سجل الدخول الآن
+              </button>
+            </p>
+            <button onClick={() => setShowSignUpModal(false)} className="mt-4 text-red-500">إغلاق</button>
           </div>
         </div>
       )}
