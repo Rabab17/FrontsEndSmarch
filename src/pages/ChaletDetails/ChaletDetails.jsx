@@ -417,6 +417,7 @@ export default function ChaletDetails() {
           <form className="space-y-4" onSubmit={handleSignUp}>
             <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
               <input
+              
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
