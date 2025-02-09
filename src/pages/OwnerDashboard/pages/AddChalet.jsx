@@ -20,14 +20,18 @@ export default function AddChalet() {
         },
         rooms: "",
         price: "",
+        facilities: [],
+        reservationPolicy: [],
         img: null,
         gallery: [],
-        // phoneOfChalet: "",
+        phoneOfChalet: "",
         instagram: "",
         facebook: "",
-        // whatsapp: "",
+        whatsapp: "",
         tiktok: ''
     });
+
+    
 
     const token = localStorage.getItem('token');
 
@@ -368,13 +372,10 @@ export default function AddChalet() {
                                         </p>
                                         <div className="w-5 h-5 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
                                     </>
-                                ) : (
+                                ) :
+                                    "إضافة الشاليه"
 
-                                    <p>
-                                        إضافة الشاليه
-
-                                    </p>
-                                )}
+                                }
                             </button>
                         </form>
                     </div >
@@ -386,7 +387,6 @@ export default function AddChalet() {
                         />
                     </div>
                 </div>
-
                 :
                 <div className="text-center w-full">
                     <h1 className="text-3xl">

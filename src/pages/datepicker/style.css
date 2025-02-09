@@ -1,61 +1,61 @@
-/* styles.css */
-
-/* تخصيص مظهر الخلفية */
 .date-picker-container {
-  background-color: #eff6ff; /* لون الخلفية */
-  padding: 20px; /* إضافة بعض الحشوة */
-  border-radius: 0.5rem; /* زوايا مستديرة */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
-  position: relative; /* تأكد من أن العنصر يحتوي على position */
+  /* background-color: #eff6ff; */
+  padding: 20px;
+  border-radius: 0.5rem;
 }
 
-/* تأثير عند التمرير على الزر */
-.confirm-button:hover {
-  background-color: #45a049; /* لون الزر عند التمرير */
+.react-datepicker__day-names {
+  font-size: medium;
+  display: flex;
+  justify-content: space-around;
+  margin-inline: 0.7rem;
+}
+.react-datepicker__month {
+
+  font-size: medium;
 }
 
-/* تخصيص مظهر التقويم */
-.custom-calendar {
-  background-color: #ffffff; /* لون خلفية التقويم */
-  border-radius: 0.5rem; /* زوايا مستديرة */
-}
-
-/* تخصيص مظهر الأيام المحددة */
 .custom-calendar .react-datepicker__day--selected {
-  background-color: #4caf50; /* لون الخلفية للأيام المحددة */
-  color: white; /* لون النص للأيام المحددة */
+  background-color: #4caf50;
+  color: white;
 }
 
-/* تخصيص مظهر الأيام عند التمرير عليها */
 .custom-calendar .react-datepicker__day:hover {
-  background-color: #45a049; /* لون الخلفية عند التمرير */
-  color: white; /* لون النص عند التمرير */
+  background-color: #45a049;
+  color: white;
 }
 
-/* تخصيص مظهر رأس التقويم */
 .custom-calendar .react-datepicker__header {
-  background-color: #4caf50; /* لون خلفية الرأس */
-  color: white; /* لون النص في الرأس */
-}
-/* styles.css */
-
-/* تخصيص مظهر الزر */
-.confirm-button {
-  margin-top: 300px; /* إضافة مسافة أعلى الزر */
-  background-color: #4caf50; /* لون الزر */
-  color: white; /* لون النص */
-  border: none; /* إزالة الحدود */
-  border-radius: 0.5rem; /* زوايا مستديرة */
-  padding: 10px 20px; /* إضافة حشوة */
-  cursor: pointer; /* تغيير المؤشر عند التمرير */
-  z-index: 10; /* تعيين z-index أعلى */
-  position: relative; /* تأكد من أن الزر في موضع صحيح */
+  background-color: #ffffff;
+  color: white;
 }
 
-
-/* تخصيص الألوان للأيام المستبعدة (إذا كنت بحاجة) */
 .react-datepicker__day--excluded {
-  background-color: red !important;  /* لون مختلف للأيام المستبعدة */
-  color: #d3d3d3 !important; /* تدرج اللون */
+  background-color: red !important;
+  color: #d3d3d3 !important;
   border-radius: 50%;
+}
+h2.react-datepicker__current-month {
+  text-align: end;
+  padding-inline-end: 20px;
+  margin-bottom: 7px;
+}
+.react-datepicker__navigation--previous {
+  right: 28px;
+}
+.react-datepicker__navigation-icon {
+  right: -1px;
+  top: 0px;
+}
+span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--previous {
+  right: 1px;
+}
+
+.react-datepicker__navigation {
+  background: linear-gradient(to left, #48bb78, #1a71ff);
+  width: 20px; /* حجم الدائرة */
+  height: 20px;
+  border-radius: 50%; /* يجعل الزر دائريًا */
+  margin-top: 5px;
+  cursor: pointer;
 }
