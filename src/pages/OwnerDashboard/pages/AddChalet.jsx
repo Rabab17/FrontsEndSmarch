@@ -72,18 +72,34 @@ export default function AddChalet() {
         if (!file) return;
 
         setLoadingImg(true);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "test cloudinary");
-        formData.append("cloud_name", "dhta28b63");
 
         try {
-            const response = await axios.post(
+            const options = {
+                maxSizeMB: 1,
+                maxWidthOrHeight: 800,
+                useWebWorker: true,
+                fileType: "image/webp",
+            };
+
+            const compressedFile = await imageCompression(file, options);
+
+            const formData = new FormData();
+            formData.append("file", compressedFile);
+            formData.append("upload_preset", "test cloudinary");
+            formData.append("cloud_name", "dhta28b63");
+
+            const response = await fetch(
                 "https://api.cloudinary.com/v1_1/dhta28b63/image/upload",
-                formData
+                { method: "POST", body: formData }
             );
-            setImageUrl(response.data.secure_url);
-            console.log(response.data)
+
+            const data = await response.json();
+
+            // تحسين الصورة باستخدام Cloudinary CDN
+            const optimizedUrl = `${data.secure_url}?format=webp&quality=auto`;
+
+            setImageUrl(optimizedUrl);
+            console.log(optimizedUrl);
         } catch (error) {
             console.error("Error uploading image:", error);
         } finally {
@@ -91,51 +107,46 @@ export default function AddChalet() {
         }
     };
 
-
     const handleGalleryUpload = async (event) => {
         const files = Array.from(event.target.files);
         if (files.length === 0) return;
 
         setLoadingGallery(true);
 
-        const uploadPromises = files.map(async (file) => {
-            const compressedFile = await imageCompression(file, {
-                maxSizeMB: 1,  // تحديد الحجم الأقصى للملف (1MB في هذا المثال)
-                maxWidthOrHeight: 800,  // تحديد أقصى أبعاد للصورة
+        try {
+            const uploadPromises = files.map(async (file) => {
+                const compressedFile = await imageCompression(file, {
+                    maxSizeMB: 1,
+                    maxWidthOrHeight: 800,
+                    useWebWorker: true,
+                    fileType: "image/webp",
+                });
+
+                const formData = new FormData();
+                formData.append("file", compressedFile);
+                formData.append("upload_preset", "test cloudinary");
+
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/dhta28b63/image/upload",
+                    { method: "POST", body: formData }
+                );
+
+                const data = await response.json();
+                return `${data.secure_url}?format=webp&quality=auto`;
             });
 
-            const formData = new FormData();
-            formData.append("file", compressedFile);
-            formData.append("upload_preset", "test cloudinary");
-
-            try {
-                const response = await axios.post(
-                    "https://api.cloudinary.com/v1_1/dhta28b63/image/upload",
-                    formData
-                );
-                return response.data.secure_url;
-            } catch (error) {
-                console.error("Error uploading image:", error);
-                return null;
-            }
-        });
-
-        const uploadedImages = await Promise.all(uploadPromises);
-        setGalleryUrls((prevImages) => [...prevImages, ...uploadedImages.filter(Boolean)]);
-        setLoadingGallery(false);
+            const uploadedImages = await Promise.all(uploadPromises);
+            setGalleryUrls((prevImages) => [...prevImages, ...uploadedImages]);
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        } finally {
+            setLoadingGallery(false);
+        }
     };
 
 
 
 
-
-    // const handlegalleryChange = (e) => {
-    //     const files = Array.from(e.target.files);
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         gallery: files,
-    //     }));
-    // };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -143,63 +154,13 @@ export default function AddChalet() {
         setSuccess(null);
         setLoading(true)
         try {
-            let uploadedImgUrl = null;
-            let uploadedGalleryUrls = [];
-
-            // Upload main image to Cloudinary
-            if (formData.img) {
-                const imgFormData = new FormData();
-                imgFormData.append("file", formData.img);
-                imgFormData.append("upload_preset", "test cloudinary");
-                imgFormData.append("cloud_name", "dhta28b63");
-
-                const responseImg = await axios.post("https://api.cloudinary.com/v1_1/dhta28b63/image/upload", imgFormData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
-
-
-                if (responseImg.status === 200) {
-                    uploadedImgUrl = responseImg.data.secure_url;
-                    console.log("Uploaded main image URL:", uploadedImgUrl);
-                } else {
-
-                    throw new Error("Error uploading main image");
-                }
-            }
-
-            // Upload gallery images to Cloudinary
-            if (formData.gallery.length > 0) {
-                const galleryUploadPromises = formData.gallery.map((image) => {
-                    const galleryImageFormData = new FormData();
-                    galleryImageFormData.append("file", image);
-                    galleryImageFormData.append("upload_preset", "test cloudinary");
-                    galleryImageFormData.append("cloud_name", "dhta28b63");
-
-                    return axios.post("https://api.cloudinary.com/v1_1/dhta28b63/image/upload", galleryImageFormData, {
-                        headers: { "Content-Type": "multipart/form-data" },
-                    });
-                });
-
-                const galleryResponses = await Promise.all(galleryUploadPromises);
-
-                uploadedGalleryUrls = galleryResponses.map((res) => {
-                    if (res.status === 200) {
-                        console.log("Uploaded gallery image URL:", res.data.secure_url);
-                        return res.data.secure_url;
-                    }
-                    throw new Error("Error uploading gallery images");
-                });
-            }
-
-            // Update formData with the uploaded URLs
             const updatedFormData = {
                 ...formData,
-                img: uploadedImgUrl,
-                gallery: uploadedGalleryUrls,
+                img: imageUrl,
+                gallery: galleryUrls,
             };
 
             console.log(updatedFormData)
-            // Send the updated formData to the backend
             const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}chalet/addChalet`, updatedFormData, {
                 headers: {
                     Authorization: token,
@@ -419,7 +380,17 @@ export default function AddChalet() {
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
                                 {loadingImg && <p className="text-blue-500">  جاري رفع الصورة الرئيسية...</p>}
-                                {imageUrl && <img src={imageUrl} alt="Uploaded" className="mt-2 w-40" />}
+                                {imageUrl &&
+                                    <>
+                                        <div className="relative">
+                                            <img src={imageUrl} alt="Uploaded" className="mt-2 w-40" />
+                                            <TiDelete onClick={() => { setImageUrl(null) }}
+                                                className="absolute top-0 right-0  text-white rounded-full p-1 cursor-pointer"
+                                                size={40}
+                                            />
+                                        </div>
+                                    </>
+                                }
                             </div>
                             <div className="text-right">
                                 <label htmlFor="gallery" className="block text-black text-xl mb-2">
@@ -429,18 +400,20 @@ export default function AddChalet() {
                                     type="file"
                                     id="gallery"
                                     name="gallery"
+                                    aria-label="اختر الصور"
                                     multiple
                                     onChange={handleGalleryUpload}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
-                                {loadingGallery && <p className="text-blue-500"> جاري رفع صور المعرض... </p>}
-                                <div className="grid grid-cols-3 gap-2">
+
+
+                                {loadingGallery && <p className=" mt-2 text-lg font-bold"> جاري رفع صور المعرض... </p>}
+                                <div className="grid grid-cols-3 gap-2 mt-2">
                                     {galleryUrls.map((url, index) => (
                                         <div key={index} className="relative">
                                             <img src={url} alt={`Uploaded ${index}`} className="w-32 h-32 object-cover" />
-                                            {/* علامة الإكس */}
                                             <TiDelete onClick={() => handleRemoveImage(url)}
-                                                className="absolute top-0 right-0  text-black rounded-full p-1 cursor-pointer"
+                                                className="absolute top-0 right-0  text-white rounded-full p-1 cursor-pointer"
                                                 size={40}
                                             />
 
@@ -450,7 +423,7 @@ export default function AddChalet() {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
+                                className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg flex items-center justify-center gap-2"
                             >
                                 {loading ? (
                                     <>
