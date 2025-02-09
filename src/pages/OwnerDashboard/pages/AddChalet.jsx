@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import imageCompression from 'browser-image-compression';
+import { TiDelete } from "react-icons/ti";
 
 export default function AddChalet() {
     const location = useLocation();
@@ -9,6 +11,11 @@ export default function AddChalet() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [loadingImg, setLoadingImg] = useState(false);
+    const [galleryUrls, setGalleryUrls] = useState([]);
+    const [loadingGallery, setLoadingGallery] = useState(false);
+
     const [formData, setFormData] = useState({
         subscriptionID: packageId,
         name: "",
@@ -31,7 +38,7 @@ export default function AddChalet() {
         tiktok: ''
     });
 
-    
+
 
     const token = localStorage.getItem('token');
 
@@ -53,21 +60,82 @@ export default function AddChalet() {
         }
     };
 
-    const handleimgChange = (e) => {
-        const file = e.target.files[0];
-        setFormData((prevData) => ({
-            ...prevData,
-            img: file,
-        }));
+    // const handleimgChange = (e) => {
+    //     const file = e.target.files[0];
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         img: file,
+    //     }));
+    // };
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        setLoadingImg(true);
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "test cloudinary");
+        formData.append("cloud_name", "dhta28b63");
+
+        try {
+            const response = await axios.post(
+                "https://api.cloudinary.com/v1_1/dhta28b63/image/upload",
+                formData
+            );
+            setImageUrl(response.data.secure_url);
+            console.log(response.data)
+        } catch (error) {
+            console.error("Error uploading image:", error);
+        } finally {
+            setLoadingImg(false);
+        }
     };
 
-    const handlegalleryChange = (e) => {
-        const files = Array.from(e.target.files);
-        setFormData((prevData) => ({
-            ...prevData,
-            gallery: files,
-        }));
+
+    const handleGalleryUpload = async (event) => {
+        const files = Array.from(event.target.files);
+        if (files.length === 0) return;
+
+        setLoadingGallery(true);
+
+        const uploadPromises = files.map(async (file) => {
+            const compressedFile = await imageCompression(file, {
+                maxSizeMB: 1,  // تحديد الحجم الأقصى للملف (1MB في هذا المثال)
+                maxWidthOrHeight: 800,  // تحديد أقصى أبعاد للصورة
+            });
+
+            const formData = new FormData();
+            formData.append("file", compressedFile);
+            formData.append("upload_preset", "test cloudinary");
+
+            try {
+                const response = await axios.post(
+                    "https://api.cloudinary.com/v1_1/dhta28b63/image/upload",
+                    formData
+                );
+                return response.data.secure_url;
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                return null;
+            }
+        });
+
+        const uploadedImages = await Promise.all(uploadPromises);
+        setGalleryUrls((prevImages) => [...prevImages, ...uploadedImages.filter(Boolean)]);
+        setLoadingGallery(false);
     };
+
+
+
+
+
+    // const handlegalleryChange = (e) => {
+    //     const files = Array.from(e.target.files);
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         gallery: files,
+    //     }));
+    // };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -165,6 +233,9 @@ export default function AddChalet() {
         }
     };
 
+    const handleRemoveImage = (url) => {
+        setGalleryUrls((prevImages) => prevImages.filter((imageUrl) => imageUrl !== url));
+    };
 
 
     return (
@@ -344,9 +415,11 @@ export default function AddChalet() {
                                     type="file"
                                     id="img"
                                     name="img"
-                                    onChange={handleimgChange}
+                                    onChange={handleImageUpload}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
+                                {loadingImg && <p className="text-blue-500">  جاري رفع الصورة الرئيسية...</p>}
+                                {imageUrl && <img src={imageUrl} alt="Uploaded" className="mt-2 w-40" />}
                             </div>
                             <div className="text-right">
                                 <label htmlFor="gallery" className="block text-black text-xl mb-2">
@@ -357,9 +430,23 @@ export default function AddChalet() {
                                     id="gallery"
                                     name="gallery"
                                     multiple
-                                    onChange={handlegalleryChange}
+                                    onChange={handleGalleryUpload}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
+                                {loadingGallery && <p className="text-blue-500"> جاري رفع صور المعرض... </p>}
+                                <div className="grid grid-cols-3 gap-2">
+                                    {galleryUrls.map((url, index) => (
+                                        <div key={index} className="relative">
+                                            <img src={url} alt={`Uploaded ${index}`} className="w-32 h-32 object-cover" />
+                                            {/* علامة الإكس */}
+                                            <TiDelete onClick={() => handleRemoveImage(url)}
+                                                className="absolute top-0 right-0  text-black rounded-full p-1 cursor-pointer"
+                                                size={40}
+                                            />
+
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             <button
                                 type="submit"
