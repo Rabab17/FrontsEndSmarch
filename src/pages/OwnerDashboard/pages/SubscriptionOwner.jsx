@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // استخدام useNavigate في React Router v6
 import Splash from "../../../components/Splash";
 
-export default function Subscription() {
+export default function SubscriptionOwner() {
     const [packages, setPackages] = useState(null);
     const token = localStorage.getItem("token");
     const navigate = useNavigate(); // استخدام useNavigate للتنقل بين الصفحات
