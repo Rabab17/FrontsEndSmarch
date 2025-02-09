@@ -2,50 +2,16 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Swal from "sweetalert2";
-import axios from "axios";
-import "./style.css";
+import Swal from "sweetalert2"; 
+import axios from "axios"; 
+import "./style.css"; 
 
-export default function Datapicker() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [isOpen, setIsOpen] = useState(true);
-  const [bookedDates, setBookedDates] = useState([]); // تخزين الأيام المحجوزة
-
-  useEffect(() => {
-    const fetchBookedDates = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/user/chalet/${id}`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
-        console.log(response.data.data)
-        const bookings = response.data.data;
-
-        let allBookedDates = [];
-
-        // استخراج الأيام بين checkInDate و checkOutDate
-        bookings.forEach(({ checkInDate, checkOutDate }) => {
-          let currentDate = new Date(checkInDate);
-          let endDate = new Date(checkOutDate);
-
-          while (currentDate <= endDate) {
-            currentDate.setDate(currentDate.getDate() - 1);
-            allBookedDates.push(new Date(currentDate));
-            currentDate.setDate(currentDate.getDate() + 2);
-          }
-        });
-
-        setBookedDates(allBookedDates);
-      } catch (error) {
-        console.error("Error fetching booked dates:", error);
-      }
-    };
-
-    fetchBookedDates();
-  }, [id]);
+export default function Datapicker() { 
+  const { id } = useParams(); 
+  const navigate = useNavigate(); // استخدام useNavigate
+  console.log("id", id);
+  const [dateRange, setDateRange] = useState([null, null]); 
+  const [isOpen, setIsOpen] = useState(true); 
 
   const handleChange = (update) => {
     setDateRange(update);
@@ -65,28 +31,36 @@ export default function Datapicker() {
       return;
     }
 
+    console.log("Sending reservation data:", {
+      checkInDate: checkInDate.toISOString(), 
+      checkOutDate: checkOutDate.toISOString(), 
+      id: id 
+    });
+    
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(`${import.meta.env.VITE_URL_BACKEND}reservation/create`, {
-        checkInDate: checkInDate.toISOString(),
-        checkOutDate: checkOutDate.toISOString(),
-        chaletID: id
-      }, {
-        headers: {
-          Authorization: token,
-        },
-      });
+        const token = localStorage.getItem("token"); 
+        console.log(token);
+        const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}reservation/create`, {
+            checkInDate: checkInDate.toISOString(),
+            checkOutDate: checkOutDate.toISOString(),
+            chaletID: id 
+        }, {
+            headers: {
+                Authorization: token, 
+            },
+        });
+        console.log("Response:", response); 
 
-      Swal.fire({
-        title: "تم حجز الشاليه بنجاح!",
-        text: "تم تأكيد الحجز بنجاح.",
-        icon: "success",
-        confirmButtonText: "العودة إلى الصفحة الرئيسية",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/UserDashboard/Overview');
-        }
-      });
+        Swal.fire({
+          title: 'تم حجز الشاليه بنجاح!',
+          text: response.data.message,
+          icon: 'success',
+          confirmButtonText: 'العودة إلى الصفحة الرئيسية',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/UserDashboard/Overview'); 
+          }
+        });
     } catch (error) {
       Swal.fire({
         title: "خطأ",
@@ -100,7 +74,7 @@ export default function Datapicker() {
   return (
     <div className="date-picker-container flex flex-col items-center mb-8">
       <h2 className="text-2xl font-bold mb-4">تفاصيل الحجز</h2>
-      {console.log(bookedDates)}
+      
       <label className="mb-2 text-gray-700">اختر النطاق الزمني:</label>
 
       <div onClick={() => setIsOpen(true)} className="cursor-pointer border border-gray-300 rounded-lg p-3 text-center w-64 mb-4">
@@ -116,15 +90,13 @@ export default function Datapicker() {
         onChange={handleChange}
         className="hidden"
         calendarClassName="custom-calendar"
-        minDate={new Date()}
-        open={isOpen}
-        excludeDates={bookedDates} // استبعاد الأيام المحجوزة
-        highlightDates={bookedDates} 
-        onCalendarClose={() => setIsOpen(false)}
+        minDate={new Date()} 
+        open={isOpen} 
+        onCalendarClose={() => setIsOpen(false)} 
       />
 
-      <button
-        onClick={handleConfirm}
+      <button 
+        onClick={handleConfirm} 
         className="confirm-button"
       >
         تأكيد الحجز
