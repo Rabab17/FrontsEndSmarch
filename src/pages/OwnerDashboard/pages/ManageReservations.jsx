@@ -43,6 +43,7 @@ export default function ManageReservations() {
     if (loading) return <Splash />; 
     return (
         <div className="p-6 space-y-6">
+            
             <div className="flex flex-wrap gap-4 justify-between">
                 <div className="flex justify-between p-4 rounded-lg w-full sm:w-[48%] md:w-[22%] flex-shrink-0 border border-[#1A71FF] bg-white shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)]">
                     <div className="w-full">
