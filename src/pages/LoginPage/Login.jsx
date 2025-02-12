@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {jwtDecode} from "jwt-decode"; // تأكد من استيراد jwtDecode
+import { jwtDecode } from "jwt-decode"; // تأكد من استيراد jwtDecode
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,7 +18,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(`${url}user/login`, { email, password });
-
+      console.log(response.data)
       if (response.status === 200) {
         const user = response.data;
 
@@ -28,10 +28,9 @@ export default function Login() {
         localStorage.setItem("token", user.token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        
+
         const decoded = jwtDecode(user.token);
-        const role = decoded.role; 
-        console.log("role",role)
+        const role = decoded.role;
 
         // عرض SweetAlert للسؤال عن الصفحة التي يرغب في الانتقال إليها
         Swal.fire({
@@ -44,24 +43,36 @@ export default function Login() {
         }).then((result) => {
           if (result.isConfirmed) {
             if (role === 'user') {
-              navigate('/userdashboard'); 
+              navigate('/userdashboard');
             } else if (role === 'owner') {
-              navigate('/OwnerDashboard'); 
+              navigate('/OwnerDashboard');
             }
           } else {
-            navigate("/"); 
+            navigate("/");
           }
         });
       } else {
         setError("بيانات تسجيل الدخول غير صحيحة");
       }
     } catch (err) {
-      Swal.fire({
-        title: "خطأ في تسجيل الدخول",
-        text: "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى إعادة المحاولة.",
-        icon: "error",
-        confirmButtonText: "حسنًا",
-      });
+      const errorMessage = err.response?.data?.message;
+      (errorMessage == 'هذا الحساب معطل حاليا يرجى التواصل معنا' ?
+
+        Swal.fire({
+          title: "خطأ في تسجيل الدخول",
+          text: errorMessage,
+          icon: "error",
+          confirmButtonText: "تواصل معنا",
+        }).then(() => {
+          navigate('/ContactUs')
+        })
+        : Swal.fire({
+          title: "خطأ في تسجيل الدخول",
+          text: errorMessage,
+          icon: "error",
+          confirmButtonText: "موافق",
+        })
+      )
 
       setError(
         err.response?.data.message || "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا"
