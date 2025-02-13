@@ -26,13 +26,13 @@ import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
 import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
 
-import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
 import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
 import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
 import SupportUser from "../pages/UserDashboard/pages/SupportUser";
 import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
+import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
 
 export const router = createBrowserRouter([
   {

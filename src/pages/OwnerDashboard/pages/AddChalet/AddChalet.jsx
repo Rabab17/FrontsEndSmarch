@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import imageCompression from 'browser-image-compression';
 import { TiDelete } from "react-icons/ti";
 import { AiOutlineCloseCircle, AiOutlinePlusCircle } from "react-icons/ai";
+import InputField from "./InputField";
 
 export default function AddChalet() {
     const location = useLocation();
@@ -18,6 +19,7 @@ export default function AddChalet() {
     const [loadingGallery, setLoadingGallery] = useState(false);
     const [facilities, setFacilities] = useState([""]);
     const [policy, setPolicy] = useState([""]);
+    const [street, setStreet] = useState("");
     const [formErrors, setFormErrors] = useState({
         name: '',
         title: '',
@@ -64,20 +66,50 @@ export default function AddChalet() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "city" || name === "street") {
-            setFormData((prevData) => ({
-                ...prevData,
-                location: {
-                    ...prevData.location,
-                    [name]: value,
-                },
-            }));
-        } else {
-            setFormData((prevData) => ({
-                ...prevData,
+
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+        setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: value.trim() ? "" : prevErrors[name],
+        }));
+    };
+
+    // city
+    const handleCityChange = (selectedCity) => {
+        const { name, value } = selectedCity.target;
+
+        setCity(value);
+        setFormData((prevData) => ({
+            ...prevData,
+            location: {
+                ...location,
                 [name]: value,
-            }));
-        }
+            }
+        }));
+        // console.log(formData);
+        setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            city: value ? "" : prevErrors[city],
+        }));
+    };
+
+
+    // street
+    const handleStreetChange = (selectedStreet) => {
+        const { value } = selectedStreet.target;
+
+        setStreet(value);
+        setFormData((prevData) => ({
+            ...prevData,
+            location: {
+                city: city,
+                street: street,
+            }
+        }));
+
     };
 
 
@@ -93,7 +125,7 @@ export default function AddChalet() {
                 maxSizeMB: 1,
                 maxWidthOrHeight: 800,
                 useWebWorker: true,
-                fileType: "image/webp",
+                // fileType: "image/webp",
             };
 
             const compressedFile = await imageCompression(file, options);
@@ -111,7 +143,7 @@ export default function AddChalet() {
             const data = await response.json();
 
             // تحسين الصورة باستخدام Cloudinary CDN
-            const optimizedUrl = `${data.secure_url}?format=webp&quality=auto`;
+            const optimizedUrl = `${data.secure_url}`;
 
             setImageUrl(optimizedUrl);
             console.log(optimizedUrl);
@@ -136,7 +168,7 @@ export default function AddChalet() {
                     maxSizeMB: 1,
                     maxWidthOrHeight: 800,
                     useWebWorker: true,
-                    fileType: "image/webp",
+                    // fileType: "image/webp",
                 });
 
                 const formData = new FormData();
@@ -149,7 +181,7 @@ export default function AddChalet() {
                 );
 
                 const data = await response.json();
-                return `${data.secure_url}?format=webp&quality=auto`;
+                return `${data.secure_url}`;
             });
 
             const uploadedImages = await Promise.all(uploadPromises);
@@ -176,26 +208,23 @@ export default function AddChalet() {
 
         // تحقق من حقل العنوان
         if (!formData.title.trim()) {
-            errors.title = 'العنوان مطلوب';
+            errors.title = 'الوصف المختصر مطلوب';
+            isValid = false;
+        }
+        // تحقق من حقل العنوان
+        if (!formData.description.trim()) {
+            errors.description = 'الوصف مطلوب';
             isValid = false;
         }
 
-        // تحقق من المدينة
-        if (!formData.location.city) {
-            errors.city = 'المدينة مطلوبة';
-            isValid = false;
-        }
+
         // تحقق من المدينة
         if (!city) {
             errors.city = 'يرجى اختيار المدينة من القائمة';
             isValid = false;
         }
 
-        // تحقق من الشارع
-        if (!formData.location.street.trim()) {
-            errors.street = 'الشارع مطلوب';
-            isValid = false;
-        }
+
 
         // تحقق من عدد الغرف
         if (!formData.rooms || isNaN(formData.rooms) || formData.rooms <= 0) {
@@ -343,7 +372,7 @@ export default function AddChalet() {
                         {error && <p className="text-red-500 mb-4">{error}</p>}
                         {success && <p className="text-green-500 mb-4">{success}</p>}
                         <form className="space-y-4" onSubmit={handleSubmit}>
-                            <div>
+                            {/* <div>
                                 <label htmlFor="name" className="block text-black text-xl mb-2">
                                     اسم الشاليه
                                 </label>
@@ -353,12 +382,19 @@ export default function AddChalet() {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.name ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.name && <div className="error text-red-600">{formErrors.name}</div>}
 
-                            </div>
-                            <div>
+                            </div> */}
+                            <InputField
+                                label="الاسم"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                error={formErrors.name}
+                            />
+                            {/* <div>
                                 <label htmlFor="title" className="block text-black text-xl mb-2">
                                     وصف مختصر
                                 </label>
@@ -368,11 +404,18 @@ export default function AddChalet() {
                                     name="title"
                                     value={formData.title}
                                     onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.title ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.title && <div className="error text-red-600">{formErrors.title}</div>}
 
-                            </div>
+                            </div> */}
+                            <InputField
+                                label="وصف مختصر"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                                error={formErrors.title}
+                            />
                             <div>
                                 <label htmlFor="description" className="block text-black text-xl mb-2">
                                     الوصف
@@ -382,7 +425,7 @@ export default function AddChalet() {
                                     name="description"
                                     value={formData.description}
                                     onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.description ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.description && <div className="error text-red-600">{formErrors.description}</div>}
 
@@ -394,9 +437,9 @@ export default function AddChalet() {
                                     id="city"
                                     name="city"
                                     value={city}
-                                    onChange={(e) => setCity(e.target.value)}
+                                    onChange={handleCityChange}
                                     placeholder="ابحث عن مدينة..."
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.city ? "border-red-500" : "border-black"}`}
                                 />
                                 <datalist id="cities">
                                     {cities.map((city, index) => (
@@ -415,7 +458,7 @@ export default function AddChalet() {
                                     id="street"
                                     name="street"
                                     value={formData.location.street}
-                                    onChange={handleChange}
+                                    onChange={handleStreetChange}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
                             </div>
@@ -429,7 +472,7 @@ export default function AddChalet() {
                                     name="rooms"
                                     value={formData.rooms}
                                     onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.rooms ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.rooms && <div className="error text-red-600">{formErrors.rooms}</div>}
 
@@ -444,7 +487,7 @@ export default function AddChalet() {
                                     name="price"
                                     value={formData.price}
                                     onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.price ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.price && <div className="error text-red-600">{formErrors.price}</div>}
 
@@ -462,7 +505,7 @@ export default function AddChalet() {
                                             value={point}
                                             onChange={(e) => handleChangeFacilities(index, e.target.value)}
                                             placeholder={`نقطة ${index + 1}`}
-                                            className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                            className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.title ? "border-red-500" : "border-black"}`}
                                         />
 
                                         {/* زر الإضافة */}
@@ -502,7 +545,7 @@ export default function AddChalet() {
                                             value={point}
                                             onChange={(e) => handleChangepolicy(index, e.target.value)}
                                             placeholder={`نقطة ${index + 1}`}
-                                            className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
+                                            className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.reservationPolicy ? "border-red-500" : "border-black"}`}
                                         />
 
                                         {/* زر الإضافة */}
@@ -567,7 +610,7 @@ export default function AddChalet() {
                                     type="text"
                                     id="facebook"
                                     name="facebook"
-                                    value={formData.location.facebook}
+                                    value={formData.facebook}
                                     onChange={handleChange}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
@@ -580,7 +623,7 @@ export default function AddChalet() {
                                     type="text"
                                     id="instagram"
                                     name="instagram"
-                                    value={formData.location.instagram}
+                                    value={formData.instagram}
                                     onChange={handleChange}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
@@ -593,7 +636,7 @@ export default function AddChalet() {
                                     type="text"
                                     id="tiktok"
                                     name="tiktok"
-                                    value={formData.location.tiktok}
+                                    value={formData.tiktok}
                                     onChange={handleChange}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
