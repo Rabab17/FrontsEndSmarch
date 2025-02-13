@@ -1,10 +1,7 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
-import { GrSwim } from "react-icons/gr";
-import { RiHomeOfficeFill } from "react-icons/ri";
-import { MdCancel, MdLocationOn } from "react-icons/md";
-import { BsInfoCircle } from "react-icons/bs";
+
 import axios from "axios";
 import Splash from "../../components/Splash";
 import Swal from "sweetalert2";
@@ -202,18 +199,11 @@ export default function ChaletDetails() {
                 </div>
                 {openSection === "المرافق" && (
                   <div className="mt-2 sm:mt-4 text-[#101828] bg-white p-4 sm:p-6 rounded-lg">
-                    <div className="flex items-center mb-4">
-                      <GrSwim className="text-blue-600 text-2xl sm:text-3xl me-2 sm:me-3" />
-                      <p className="text-sm sm:text-xl">
-                        مسبح خاص ونظيف، محاط بكراسي للتشمس وجلسات مريحة.
-                      </p>
-                    </div>
-                    <div className="flex items-center">
-                      <RiHomeOfficeFill className="text-blue-600 text-2xl sm:text-3xl me-2 sm:me-3" />
-                      <p className="text-sm sm:text-xl">
-                        حديقة خارجية خضراء تضم منطقة شواء مخصصة (BBQ)
-                      </p>
-                    </div>
+                    {chalet.facilities.map((facilitie, index) => (
+                      <div key={index} className="mb-4">
+                        <p className="text-sm sm:text-xl">{facilitie}</p>
+                      </div>
+                    ))}
                   </div>
                 )}
 
@@ -231,16 +221,7 @@ export default function ChaletDetails() {
                     )}
                   </div>
                 </div>
-                {openSection === "الموقع" && (
-                  <div className="mt-2 sm:mt-4 text-[#101828] bg-white p-4 sm:p-6 rounded-lg">
-                    <div className="flex items-center">
-                      <MdLocationOn className="text-blue-600 text-2xl sm:text-3xl me-2 sm:me-3" />
-                      <p className="text-sm sm:text-xl">
-                        يقع الشاليه في منطقة مميزة، على بعد 5 دقائق من الشاطئ ومناطق الترفيه.
-                      </p>
-                    </div>
-                  </div>
-                )}
+
 
                 {/* شروط الحجز */}
                 <div className="p-4 rounded-lg shadow-md transition-all duration-300 bg-[#0061E0]">
@@ -258,18 +239,11 @@ export default function ChaletDetails() {
                 </div>
                 {openSection === "شروط الحجز" && (
                   <div className="text-[#101828] bg-white p-4 sm:p-6 rounded-lg">
-                    <div className="flex items-center mb-4">
-                      <BsInfoCircle className="text-blue-600 text-2xl sm:text-3xl me-2 sm:me-3" />
-                      <p className="text-sm sm:text-xl">
-                        الحجز غير قابل للإلغاء بعد 48 ساعة من تأكيده. يجب إظهار بطاقة الهوية عند الوصول.
-                      </p>
-                    </div>
-                    <div className="flex items-center">
-                      <MdCancel className="text-blue-600 text-2xl sm:text-3xl me-2 sm:me-3" />
-                      <p className="text-sm sm:text-xl">
-                        يمكن الإلغاء مجاناً حتى 7 أيام قبل موعد الحجز. بعد ذلك، يتم خصم 50% من الرسوم.
-                      </p>
-                    </div>
+                    {chalet.reservationPolicy.map((policy, index) => (
+                      <div key={index} className="mb-4">
+                        <p className="text-sm sm:text-xl">{policy}</p>
+                      </div>
+                    ))}
                   </div>
                 )}
                 {(chalet.facebook || chalet.instagram || chalet.tiktok || chalet.whatsapp) && (
@@ -412,62 +386,62 @@ export default function ChaletDetails() {
       )}
       {showSignUpModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white rounded-lg p-4 w-3/4 sm:w-1/4"> {/* Reduced padding and width further */}
-          <h1 className="text-3xl font-bold text-[#1E293B] mb-4">إنشاء حساب جديد</h1>
-          <form className="space-y-4" onSubmit={handleSignUp}>
-            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-              <input
-              
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="اسم المستخدم"
-                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                required
-              />
-            </div>
-            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="بريد إلكتروني"
-                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                required
-              />
-            </div>
-            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="كلمة مرور"
-                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                required
-              />
-            </div>
-            <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="تأكيد كلمة المرور"
-                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                required
-              />
-            </div>
-            <label className="flex items-center text-sm">
-              <input type="checkbox" className="ml-2" required />
-              أوافق على اتفاقية المستخدم
-            </label>
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 rounded-lg" // Reduced button padding
-            >
-              إنشاء حساب
-              
-            </button>
-         
+          <div className="bg-white rounded-lg p-4 w-3/4 sm:w-1/4"> {/* Reduced padding and width further */}
+            <h1 className="text-3xl font-bold text-[#1E293B] mb-4">إنشاء حساب جديد</h1>
+            <form className="space-y-4" onSubmit={handleSignUp}>
+              <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+                <input
+
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="اسم المستخدم"
+                  className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                  required
+                />
+              </div>
+              <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="بريد إلكتروني"
+                  className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                  required
+                />
+              </div>
+              <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="كلمة مرور"
+                  className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                  required
+                />
+              </div>
+              <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="تأكيد كلمة المرور"
+                  className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
+                  required
+                />
+              </div>
+              <label className="flex items-center text-sm">
+                <input type="checkbox" className="ml-2" required />
+                أوافق على اتفاقية المستخدم
+              </label>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-2 rounded-lg" // Reduced button padding
+              >
+                إنشاء حساب
+
+              </button>
+
             </form>
             <p className="text-center text-sm mt-4">
               لديك حساب بالفعل؟{" "}

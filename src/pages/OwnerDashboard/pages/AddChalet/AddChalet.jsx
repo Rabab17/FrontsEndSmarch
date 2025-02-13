@@ -4,14 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import imageCompression from 'browser-image-compression';
 import { TiDelete } from "react-icons/ti";
-import { AiOutlineCloseCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import InputField from "./InputField";
+import ListInput from "./ListInput";
 
 export default function AddChalet() {
     const location = useLocation();
     const { packageId } = location.state || {};
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState(null);
     const [loadingImg, setLoadingImg] = useState(false);
@@ -19,7 +17,6 @@ export default function AddChalet() {
     const [loadingGallery, setLoadingGallery] = useState(false);
     const [facilities, setFacilities] = useState([""]);
     const [policy, setPolicy] = useState([""]);
-    const [street, setStreet] = useState("");
     const [formErrors, setFormErrors] = useState({
         name: '',
         title: '',
@@ -58,9 +55,12 @@ export default function AddChalet() {
     const [city, setCity] = useState("");
 
     const cities = [
-        "الرياض", "جدة", "مكة المكرمة", "المدينة المنورة", "الدمام", "الطائف", "تبوك",
-        "الخبر", "بريدة", "خميس مشيط",
+        "الرياض", "جدة", "مكة المكرمة", "المدينة المنورة", "الدمام",
+        "الطائف", "تبوك", "الخبر", "بريدة", "خميس مشيط", "حائل",
+        "الجبيل", "القطيف", "نجران", "ينبع", "أبها", "عرعر",
+        "سكاكا", "جازان", "القريات", "الباحة"
     ];
+
 
     const token = localStorage.getItem('token');
 
@@ -101,12 +101,11 @@ export default function AddChalet() {
     const handleStreetChange = (selectedStreet) => {
         const { value } = selectedStreet.target;
 
-        setStreet(value);
         setFormData((prevData) => ({
             ...prevData,
             location: {
                 city: city,
-                street: street,
+                street: value,
             }
         }));
 
@@ -268,8 +267,6 @@ export default function AddChalet() {
         if (!validateForm()) {
             return;
         }
-        setError(null);
-        setSuccess(null);
         setLoading(true)
         try {
             const updatedFormData = {
@@ -319,45 +316,6 @@ export default function AddChalet() {
     };
 
 
-    // المرافق
-    const handleChangeFacilities = (index, value) => {
-        const updatedfacilities = [...facilities];
-        updatedfacilities[index] = value;
-        setFacilities(updatedfacilities);
-    };
-
-    // دالة لإضافة نقطة جديدة
-    const handleAddfacilities = () => {
-        setFacilities([...facilities, ""]);
-    };
-
-    // دالة لحذف نقطة
-    const handleRemovefacilities = (index) => {
-        const updatedfacilities = facilities.filter((_, i) => i !== index);
-        setFacilities(updatedfacilities);
-    };
-
-
-    // سياسة الحجز
-    const handleChangepolicy = (index, value) => {
-        const updatedpolicy = [...policy];
-        updatedpolicy[index] = value;
-        setPolicy(updatedpolicy);
-    };
-
-    // دالة لإضافة نقطة جديدة
-    const handleAddpolicy = () => {
-        setPolicy([...policy, ""]);
-    };
-
-    // دالة لحذف نقطة
-    const handleRemovepolicy = (index) => {
-        const updatedpolicy = policy.filter((_, i) => i !== index);
-        setPolicy(updatedpolicy);
-    };
-
-
-
     return (
         <>
             {packageId != null ?
@@ -369,24 +327,8 @@ export default function AddChalet() {
                         <p className="text-2xl text-[#718096] mb-6">
                             قم بإضافة شاليهك وابدأ في استقبال الحجوزات الآن.
                         </p>
-                        {error && <p className="text-red-500 mb-4">{error}</p>}
-                        {success && <p className="text-green-500 mb-4">{success}</p>}
                         <form className="space-y-4" onSubmit={handleSubmit}>
-                            {/* <div>
-                                <label htmlFor="name" className="block text-black text-xl mb-2">
-                                    اسم الشاليه
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.name ? "border-red-500" : "border-black"}`}
-                                />
-                                {formErrors.name && <div className="error text-red-600">{formErrors.name}</div>}
-
-                            </div> */}
+                            {/* الاسم */}
                             <InputField
                                 label="الاسم"
                                 name="name"
@@ -394,21 +336,7 @@ export default function AddChalet() {
                                 onChange={handleChange}
                                 error={formErrors.name}
                             />
-                            {/* <div>
-                                <label htmlFor="title" className="block text-black text-xl mb-2">
-                                    وصف مختصر
-                                </label>
-                                <input
-                                    type="text"
-                                    id="title"
-                                    name="title"
-                                    value={formData.title}
-                                    onChange={handleChange}
-                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.title ? "border-red-500" : "border-black"}`}
-                                />
-                                {formErrors.title && <div className="error text-red-600">{formErrors.title}</div>}
-
-                            </div> */}
+                            {/* الوصف المختصر  */}
                             <InputField
                                 label="وصف مختصر"
                                 name="title"
@@ -416,6 +344,7 @@ export default function AddChalet() {
                                 onChange={handleChange}
                                 error={formErrors.title}
                             />
+                            {/* الوصف */}
                             <div>
                                 <label htmlFor="description" className="block text-black text-xl mb-2">
                                     الوصف
@@ -430,6 +359,7 @@ export default function AddChalet() {
                                 {formErrors.description && <div className="error text-red-600">{formErrors.description}</div>}
 
                             </div>
+                            {/* المدينه */}
                             <div>
                                 <label htmlFor="city" className="block text-black text-xl mb-2">اختر مدينة:</label>
                                 <input
@@ -449,198 +379,85 @@ export default function AddChalet() {
                                 {formErrors.city && <div className="error text-red-600">{formErrors.city}</div>}
                             </div>
 
-                            <div>
-                                <label htmlFor="street" className="block text-black text-xl mb-2">
-                                    الشارع
-                                </label>
-                                <input
-                                    type="text"
-                                    id="street"
-                                    name="street"
-                                    value={formData.location.street}
-                                    onChange={handleStreetChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="rooms" className="block text-black text-xl mb-2">
-                                    عدد الغرف
-                                </label>
-                                <input
-                                    type="number"
-                                    id="rooms"
-                                    name="rooms"
-                                    value={formData.rooms}
-                                    onChange={handleChange}
-                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.rooms ? "border-red-500" : "border-black"}`}
-                                />
-                                {formErrors.rooms && <div className="error text-red-600">{formErrors.rooms}</div>}
+                            {/* الشارع */}
+                            <InputField
+                                label="الشارع"
+                                name="street"
+                                value={formData.street}
+                                onChange={handleStreetChange}
 
-                            </div>
-                            <div>
-                                <label htmlFor="price" className="block text-black text-xl mb-2">
-                                    السعر
-                                </label>
-                                <input
-                                    type="number"
-                                    id="price"
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={handleChange}
-                                    className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.price ? "border-red-500" : "border-black"}`}
-                                />
-                                {formErrors.price && <div className="error text-red-600">{formErrors.price}</div>}
+                            />
 
-                            </div>
-
+                            {/* عدد الغرف */}
+                            <InputField
+                                label="عدد الغرف"
+                                name="rooms"
+                                value={formData.rooms}
+                                onChange={handleChange}
+                                error={formErrors.rooms}
+                                type="number"
+                            />
+                            {/* السعر */}
+                            <InputField
+                                label="السعر "
+                                name="price"
+                                value={formData.price}
+                                onChange={handleChange}
+                                error={formErrors.price}
+                                type="number"
+                            />
 
 
                             {/* المرافق */}
-                            <div className="mb-3">
-                                <label className="block font-semibold mb-1"> المرافق:</label>
-                                {facilities.map((point, index) => (
-                                    <div key={index} className="flex items-center gap-2 mb-2">
-                                        <input
-                                            type="text"
-                                            value={point}
-                                            onChange={(e) => handleChangeFacilities(index, e.target.value)}
-                                            placeholder={`نقطة ${index + 1}`}
-                                            className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.title ? "border-red-500" : "border-black"}`}
-                                        />
-
-                                        {/* زر الإضافة */}
-                                        {index === facilities.length - 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={handleAddfacilities}
-                                                className="text-blue-600 hover:text-blue-800"
-                                            >
-                                                <AiOutlinePlusCircle size={24} />
-                                            </button>
-                                        )}
-                                        {/* زر الحذف */}
-                                        {facilities.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemovefacilities(index)}
-                                                className="text-red-600 hover:text-red-800"
-                                            >
-                                                <AiOutlineCloseCircle size={24} />
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                                {formErrors.facilities && <div className="error text-red-600">{formErrors.facilities}</div>}
-
-                            </div>
-
-
+                            <ListInput
+                                title="المرافق"
+                                list={facilities}
+                                setList={setFacilities}
+                                error={formErrors.facilities}
+                            />
                             {/* سياسة الحجز */}
-                            <div className="mb-3">
-                                <label className="block font-semibold mb-1"> سياسة الحجز والالغاء:</label>
-                                {policy.map((point, index) => (
-                                    <div key={index} className="flex items-center gap-2 mb-2">
-                                        <input
-                                            type="text"
-                                            value={point}
-                                            onChange={(e) => handleChangepolicy(index, e.target.value)}
-                                            placeholder={`نقطة ${index + 1}`}
-                                            className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.reservationPolicy ? "border-red-500" : "border-black"}`}
-                                        />
-
-                                        {/* زر الإضافة */}
-                                        {index === policy.length - 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={handleAddpolicy}
-                                                className="text-blue-600 hover:text-blue-800"
-                                            >
-                                                <AiOutlinePlusCircle size={24} />
-                                            </button>
-                                        )}
-                                        {/* زر الحذف */}
-                                        {policy.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemovepolicy(index)}
-                                                className="text-red-600 hover:text-red-800"
-                                            >
-                                                <AiOutlineCloseCircle size={24} />
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                                {formErrors.reservationPolicy && <div className="error text-red-600">{formErrors.reservationPolicy}</div>}
-                            </div>
+                            <ListInput
+                                title="سياسة الحجز والإلغاء"
+                                list={policy}
+                                setList={setPolicy}
+                                error={formErrors.reservationPolicy}
+                            />
+                            <InputField
+                                label="رقم الهاتف الخاص بالشاليه"
+                                name="phoneOfChalet"
+                                value={formData.phoneOfChalet}
+                                onChange={handleChange}
+                                type="number"
+                            />
+                            <InputField
+                                label="رقم الواتساب الخاص بالشاليه"
+                                name="whatsapp"
+                                value={formData.whatsapp}
+                                onChange={handleChange}
+                                type="number"
+                            />
 
 
+                            <InputField
+                                label="رابط صفحة الفيس بوك"
+                                name="facebook"
+                                value={formData.facebook}
+                                onChange={handleChange}
+                            />
 
+                            <InputField
+                                label="رابط صفحة الانستجرام"
+                                name="instagram"
+                                value={formData.instagram}
+                                onChange={handleChange}
+                            />
 
-                            <div>
-                                <label htmlFor="phoneOfChalet" className="block text-black text-xl mb-2">
-                                    رقم الهاتف الخاص بالشاليه
-                                </label>
-                                <input
-                                    type="number"
-                                    id="phoneOfChalet"
-                                    name="phoneOfChalet"
-                                    value={formData.phoneOfChalet}
-                                    onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="whatsapp" className="block text-black text-xl mb-2">
-                                    رقم الواتساب الخاص بالشاليه
-                                </label>
-                                <input
-                                    type="number"
-                                    id="whatsapp"
-                                    name="whatsapp"
-                                    value={formData.whatsapp}
-                                    onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="facebook" className="block text-black text-xl mb-2">
-                                    رابط صفحة الفيس بوك
-                                </label>
-                                <input
-                                    type="text"
-                                    id="facebook"
-                                    name="facebook"
-                                    value={formData.facebook}
-                                    onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="instagram" className="block text-black text-xl mb-2">
-                                    رابط صفحة الانستجرام
-                                </label>
-                                <input
-                                    type="text"
-                                    id="instagram"
-                                    name="instagram"
-                                    value={formData.instagram}
-                                    onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="tiktok" className="block text-black text-xl mb-2">
-                                    رابط صفحة التيك توك
-                                </label>
-                                <input
-                                    type="text"
-                                    id="tiktok"
-                                    name="tiktok"
-                                    value={formData.tiktok}
-                                    onChange={handleChange}
-                                    className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
-                                />
-                            </div>
+                            <InputField
+                                label=" رابط صفحة التيك توك "
+                                name="tiktok"
+                                value={formData.tiktok}
+                                onChange={handleChange}
+                            />
                             <div>
                                 <label htmlFor="img" className="block text-black text-xl mb-2">
                                     صورة الشاليه الرئيسية
@@ -652,7 +469,7 @@ export default function AddChalet() {
                                     onChange={handleImageUpload}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
-                                {loadingImg && <p className="text-blue-500">  جاري رفع الصورة الرئيسية...</p>}
+                                {loadingImg && <p className="mt-2 text-lg font-bold">  جاري رفع الصورة الرئيسية...</p>}
                                 {imageUrl &&
                                     <>
                                         <div className="relative">
@@ -678,7 +495,6 @@ export default function AddChalet() {
                                     onChange={handleGalleryUpload}
                                     className="w-full p-2 bg-transparent border border-black rounded-lg focus:outline-[#124FB3]"
                                 />
-
 
                                 {loadingGallery && <p className=" mt-2 text-lg font-bold"> جاري رفع صور المعرض... </p>}
                                 <div className="grid grid-cols-3 gap-2 mt-2">

@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,13 +6,46 @@ import Swal from "sweetalert2";
 import axios from "axios"; 
 import "./style.css"; 
 
-export default function Datapicker() { 
-  const { id } = useParams(); 
-  const navigate = useNavigate(); // استخدام useNavigate
-  console.log("id", id);
-  const [dateRange, setDateRange] = useState([null, null]); 
-  const [isOpen, setIsOpen] = useState(true); 
+export default function Datapicker() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [isOpen, setIsOpen] = useState(true);
+  const [bookedDates, setBookedDates] = useState([]); // تخزين الأيام المحجوزة
 
+  useEffect(() => {
+    const fetchBookedDates = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/user/chalet/${id}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        console.log(response.data.data)
+        const bookings = response.data.data;
+
+        let allBookedDates = [];
+
+        // استخراج الأيام بين checkInDate و checkOutDate
+        bookings.forEach(({ checkInDate, checkOutDate }) => {
+          let currentDate = new Date(checkInDate);
+          let endDate = new Date(checkOutDate);
+
+          while (currentDate <= endDate) {
+            currentDate.setDate(currentDate.getDate() - 1);
+            allBookedDates.push(new Date(currentDate));
+            currentDate.setDate(currentDate.getDate() + 2);
+          }
+        });
+
+        setBookedDates(allBookedDates);
+      } catch (error) {
+        console.error("Error fetching booked dates:", error);
+      }
+    };
+
+    fetchBookedDates();
+  }, [id]);
   const handleChange = (update) => {
     setDateRange(update);
   };
