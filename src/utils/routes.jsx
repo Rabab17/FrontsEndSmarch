@@ -13,7 +13,6 @@ import OwnerDashboard from "../pages/OwnerDashboard/layout/OwnerDashboard";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import SinglePost from "../pages/SinglePost/SinglePost";
 import SignUpUser from "../pages/SignUpPage/SignUpUser";
-import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
 import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
 import BalanceRechargePage from "../pages/OwnerDashboard/pages/BalanceRechargePage";
@@ -48,7 +47,6 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "signupUser", element: <SignUpUser /> },
-      { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
       { path: "UpdatePassword", element: <UpdatePassword /> },
       { path: "ResetPassword/:token", element: <ResetPassword /> },

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Splash from "../../components/Splash";
 
 export default function Blog() {
   const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true)
+
   const nav = useNavigate();
 
   const GoToPost = (id) => {
@@ -12,19 +15,22 @@ export default function Blog() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("https://smarch-back-end-nine.vercel.app/article");
+        const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}article`);
         const data = await response.json();
         if (data.status === "success") {
           setBlogPosts(data.data);
         }
       } catch (error) {
         console.error("Error fetching blog posts:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPosts();
   }, []);
 
+  if (loading) return <Splash />;
   return (
     <div className="bg-blue-50 py-10">
       <div className="text-center space-y-4 mb-8">
