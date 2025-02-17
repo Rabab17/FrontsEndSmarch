@@ -1,12 +1,30 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Posts } from "../../api/data";
 
 export default function Blog() {
-  const blogPosts = Posts
-  const nav = useNavigate()
+  const [blogPosts, setBlogPosts] = useState([]);
+  const nav = useNavigate();
+
   const GoToPost = (id) => {
-    nav(`/blog/${id}`)
-  }
+    nav(`/blog/${id}`);
+  };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("https://smarch-back-end-nine.vercel.app/article");
+        const data = await response.json();
+        if (data.status === "success") {
+          setBlogPosts(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   return (
     <div className="bg-blue-50 py-10">
       <div className="text-center space-y-4 mb-8">
@@ -27,22 +45,22 @@ export default function Blog() {
       <div className="flex flex-wrap gap-6 justify-center">
         {blogPosts.map((post) => (
           <div
-            key={post.id}
-            className="bg-white p-4 w-full  sm:w-[48%] lg:w-[25%] rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out"
-            onClick={() => GoToPost(post.id)}
+            key={post._id}
+            className="bg-white p-4 w-full sm:w-[48%] lg:w-[25%] rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out"
+            onClick={() => GoToPost(post._id)}
           >
-            <img
-              src={post.image}
-              alt={post.title}
-              className="w-full h-60 object-cover rounded-lg mb-10"
-            />
+            {post.image && (
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-60 object-cover rounded-lg mb-10"
+              />
+            )}
             <h2 className="text-lg font-semibold text-blue-700 mb-2">{post.title}</h2>
-            <p className="text-gray-600 text-sm mb-4">{post.description}</p>
+            <p className="text-gray-600 text-sm mb-4">{post.subTitel}</p>
           </div>
         ))}
       </div>
-
-
     </div>
   );
 }

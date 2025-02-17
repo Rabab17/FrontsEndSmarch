@@ -13,7 +13,7 @@ export default function ManageReservations() {
     const [loading, setLoading] = useState(true);
 
     const fetchUserData = async (page) => {
-        setLoading(true);
+        setLoading(true); 
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}reservation/owner`, {
                 headers: {
@@ -32,7 +32,7 @@ export default function ManageReservations() {
         } catch (error) {
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
         } finally {
-            setLoading(false);
+            setLoading(false); 
         }
     };
 
@@ -40,10 +40,9 @@ export default function ManageReservations() {
         fetchUserData(currentPage);
     }, [currentPage]);
 
-    if (loading) return <Splash />;
+    if (loading) return <Splash />; 
     return (
         <div className="p-6 space-y-6">
-
             <div className="flex flex-wrap gap-4 justify-between">
                 <div className="flex justify-between p-4 rounded-lg w-full sm:w-[48%] md:w-[22%] flex-shrink-0 border border-[#1A71FF] bg-white shadow-[6px_6px_54px_0px_rgba(0,0,0,0.05)]">
                     <div className="w-full">
@@ -60,7 +59,7 @@ export default function ManageReservations() {
                         </div>
                     </div>
                 </div>
-
+                
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
                         <h3 className="text-lg font-semibold text-gray-700 mb-3">الشاليهات المؤجرة</h3>
@@ -72,7 +71,6 @@ export default function ManageReservations() {
                         <path opacity="0.499209" d="M15.5718 20.7014C15.7294 20.5024 15.9282 20.3343 16.1601 20.2108L29.2851 13.2201C29.8361 12.9266 30.497 12.9266 31.048 13.2201L44.173 20.2108C44.3517 20.306 44.5109 20.4277 44.6466 20.5697L30.2564 28.8778C30.1618 28.9325 30.0746 28.995 29.9951 29.064C29.9156 28.995 29.8283 28.9325 29.7337 28.8778L15.5718 20.7014Z" fill="#FEC53D" />
                     </svg>
                 </div>
-
 
                 <div className="flex justify-between p-4 rounded-lg shadow w-full sm:w-[48%] md:w-[22%] h-[150px] flex-shrink-0 border border-[#1A71FF]">
                     <div>
@@ -101,22 +99,23 @@ export default function ManageReservations() {
                 <table className="w-full">
                     <thead>
                         <tr className="text-[#0061E0] p-2 text-xl">
-                            <th >رقم الحجز</th>
-                            <th >اسم العميل</th>
-                            <th >اسم الشاليه</th>
-                            <th >تاريخ الدخول</th>
-                            <th >تاريخ المغادرة</th>
+                            <th>رقم الحجز</th>
+                            <th>اسم العميل</th>
+                            <th>اسم الشاليه</th>
+                            <th>تاريخ الدخول</th>
+                            <th>تاريخ المغادرة</th>
                             <th>مبلغ الحجز</th>
-                            <th >حالة الحجز</th>
+                            <th>حالة الحجز</th>
                             <th>خيارات</th>
                         </tr>
                     </thead>
                     <tbody>
                         {bookings.map((booking, index) => (
                             <tr key={booking._id}>
-
                                 <td className="py-2 px-1 text-center text-lg">{index + 1}</td>
-                                <td className="py-2 px-1 text-center text-lg">{booking.userID.userName}</td>
+                                <td className="py-2 px-1 text-center text-lg">
+                                    {booking.userID ? booking.userID.userName : "غير متوفر"}
+                                </td>
                                 <td className="py-2 px-1 text-center text-lg">{booking.chaletID.name}</td>
                                 <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString()}</td>
                                 <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString()}</td>
@@ -126,7 +125,6 @@ export default function ManageReservations() {
                                         className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
                                         {booking.status === "pending" ? "قيد الانتظار" : "مكتمل"}
                                     </span>
-
                                 </td>
                                 <td className="p-2 text-center">
                                     <button>
@@ -145,8 +143,6 @@ export default function ManageReservations() {
                         ))}
                     </tbody>
                 </table>
-
-
             </div>
             {/* عناصر التحكم في الصفحات */}
             <div className="flex justify-between mt-4">
@@ -168,4 +164,4 @@ export default function ManageReservations() {
             </div>
         </div>
     );
-};
+}
