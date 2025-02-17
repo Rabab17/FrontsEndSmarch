@@ -85,7 +85,7 @@ export default function AddChalet() {
         setFormData((prevData) => ({
             ...prevData,
             location: {
-                ...location,
+                ...prevData.location,
                 [name]: value,
             }
         }));
@@ -329,31 +329,15 @@ export default function AddChalet() {
                         </p>
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             {/* الاسم */}
-                            <InputField
-                                label="الاسم"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                error={formErrors.name}
-                            />
+                            <InputField label="الاسم" name="name" value={formData.name} onChange={handleChange} error={formErrors.name} />
                             {/* الوصف المختصر  */}
-                            <InputField
-                                label="وصف مختصر"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                error={formErrors.title}
-                            />
+                            <InputField label="وصف مختصر" name="title" value={formData.title} onChange={handleChange} error={formErrors.title} />
                             {/* الوصف */}
                             <div>
                                 <label htmlFor="description" className="block text-black text-xl mb-2">
                                     الوصف
                                 </label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleChange}
+                                <textarea id="description" name="description" value={formData.description} onChange={handleChange}
                                     className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.description ? "border-red-500" : "border-black"}`}
                                 />
                                 {formErrors.description && <div className="error text-red-600">{formErrors.description}</div>}
@@ -362,13 +346,7 @@ export default function AddChalet() {
                             {/* المدينه */}
                             <div>
                                 <label htmlFor="city" className="block text-black text-xl mb-2">اختر مدينة:</label>
-                                <input
-                                    list="cities"
-                                    id="city"
-                                    name="city"
-                                    value={city}
-                                    onChange={handleCityChange}
-                                    placeholder="ابحث عن مدينة..."
+                                <input list="cities" id="city" name="city" value={city} onChange={handleCityChange} placeholder="ابحث عن مدينة..."
                                     className={`w-full p-2 bg-transparent border rounded-lg focus:outline-[#124FB3] ${formErrors.city ? "border-red-500" : "border-black"}`}
                                 />
                                 <datalist id="cities">
@@ -380,84 +358,29 @@ export default function AddChalet() {
                             </div>
 
                             {/* الشارع */}
-                            <InputField
-                                label="الشارع"
-                                name="street"
-                                value={formData.street}
-                                onChange={handleStreetChange}
-
-                            />
+                            <InputField label="الشارع" name="street" value={formData.street} onChange={handleStreetChange} />
 
                             {/* عدد الغرف */}
-                            <InputField
-                                label="عدد الغرف"
-                                name="rooms"
-                                value={formData.rooms}
-                                onChange={handleChange}
-                                error={formErrors.rooms}
-                                type="number"
-                            />
-                            {/* السعر */}
-                            <InputField
-                                label="السعر "
-                                name="price"
-                                value={formData.price}
-                                onChange={handleChange}
-                                error={formErrors.price}
-                                type="number"
-                            />
+                            <InputField label="عدد الغرف" name="rooms" value={formData.rooms} onChange={handleChange} error={formErrors.rooms} type="number" />
 
+                            {/* السعر */}
+                            <InputField label="السعر " name="price" value={formData.price} onChange={handleChange} error={formErrors.price} type="number" />
 
                             {/* المرافق */}
-                            <ListInput
-                                title="المرافق"
-                                list={facilities}
-                                setList={setFacilities}
-                                error={formErrors.facilities}
-                            />
+                            <ListInput title="المرافق" list={facilities} setList={setFacilities} error={formErrors.facilities} />
+
                             {/* سياسة الحجز */}
-                            <ListInput
-                                title="سياسة الحجز والإلغاء"
-                                list={policy}
-                                setList={setPolicy}
-                                error={formErrors.reservationPolicy}
-                            />
-                            <InputField
-                                label="رقم الهاتف الخاص بالشاليه"
-                                name="phoneOfChalet"
-                                value={formData.phoneOfChalet}
-                                onChange={handleChange}
-                                type="number"
-                            />
-                            <InputField
-                                label="رقم الواتساب الخاص بالشاليه"
-                                name="whatsapp"
-                                value={formData.whatsapp}
-                                onChange={handleChange}
-                                type="number"
-                            />
+                            <ListInput title="سياسة الحجز والإلغاء" list={policy} setList={setPolicy} error={formErrors.reservationPolicy} />
 
+                            <InputField label="رقم الهاتف الخاص بالشاليه" name="phoneOfChalet" value={formData.phoneOfChalet} onChange={handleChange} type="number" />
 
-                            <InputField
-                                label="رابط صفحة الفيس بوك"
-                                name="facebook"
-                                value={formData.facebook}
-                                onChange={handleChange}
-                            />
+                            <InputField label="رقم الواتساب الخاص بالشاليه" name="whatsapp" value={formData.whatsapp} onChange={handleChange} type="number" />
 
-                            <InputField
-                                label="رابط صفحة الانستجرام"
-                                name="instagram"
-                                value={formData.instagram}
-                                onChange={handleChange}
-                            />
+                            <InputField label="رابط صفحة الفيس بوك" name="facebook" value={formData.facebook} onChange={handleChange} />
 
-                            <InputField
-                                label=" رابط صفحة التيك توك "
-                                name="tiktok"
-                                value={formData.tiktok}
-                                onChange={handleChange}
-                            />
+                            <InputField label="رابط صفحة الانستجرام" name="instagram" value={formData.instagram} onChange={handleChange} />
+
+                            <InputField label=" رابط صفحة التيك توك " name="tiktok" value={formData.tiktok} onChange={handleChange} />
                             <div>
                                 <label htmlFor="img" className="block text-black text-xl mb-2">
                                     صورة الشاليه الرئيسية
