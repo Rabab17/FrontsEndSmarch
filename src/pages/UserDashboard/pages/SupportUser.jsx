@@ -10,14 +10,14 @@ export default function SupportUser() {
 
     useEffect(() => {
         const fetchTickets = async () => {
-            const token = localStorage.getItem('token'); // استرجاع التوكن من localStorage
+            const token = localStorage.getItem('token');
+
             try {
                 const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user?page=${currentPage}`, {
                     headers: {
                         'Authorization': token 
                     }
                 });
-                // تعيين التذاكر إلى response.data
                 if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                     setTickets(response.data.data); 
                     setTotalPages(response.data.pagination.totalPages); // تعيين إجمالي الصفحات
@@ -46,7 +46,7 @@ export default function SupportUser() {
                     <thead>
                         <tr className="text-[#0061E0] p-2 text-xl">
                             <th>رقم التذكره</th>
-                            <th>اسم المستخدم</th>
+                            <th>اسم مالك الشاليه </th>
                             <th>تاريخ الارسال</th>
                             <th>الموضوع</th>
                             <th>الحاله</th>
@@ -77,38 +77,40 @@ export default function SupportUser() {
             </div>
 
             {/* أزرار التنقل بين الصفحات */}
-            <nav aria-label="Page navigation example" className="flex justify-center">
-                <ul className="inline-flex -space-x-px text-sm">
-                    <li>
-                        <button 
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                            disabled={currentPage === 1}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                           السابق
-                        </button>
-                    </li>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <li key={index}>
+            {totalPages > 1 && ( // Only show pagination if there are more than 1 page
+                <nav aria-label="Page navigation example" className="flex justify-center">
+                    <ul className="inline-flex -space-x-px text-sm">
+                        <li>
                             <button 
-                                onClick={() => setCurrentPage(index + 1)} 
-                                className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === index + 1 ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                                disabled={currentPage === 1}
+                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
                             >
-                                {index + 1}
+                               السابق
                             </button>
                         </li>
-                    ))}
-                    <li>
-                        <button 
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-                            disabled={currentPage === totalPages}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            التالي
-                        </button>
-                    </li>
-                </ul>
-            </nav>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <li key={index}>
+                                <button 
+                                    onClick={() => setCurrentPage(index + 1)} 
+                                    className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === index + 1 ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
+                                >
+                                    {index + 1}
+                                </button>
+                            </li>
+                        ))}
+                        <li>
+                            <button 
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                                disabled={currentPage === totalPages}
+                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                            >
+                                التالي
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            )}
         </div>
     );
 }

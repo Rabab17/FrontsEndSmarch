@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import Swal from 'sweetalert2'; // استيراد SweetAlert
+import Swal from 'sweetalert2'; 
+import { jwtDecode } from 'jwt-decode'; 
 
 const TicketModal = ({ isOpen, onClose, ownerID }) => {
     const [subject, setSubject] = useState('');
@@ -12,29 +13,66 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
         console.log("التوكن:", token);
         
         try {
-            console.log("إرسال التذكرة بالموضوع:", subject, "و ownerID:", ownerID);
-            
-            const response = await axios.post('https://smarch-back-end-nine.vercel.app/ticket/create', {
-                subject,
-                recipient: ownerID
-            }, {
-                headers: {
-                    'Authorization': token 
-                }
-            });
+            // التحقق من الدور من الـ token
+            const userRole = getUserRole(token); // دالة للحصول على الدور
 
-            if (response.status === 201) { // تحقق من حالة الاستجابة
-                // عرض تنبيه SweetAlert
+            if (userRole === 'user') { // تحقق من أن الدور هو user
+                console.log("إرسال التذكرة بالموضوع:", subject, "و ownerID:", ownerID);
+                
+                const response = await axios.post('https://smarch-back-end-nine.vercel.app/ticket/create', {
+                    subject,
+                    recipient: ownerID
+                }, {
+                    headers: {
+                        'Authorization': token 
+                    }
+                });
+
+                if (response.status === 201) { // تحقق من حالة الاستجابة
+                    // عرض تنبيه SweetAlert
+                    Swal.fire({
+                        title: 'تم الإرسال بنجاح!',
+                        text: 'تم إنشاء التذكرة بنجاح.',
+                        icon: 'success',
+                        confirmButtonText: 'موافق'
+                    });
+                    onClose(); 
+                } else {
+                    console.error('حالة استجابة غير متوقعة:', response.status);
+                    console.error('بيانات الاستجابة:', response.data);
+                }
+            } else if (userRole === 'owner') { // تحقق من أن الدور هو owner
+                console.log("إرسال التذكرة بالموضوع:", subject);
+                
+                const response = await axios.post('https://smarch-back-end-nine.vercel.app/ticket/create', {
+                    subject,
+                }, {
+                    headers: {
+                        'Authorization': token 
+                    }
+                });
+
+                if (response.status === 201) { // تحقق من حالة الاستجابة
+                    // عرض تنبيه SweetAlert
+                    Swal.fire({
+                        title: 'تم الإرسال بنجاح!',
+                        text: 'تم إنشاء التذكرة بنجاح.',
+                        icon: 'success',
+                        confirmButtonText: 'موافق'
+                    });
+                    onClose(); 
+                } else {
+                    console.error('حالة استجابة غير متوقعة:', response.status);
+                    console.error('بيانات الاستجابة:', response.data);
+                }
+            } else {
+                // إذا كان الدور ليس user أو owner، عرض رسالة تنبيه
                 Swal.fire({
-                    title: 'تم الإرسال بنجاح!',
-                    text: 'تم إنشاء التذكرة بنجاح.',
-                    icon: 'success',
+                    title: 'خطأ',
+                    text: 'ليس لديك صلاحيات لإنشاء تذكرة.',
+                    icon: 'error',
                     confirmButtonText: 'موافق'
                 });
-                onClose(); 
-            } else {
-                console.error('حالة استجابة غير متوقعة:', response.status);
-                console.error('بيانات الاستجابة:', response.data);
             }
         } catch (error) {
             console.error('خطأ في إنشاء التذكرة', error.message);
@@ -46,6 +84,16 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
             } else {
                 console.error('رسالة الخطأ:', error.message);
             }
+        }
+    };
+
+    const getUserRole = (token) => {
+        try {
+            const decodedToken = jwtDecode(token); // فك تشفير الـ token
+            return decodedToken.role; // افترض أن الـ token يحتوي على خاصية role
+        } catch (error) {
+            console.error('خطأ في فك تشفير الـ token', error.message);
+            return null; // أو يمكنك إرجاع قيمة افتراضية
         }
     };
 

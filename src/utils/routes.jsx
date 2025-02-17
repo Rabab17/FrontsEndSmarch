@@ -33,7 +33,8 @@ import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
 // import SupportUser from "../pages/UserDashboard/pages/SupportUser";
 import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 import SupportUser from "../pages/UserDashboard/pages/supportUser";
-// import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
+import Subscription from "../pages/OwnerDashboard/pages/Subscription";
+
 
 export const router = createBrowserRouter([
   {
@@ -62,7 +63,7 @@ export const router = createBrowserRouter([
           { path: 'notifications', element: <NotificationPage /> },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
-          // { path: 'subscription', element: <SubscriptionOwner /> },
+          { path: 'subscription', element: <Subscription /> },
           { path: 'addChalet', element: <AddChalet /> },
           { path: 'SingleChaletManagement', element: <SingleChaletManagement /> },
           { path: 'editchlet', element: <EditChalet /> },
