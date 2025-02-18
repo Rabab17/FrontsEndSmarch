@@ -107,6 +107,7 @@ export default function ManageReservations() {
                             <th>مبلغ الحجز</th>
                             <th>حالة الحجز</th>
                             <th>خيارات</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
