@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Splash from "../../../components/Splash";
 
 export default function SupportUser() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -36,7 +37,7 @@ export default function SupportUser() {
         fetchTickets(); 
     }, [currentPage]); // إعادة تحميل البيانات عند تغيير الصفحة
 
-    if (loading) return <div>Loading...</div>; 
+    if (loading) return <Splash />; 
     if (error) return <div>Error: {error}</div>; 
 
     return (

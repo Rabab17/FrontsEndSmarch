@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import Splash from "../../../components/Splash";
 
 export default function SupportPage() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -78,7 +79,7 @@ export default function SupportPage() {
         });
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
 
     return (

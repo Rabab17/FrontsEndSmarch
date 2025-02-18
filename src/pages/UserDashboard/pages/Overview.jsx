@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TicketModal from "./TicketModal"; // Import the TicketModal component
+import Splash from "../../../components/Splash";
+
 
 export default function Overview() {
     const [bookings, setBookings] = useState([]);
@@ -51,7 +53,7 @@ export default function Overview() {
     };
 
     if (loading) {
-        return <div>جاري تحميل البيانات...</div>;
+        return <Splash />;;
     }
 
     if (error) {
