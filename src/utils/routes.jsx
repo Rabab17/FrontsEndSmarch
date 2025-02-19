@@ -17,7 +17,7 @@ import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
 import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
 import BalanceRechargePage from "../pages/OwnerDashboard/pages/BalanceRechargePage";
 import SupportPage from "../pages/OwnerDashboard/pages/SupportPage";
-import NotificationPage from "../pages/OwnerDashboard/pages/NotificationPage";
+import NotificationPage from "../pages/OwnerDashboard/pages/Notifications/NotificationPage";
 import ChaletManagement from "../pages/OwnerDashboard/pages/ChaletManagement";
 import ManageReservations from "../pages/OwnerDashboard/pages/ManageReservations";
 import UserDashboard from "../pages/UserDashboard/layout/UserDashboard";
@@ -32,6 +32,8 @@ import SupportUser from "../pages/UserDashboard/pages/SupportUser";
 import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
 import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
+import NewNotification from "../pages/OwnerDashboard/pages/Notifications/pages/NewNotification";
+import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/ReadNotification";
 
 export const router = createBrowserRouter([
   {
@@ -56,7 +58,10 @@ export const router = createBrowserRouter([
           { path: 'profile', element: <ProfilePage /> },
           { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
           { path: 'support', element: <SupportPage /> },
-          { path: 'notifications', element: <NotificationPage /> },
+          { path: 'notifications', element: <NotificationPage />, children:[
+            {path:'new', element : <NewNotification/>},
+            {path: 'read' , element : <ReadNotification/>}
+          ] },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
           { path: 'subscription', element: <SubscriptionOwner /> },
