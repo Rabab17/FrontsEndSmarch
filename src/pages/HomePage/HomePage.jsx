@@ -11,12 +11,16 @@ import { useNavigate } from "react-router-dom";
 export default function HomePage() {
 
   const [tokenOwner, setTokenOwner] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMessage = async (event) => {
 
-      if (event.origin !== "https://smarch-admin.vercel.app/") return;
+      if (event.origin !== "https://smarch-admin.vercel.app") {
+        console.log("error", event.origin)
+
+        return;
+      }
 
       const { id } = event.data;
 
@@ -25,14 +29,14 @@ export default function HomePage() {
           `https://smarch-back-end-nine.vercel.app/user/token/${id}`,
           {
             headers: {
-              authorization:import.meta.env.VITE_ADMIN_TOKEN
+              authorization: import.meta.env.VITE_ADMIN_TOKEN
             },
           }
         );
 
         const token = response.data.token;
         localStorage.setItem("token", token);
-        setTokenOwner(token); 
+        setTokenOwner(token);
       } catch (error) {
         console.error("Error fetching owner token:", error);
       }
