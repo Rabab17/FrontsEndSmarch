@@ -18,11 +18,9 @@ export default function Login() {
 
     try {
       const response = await axios.post(`${url}user/login`, { email, password });
-      console.log(response.data)
       if (response.status === 200) {
         const user = response.data;
 
-        console.log("تم تسجيل الدخول بنجاح:", user);
 
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);

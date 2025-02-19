@@ -10,7 +10,6 @@ export default function About() {
 
   return (
     <div className="bg-blue-50  py-12">
-      {console.log(data)}
       <div className="text-center">
         <h1 className="text-[#0061E0] text-3xl font-bold mb-6">
           اكتشف أفضل الشاليهات

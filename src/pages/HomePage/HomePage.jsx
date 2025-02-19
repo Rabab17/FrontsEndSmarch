@@ -15,9 +15,8 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleMessage = async (event) => {
-      console.log("Received data:", event.data);
-      console.log("Received data:", event);
-      if (event.origin !== "http://localhost:5174") return;
+
+      if (event.origin !== "https://smarch-admin.vercel.app/") return;
 
       const { id } = event.data;
 
@@ -32,7 +31,6 @@ export default function HomePage() {
         );
 
         const token = response.data.token;
-        console.log("Received token:", token);
         localStorage.setItem("token", token);
         setTokenOwner(token); 
       } catch (error) {
@@ -47,7 +45,7 @@ export default function HomePage() {
   // 🔄 إعادة التوجيه تلقائيًا بعد استلام التوكن
   useEffect(() => {
     if (tokenOwner) {
-      navigate("/"); // غير المسار حسب الحاجة
+      navigate("/ownerdashboard"); // غير المسار حسب الحاجة
     }
   }, [tokenOwner, navigate]);
 

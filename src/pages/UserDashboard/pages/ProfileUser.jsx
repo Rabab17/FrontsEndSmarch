@@ -13,20 +13,16 @@ export default function ProfilePage() {
   const [phone, setPhone] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const token = localStorage.getItem("token");
-  console.log("token", token);
 
   useEffect(() => {
     if (token) {
-      console.log("decodedToken");
       const decoded = jwtDecode(token);
       const id = decoded.id;
 
-      console.log("userID من الـ token:", id);
 
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`);
-          console.log("بيانات المستخدم:", response.data);
           const userData = response.data.data;
           setUser(userData);
 
@@ -56,7 +52,6 @@ export default function ProfilePage() {
       birthdate,
     };
     const token = localStorage.getItem("token");
-    console.log(updatedData);
     if (!token) {
       console.error("لا يوجد توثيق. يرجى تسجيل الدخول.");
       return;

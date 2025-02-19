@@ -14,7 +14,6 @@ export default function HeroSection() {
 
     if (token) {
         const decoded = jwtDecode(token);
-        console.log(decoded);
         username = decoded.username;
         role = decoded.role;
 
