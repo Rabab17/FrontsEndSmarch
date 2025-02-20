@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // استخدام useNavigate في React Router v6
+import { useNavigate } from "react-router-dom"; 
 import Splash from "../../../components/Splash";
 
-export default function Subscription() {
+export default function SubscriptionOwner() {
     const [packages, setPackages] = useState(null);
     const token = localStorage.getItem("token");
-    const navigate = useNavigate(); // استخدام useNavigate للتنقل بين الصفحات
-
+    const navigate = useNavigate(); 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -33,7 +32,6 @@ export default function Subscription() {
     }
 
     const handleSelectPackage = (packageId) => {
-        // التنقل إلى الصفحة المحددة مع إرسال الـ id عبر state
         navigate("/OwnerDashboard/addChalet", { state: { packageId } });
     };
 

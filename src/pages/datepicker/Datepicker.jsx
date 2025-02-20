@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Swal from "sweetalert2";
-import axios from "axios";
-import "./style.css";
+import Swal from "sweetalert2"; 
+import axios from "axios"; 
+import "./style.css"; 
 
 export default function Datapicker() {
   const { id } = useParams();
@@ -46,7 +46,6 @@ export default function Datapicker() {
 
     fetchBookedDates();
   }, [id]);
-
   const handleChange = (update) => {
     setDateRange(update);
   };
@@ -65,28 +64,36 @@ export default function Datapicker() {
       return;
     }
 
+    console.log("Sending reservation data:", {
+      checkInDate: checkInDate.toISOString(), 
+      checkOutDate: checkOutDate.toISOString(), 
+      id: id 
+    });
+    
     try {
-      const token = localStorage.getItem("token");
-      await axios.post(`${import.meta.env.VITE_URL_BACKEND}reservation/create`, {
-        checkInDate: checkInDate.toISOString(),
-        checkOutDate: checkOutDate.toISOString(),
-        chaletID: id
-      }, {
-        headers: {
-          Authorization: token,
-        },
-      });
+        const token = localStorage.getItem("token"); 
+        console.log(token);
+        const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}reservation/create`, {
+            checkInDate: checkInDate.toISOString(),
+            checkOutDate: checkOutDate.toISOString(),
+            chaletID: id 
+        }, {
+            headers: {
+                Authorization: token, 
+            },
+        });
+        console.log("Response:", response); 
 
-      Swal.fire({
-        title: "تم حجز الشاليه بنجاح!",
-        text: "تم تأكيد الحجز بنجاح.",
-        icon: "success",
-        confirmButtonText: "العودة إلى الصفحة الرئيسية",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/UserDashboard/Overview');
-        }
-      });
+        Swal.fire({
+          title: 'تم حجز الشاليه بنجاح!',
+          text: response.data.message,
+          icon: 'success',
+          confirmButtonText: 'العودة إلى الصفحة الرئيسية',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/UserDashboard/Overview'); 
+          }
+        });
     } catch (error) {
       Swal.fire({
         title: "خطأ",

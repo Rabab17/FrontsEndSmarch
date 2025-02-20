@@ -1,24 +1,37 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import FormInput from "./FormInput";
 
 export default function SignUpUser() {
+    const location = useLocation();
+    const { userType } = location.state || {};
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [phone, setPhone] = useState("");
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); // حالة اللودر
     const nav = useNavigate();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$/;
+    useEffect(() => {
 
+        if (!userType) {
+            nav("/signup");
+        }
+    }, [userType, nav]);
+
+
+    // submit
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError(null);
         setSuccess(null);
-
+        setIsLoading(true)
         // التحقق من صحة البيانات
         if (!emailRegex.test(email)) {
             setError("البريد الإلكتروني غير صالح.");
@@ -34,15 +47,14 @@ export default function SignUpUser() {
             setError("كلمتا المرور غير متطابقتين.");
             return;
         }
-
         try {
             const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}user`, {
                 userName: username,
                 email,
+                phoneNumber: phone,
                 password,
-                role: "user",
+                role: userType,
             });
-            console.log("Response:", response.data);
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("token", response.data.token);
             Swal.fire({
@@ -57,10 +69,13 @@ export default function SignUpUser() {
             console.error("Error:", error.response ? error.response.data : error.message);
             Swal.fire({
                 title: "خطأ",
-                text: "حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+                text: error.response.data.message,
                 icon: "error",
                 confirmButtonText: "حسناً",
             });
+        } finally {
+            setIsLoading(false); // إيقاف اللودر
+
         }
 
     };
@@ -70,63 +85,48 @@ export default function SignUpUser() {
             {/* form section */}
             <div className="w-full md:w-1/3 p-8">
                 <h1 className="text-4xl font-bold text-[#1E293B] mb-4">
-                    تريد الاستمتاع بإجازتك؟
+                    {userType == 'user' ? "تريد الاستمتاع بإجازتك؟" : "تبحث عن إدارة شاليهك؟"}
                 </h1>
                 <p className="text-2xl text-[#718096] mb-6">
-                    سجّل حسابك لتصفح الشاليهات وحجز عطلتك المثالية بسهولة.
+                    {userType == 'user' ? "سجّل حسابك لتصفح الشاليهات وحجز عطلتك المثالية بسهولة." : "تبحث عن إدارة شاليهك؟"}
+
                 </p>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 {success && <p className="text-green-500 mb-4">{success}</p>}
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="اسم المستخدم"
-                            className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                            required
-                        />
-                    </div>
-                    <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="بريد إلكتروني"
-                            className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                            required
-                        />
-                    </div>
-                    <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="كلمة مرور"
-                            className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                            required
-                        />
-                    </div>
-                    <div className="p-[1px] bg-gradient-to-r from-[#1a72ffd3] via-[#1A71FFCC] to-[#48BB78] rounded-lg">
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            placeholder="تأكيد كلمة المرور"
-                            className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
-                            required
-                        />
-                    </div>
+
+                    <FormInput label="اسم المستخدم" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+
+                    <FormInput label="بريد إلكتروني" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required={true} />
+
+
+                    <FormInput label="رقم الهاتف" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+
+
+                    <FormInput label="كلمة مرور" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required={true} />
+
+
+                    <FormInput label="تأكيد كلمة المرور" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required={true} />
+
                     <label className="flex items-center text-sm">
                         <input type="checkbox" className="ml-2" required />
                         أوافق على اتفاقية المستخدم
                     </label>
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
+                        className="w-full bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg flex items-center justify-center gap-2"
+                        disabled={isLoading} // تعطيل الزر أثناء التحميل
                     >
-                        إنشاء حساب
+                        {isLoading ? (
+                            <>
+                                <p className="mx-5">
+                                    جاري المعالجة
+                                </p>
+                                <div className="w-5 h-5 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+                            </>
+                        ) : (
+                            "انشاء حساب"
+                        )}
                     </button>
                 </form>
                 <p className="text-center text-sm mt-4">

@@ -13,7 +13,6 @@ import OwnerDashboard from "../pages/OwnerDashboard/layout/OwnerDashboard";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import SinglePost from "../pages/SinglePost/SinglePost";
 import SignUpUser from "../pages/SignUpPage/SignUpUser";
-import SignUpOwner from "../pages/SignUpPage/SignUpOwner";
 import ProfilePage from "../pages/OwnerDashboard/pages/ProfilePage";
 import ControlsPage from "../pages/OwnerDashboard/pages/ControlsPage";
 import BalanceRechargePage from "../pages/OwnerDashboard/pages/BalanceRechargePage";
@@ -26,14 +25,13 @@ import ProfileUser from "../pages/UserDashboard/pages/ProfileUser";
 import ResetPassword from "../pages/ForgetPassword/[token]/ResetPassword";
 import Overview from "../pages/UserDashboard/pages/Overview";
 
-import AddChalet from "../pages/OwnerDashboard/pages/AddChalet";
 import Datapicker from "../pages/datepicker/Datepicker";
 import SingleChaletManagement from "../pages/OwnerDashboard/pages/SingleChaletManagement";
 import EditChalet from "../pages/OwnerDashboard/pages/EditChalet";
+import SupportUser from "../pages/UserDashboard/pages/SupportUser";
 import UpdatePassword from "../pages/UpdatePassword/UpdatePassword";
-import SupportUser from "../pages/UserDashboard/pages/supportUser";
-import Subscription from "../pages/OwnerDashboard/pages/Subscription";
-
+import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
+import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
 
 export const router = createBrowserRouter([
   {
@@ -49,7 +47,6 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "signup", element: <SignUp /> },
       { path: "signupUser", element: <SignUpUser /> },
-      { path: "signupOwner", element: <SignUpOwner /> },
       { path: "ForgetPassword", element: <ForgetPassword /> },
       { path: "UpdatePassword", element: <UpdatePassword /> },
       { path: "ResetPassword/:token", element: <ResetPassword /> },
@@ -62,7 +59,7 @@ export const router = createBrowserRouter([
           { path: 'notifications', element: <NotificationPage /> },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
-          { path: 'subscription', element: <Subscription /> },
+          { path: 'subscription', element: <SubscriptionOwner /> },
           { path: 'addChalet', element: <AddChalet /> },
           { path: 'SingleChaletManagement', element: <SingleChaletManagement /> },
           { path: 'editchlet', element: <EditChalet /> },
