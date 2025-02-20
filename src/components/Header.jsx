@@ -15,8 +15,7 @@ export default function Header() {
 
     username = decoded.username;
     role = decoded.role;
-    console.log(`مرحبًا ${username}`);
-    console.log(decoded);
+ 
   }
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
