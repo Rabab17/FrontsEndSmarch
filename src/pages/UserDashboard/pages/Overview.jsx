@@ -3,7 +3,6 @@ import axios from "axios";
 import TicketModal from "./TicketModal"; // Import the TicketModal component
 import Splash from "../../../components/Splash";
 
-
 export default function Overview() {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -53,7 +52,7 @@ export default function Overview() {
     };
 
     if (loading) {
-        return <Splash />;;
+        return <Splash />;
     }
 
     if (error) {
@@ -132,38 +131,40 @@ export default function Overview() {
             </div>
 
             {/* أزرار التنقل بين الصفحات */}
-            <nav aria-label="Page navigation example" className="flex justify-center">
-                <ul className="inline-flex -space-x-px text-sm">
-                    <li>
-                        <button 
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                            disabled={currentPage === 1}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                          السابق
-                        </button>
-                    </li>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <li key={index}>
+            {totalPages > 1 && ( // Show pagination only if there are more than 10 bookings
+                <nav aria-label="Page navigation example" className="flex justify-center">
+                    <ul className="inline-flex -space-x-px text-sm">
+                        <li>
                             <button 
-                                onClick={() => setCurrentPage(index + 1)} 
-                                className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === index + 1 ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                                disabled={currentPage === 1}
+                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
                             >
-                                {index + 1}
+                                السابق
                             </button>
                         </li>
-                    ))}
-                    <li>
-                        <button 
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-                            disabled={currentPage === totalPages}
-                            className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                        >
-                            التالى 
-                        </button>
-                    </li>
-                </ul>
-            </nav>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <li key={index}>
+                                <button 
+                                    onClick={() => setCurrentPage(index + 1)} 
+                                    className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === index + 1 ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
+                                >
+                                    {index + 1}
+                                </button>
+                            </li>
+                        ))}
+                        <li>
+                            <button 
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                                disabled={currentPage === totalPages}
+                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                            >
+                                التالى 
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            )}
 
             {/* Modal for support ticket */}
             <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} ownerID={selectedOwnerID} /> {/* Pass ownerID to the modal */}

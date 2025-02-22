@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; // تأكد من استخدام jwt-decode بشكل صحيح
+import { jwtDecode } from 'jwt-decode'; // تأكد من استخدام jwt-decode بشكل صحيح
 import Splash from "../../../components/Splash";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'; // استيراد useNavigate
@@ -13,20 +13,15 @@ export default function ProfilePage() {
   const [phone, setPhone] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const token = localStorage.getItem("token");
-  console.log("token", token);
 
   useEffect(() => {
     if (token) {
-      console.log("decodedToken");
       const decoded = jwtDecode(token);
       const id = decoded.id;
-
-      console.log("userID من الـ token:", id);
 
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`);
-          console.log("بيانات المستخدم:", response.data);
           const userData = response.data.data;
           setUser(userData);
 
@@ -56,7 +51,6 @@ export default function ProfilePage() {
       birthdate,
     };
     const token = localStorage.getItem("token");
-    console.log(updatedData);
     if (!token) {
       console.error("لا يوجد توثيق. يرجى تسجيل الدخول.");
       return;
@@ -68,7 +62,6 @@ export default function ProfilePage() {
           Authorization: ` ${token}`,
         },
       });
-      console.log("تم تحديث البيانات بنجاح:", response.data);
       Swal.fire({
         title: "تم التحديث بنجاح",
         text: "تم حفظ بياناتك بنجاح.",
@@ -78,12 +71,16 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("خطأ في تحديث البيانات:", error.response ? error.response.data : error.message);
       Swal.fire({
-        title: " خطأ ",
-        text: "حدث خطأ اثناء تحديث البيانات ",
-        icon: "erorr",
+        title: "خطأ",
+        text: "حدث خطأ أثناء تحديث البيانات",
+        icon: "error",
         confirmButtonText: "حسناً",
       });
     }
+  };
+
+  const getInitial = (name) => {
+    return name.charAt(0).toUpperCase(); // الحصول على أول حرف من الاسم
   };
 
   if (!user) {
@@ -114,11 +111,9 @@ export default function ProfilePage() {
               <h2 className="text-lg font-semibold">{userName}</h2>
               <p className="text-gray-500">{email}</p>
             </div>
-            <img
-              src="/assets/images/copy1.JPG"
-              alt="Profile Picture"
-              className="w-20 h-20 rounded-full"
-            />
+            <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg">
+              {getInitial(userName)} {/* عرض أول حرف من اسم المستخدم */}
+            </div>
           </div>
         </div>
 

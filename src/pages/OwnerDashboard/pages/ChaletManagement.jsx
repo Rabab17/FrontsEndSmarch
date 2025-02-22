@@ -8,6 +8,9 @@ export default function ChaletManagement() {
 
     const [chalets, setChalets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5); // يمكنك تغيير هذا الرقم حسب الحاجة
+
     const fetchPackages = async () => {
         const token = localStorage.getItem("token");
         try {
@@ -30,36 +33,40 @@ export default function ChaletManagement() {
         fetchPackages();
     }, []);
 
-
     const GoToChalet = (id) => {
-        nav(`/partners/${id}`)
-    }
+        nav(`/partners/${id}`);
+    };
 
     const editChlet = (id) => {
-        nav('/ownerdashboard/editChlet', { state: { id } })
-    }
+        nav('/ownerdashboard/editChlet', { state: { id } });
+    };
 
+    const indexOfLastChalet = currentPage * itemsPerPage;
+    const indexOfFirstChalet = indexOfLastChalet - itemsPerPage;
+    const currentChalets = chalets.slice(indexOfFirstChalet, indexOfLastChalet);
 
-    if (loading) return <Splash />
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
+    const totalPages = Math.ceil(chalets.length / itemsPerPage);
+
+    if (loading) return <Splash />;
 
     return (
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
-            {console.log(chalets)}
             <div className="flex flex-wrap justify-center gap-4">
-                {chalets.map((chalet) => (
+                {currentChalets.map((chalet) => (
                     <div
                         key={chalet._id}
                         className="w-96 border rounded-lg shadow-lg overflow-hidden"
                     >
-
                         <img
                             src={chalet.img}
                             alt={chalet.name}
                             className="w-full h-48 object-cover"
                         />
-
                         <div className="p-4 text-right">
                             <h2 className="text-xl font-bold mb-2 flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 22" fill="none">
@@ -80,7 +87,7 @@ export default function ChaletManagement() {
                                 عدد الحجوزات: {chalet.numOfReservation}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
-                                {chalet.status == 'active' ? (
+                                {chalet.status === 'active' ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3480)">
                                             <path
@@ -112,8 +119,8 @@ export default function ChaletManagement() {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                )}  
-                                {chalet.status == 'active' ? "نشط" : "غير نشط"}
+                                )}
+                                {chalet.status === 'active' ? "نشط" : "غير نشط"}
                             </p>
 
                             <div className="flex gap-2 mt-4">
@@ -138,20 +145,40 @@ export default function ChaletManagement() {
                         </div>
                     </div>
                 ))}
+                    <div className="flex justify-center mt-4">
+                <button
+                    className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
+                    onClick={() => nav('/ownerdashboard/subscription')}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
+                        <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
+                    </svg>
+                    إضافة شاليه جديد
+                </button>
             </div>
+            </div>
+
             {/* زر إضافة شاليه جديد */}
-            <button
-                className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
-                onClick={() => nav('/ownerdashboard/subscription')}
-            >
+        
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
-                    <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
-                </svg>
-
-                إضافة شاليه جديد
-
-            </button>
+            {totalPages > 1 && ( // Show pagination only if there are more than 10 chalets
+                <div className="flex justify-between mt-4 w-full px-4">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className={`py-2 px-4 rounded-lg ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white'}`}
+                    >
+                        الصفحة السابقة
+                    </button>
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className={`py-2 px-4 rounded-lg ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-600 text-white'}`}
+                    >
+                        الصفحة التالية
+                    </button>
+                </div>
+            )}
         </div>
-    )
+    );
 }

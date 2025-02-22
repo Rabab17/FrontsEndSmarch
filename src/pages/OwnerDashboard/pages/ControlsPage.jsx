@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Splash from "../../../components/Splash";
 import { useNavigate } from 'react-router-dom';
+
 export default function ControlsPage() {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
-    const nav = useNavigate()
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5); // يمكنك تغيير هذا الرقم حسب الحاجة
+    const nav = useNavigate();
+
     const fetchPackages = async () => {
         const token = localStorage.getItem("token");
         try {
@@ -29,12 +33,22 @@ export default function ControlsPage() {
     }, []);
 
     const navToAddPackage = () => {
-        nav('BalanceRecharge')
+        nav('BalanceRecharge');
     };
 
     const navToSingleMang = (chaletId) => {
-        nav('SingleChaletManagement', { state: { chaletId } })
-    }
+        nav('SingleChaletManagement', { state: { chaletId } });
+    };
+
+    const indexOfLastPackage = currentPage * itemsPerPage;
+    const indexOfFirstPackage = indexOfLastPackage - itemsPerPage;
+    const currentPackages = packages.slice(indexOfFirstPackage, indexOfLastPackage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const totalPages = Math.ceil(packages.length / itemsPerPage);
 
     if (loading) return <Splash />;
 
@@ -49,15 +63,12 @@ export default function ControlsPage() {
                 </button>
             </div>
             <div className="space-y-4">
-                {packages.map((pkg, index) => (
-                    <div
-                        key={pkg._id}
-                        className="flex flex-col md:flex-row bg-blue-100 p-4 rounded-lg shadow-md items-center md:justify-between"
-                    >
+                {currentPackages.map((pkg, index) => (
+                    <div key={pkg._id} className="flex flex-col md:flex-row bg-blue-100 p-4 rounded-lg shadow-md items-center md:justify-between">
                         {/* رقم الباقة */}
                         <div className="text-center md:w-1/6">
                             <p className="text-gray-800 pb-5">رقم الباقة</p>
-                            <p className="font-bold text-blue-600">{index + 1}</p>
+                            <p className="font-bold text-blue-600">{index + 1 + (currentPage - 1) * itemsPerPage}</p>
                         </div>
 
                         {/* اسم الباقة */}
@@ -96,6 +107,20 @@ export default function ControlsPage() {
                     </div>
                 ))}
             </div>
+            {/* Pagination Controls */}
+            {totalPages > 1 && ( // Show pagination only if there are more than 10 packages
+                <div className="flex justify-center mt-4">
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <button
+                            key={index + 1}
+                            onClick={() => handlePageChange(index + 1)}
+                            className={`mx-1 px-4 py-2 rounded-lg ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
