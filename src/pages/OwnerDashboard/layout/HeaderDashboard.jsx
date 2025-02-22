@@ -29,7 +29,7 @@ export default function HeaderDashboard() {
                     });
                     // console.log("بيانات المستخدم:", response.data);
                     const userData = response.data.data;
-
+                    console.log(userData)
                     setName(userData.userName);
 
 

@@ -34,6 +34,7 @@ import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
 import NewNotification from "../pages/OwnerDashboard/pages/Notifications/pages/NewNotification";
 import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/ReadNotification";
+import AllNotification from "../pages/OwnerDashboard/pages/Notifications/pages/AllNotification";
 
 export const router = createBrowserRouter([
   {
@@ -58,10 +59,13 @@ export const router = createBrowserRouter([
           { path: 'profile', element: <ProfilePage /> },
           { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
           { path: 'support', element: <SupportPage /> },
-          { path: 'notifications', element: <NotificationPage />, children:[
-            {path:'new', element : <NewNotification/>},
-            {path: 'read' , element : <ReadNotification/>}
-          ] },
+          {
+            path: 'notifications', element: <NotificationPage />, children: [
+              { index: true, element: <AllNotification /> },
+              { path: 'new', element: <NewNotification /> },
+              { path: 'read', element: <ReadNotification /> },
+            ]
+          },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
           { path: 'subscription', element: <SubscriptionOwner /> },
@@ -72,8 +76,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
-        
-          {path: 'Overview', element: <Overview /> },
+
+          { path: 'Overview', element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
           { path: 'SupportUser', element: <SupportUser /> },
 
