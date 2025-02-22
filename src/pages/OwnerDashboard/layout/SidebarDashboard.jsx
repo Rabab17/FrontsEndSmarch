@@ -1,15 +1,22 @@
 /* eslint-disable react/prop-types */
 
+import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import { notificationContext } from "../../../context/Notification";
 
 export default function SidebarDashboard({ isOpen }) {
+
     const nav = useNavigate();
     const location = useLocation();
 
     const isExactMatch = (path) => location.pathname === path;
 
     const isPartialMatch = (path) => location.pathname.includes(path);
+
+
+    const { numOfNewNotification } = useContext(notificationContext)
+
 
 
     const SignOutButtonClick = () => {
@@ -128,16 +135,20 @@ export default function SidebarDashboard({ isOpen }) {
                         <h1>تذاكر الدعم</h1>
                     </div>
                     <div
-                        className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/notifications") ? "bg-[#0061E0] text-white py-2" : ""
+                        className={`text-2xl flex items-center justify-evenly gap-2 cursor-pointer rounded ${isPartialMatch("/notifications") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
                         onClick={() => nav("notifications")}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
-                            className={`text-[#0061E0] ${isPartialMatch("/notifications") ? "text-white" : ""}`}
-                            fill="currentColor">
-                            <path d="M16 4C13.6131 4 11.3239 4.94821 9.63604 6.63604C7.94822 8.32387 7.00001 10.6131 7.00001 13V17.802L5.07201 22.63C5.01162 22.7816 4.98926 22.9457 5.00688 23.108C5.02451 23.2702 5.08157 23.4257 5.1731 23.5608C5.26463 23.6959 5.38784 23.8066 5.53198 23.8832C5.67612 23.9597 5.8368 23.9998 6.00001 24H26C26.1632 23.9998 26.3239 23.9597 26.468 23.8832C26.6122 23.8066 26.7354 23.6959 26.8269 23.5608C26.9184 23.4257 26.9755 23.2702 26.9931 23.108C27.0107 22.9457 26.9884 22.7816 26.928 22.63L25 17.8V13C25 10.6131 24.0518 8.32387 22.364 6.63604C20.6761 4.94821 18.387 4 16 4ZM16 29C15.113 29.0002 14.2512 28.7056 13.5499 28.1626C12.8486 27.6195 12.3477 26.8588 12.126 26H19.874C19.6523 26.8588 19.1514 27.6195 18.4501 28.1626C17.7488 28.7056 16.887 29.0002 16 29Z" />
-                        </svg>
-                        <h1>الإشعارات</h1>
+                        <div className="flex gap-2">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
+                                className={`text-[#0061E0] ${isPartialMatch("/notifications") ? "text-white" : ""}`}
+                                fill="currentColor">
+                                <path d="M16 4C13.6131 4 11.3239 4.94821 9.63604 6.63604C7.94822 8.32387 7.00001 10.6131 7.00001 13V17.802L5.07201 22.63C5.01162 22.7816 4.98926 22.9457 5.00688 23.108C5.02451 23.2702 5.08157 23.4257 5.1731 23.5608C5.26463 23.6959 5.38784 23.8066 5.53198 23.8832C5.67612 23.9597 5.8368 23.9998 6.00001 24H26C26.1632 23.9998 26.3239 23.9597 26.468 23.8832C26.6122 23.8066 26.7354 23.6959 26.8269 23.5608C26.9184 23.4257 26.9755 23.2702 26.9931 23.108C27.0107 22.9457 26.9884 22.7816 26.928 22.63L25 17.8V13C25 10.6131 24.0518 8.32387 22.364 6.63604C20.6761 4.94821 18.387 4 16 4ZM16 29C15.113 29.0002 14.2512 28.7056 13.5499 28.1626C12.8486 27.6195 12.3477 26.8588 12.126 26H19.874C19.6523 26.8588 19.1514 27.6195 18.4501 28.1626C17.7488 28.7056 16.887 29.0002 16 29Z" />
+                            </svg>
+                            <h1>الإشعارات</h1>
+                        </div>
+                        <p className="rounded-full bg-red-700 w-8 h-8 text-center "> {numOfNewNotification} </p>
                     </div>
                 </div>
             </div>
