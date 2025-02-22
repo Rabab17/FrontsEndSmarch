@@ -71,7 +71,7 @@ export default function Overview() {
                             <th>تاريخ الحجز</th>
                             <th>عدد المرات</th>
                             <th>حالة الحجز</th>
-                            <th>تذكرة الدعم</th> {/* New column for support tickets */}
+                            <th> ارسال تذكره</th> {/* New column for support tickets */}
                             <th>تقييم</th> {/* New column for rating */}
                         </tr>
                     </thead>
