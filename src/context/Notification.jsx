@@ -104,10 +104,7 @@ export default function NotificationContextProvider({ children }) {
 
     const toggleReadStatus = async (id) => {
         const token = localStorage.getItem("token");
-        console.log(id);
 
-        getNotifications()
-        console.log("updated")
         try {
             await axios.patch(
                 `${import.meta.env.VITE_URL_BACKEND}notification/isRead/${id}`,
@@ -124,6 +121,7 @@ export default function NotificationContextProvider({ children }) {
                 icon: "success",
                 confirmButtonText: "موافق",
             });
+            getNotifications()
             getNewNotifications()
             setCurrentPage(currentPage);
 
