@@ -34,8 +34,8 @@ export default function NotificationContextProvider({ children }) {
                 }
             })
             console.log(data)
-            // Ensure we're setting an array
-            // setNewNotification(data.data || [])
+            window.scrollTo(0, 0);
+
             setNotification(data.data || [])
             serTotalPages(data.pagination.totalPages)
             setnumOfNotification(data.pagination.totalItems)
@@ -102,7 +102,7 @@ export default function NotificationContextProvider({ children }) {
     // }, [currentPage])
 
 
-    const toggleReadStatus = async (id) => {
+    const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
 
         try {
@@ -121,7 +121,8 @@ export default function NotificationContextProvider({ children }) {
                 icon: "success",
                 confirmButtonText: "موافق",
             });
-            getNotifications()
+            console.log("all:" + all)
+            getNotifications(all)
             getNewNotifications()
             setCurrentPage(currentPage);
 

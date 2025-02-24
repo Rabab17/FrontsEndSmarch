@@ -37,12 +37,6 @@ export default function NewNotification() {
         }
     }
 
-
-
-
-
-
-
     if (loading) return (<Splash />)
     return (
         <>
@@ -52,6 +46,7 @@ export default function NewNotification() {
                         notification={notif}
                         formatDate={formatDate}
                         toggleReadStatus={toggleReadStatus}
+                        all={false}
                     />
                 </div>
             ))}

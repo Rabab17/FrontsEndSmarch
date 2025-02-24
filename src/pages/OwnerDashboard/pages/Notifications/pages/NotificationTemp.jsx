@@ -2,7 +2,7 @@
 import { MdMarkEmailRead } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-export default function NotificationTemp({ notification, formatDate, toggleReadStatus }) {
+export default function NotificationTemp({ notification, formatDate, toggleReadStatus, all = null }) {
     const navigate = useNavigate();
     const handleNavigate = () => {
         switch (notification.type) {
@@ -23,7 +23,7 @@ export default function NotificationTemp({ notification, formatDate, toggleReadS
         }
     };
     return (
-        <div className="flex w-full justify-between max-w-3xl border rounded-lg py-2 px-3 shadow-md transition-all duration-300 bg-blue-50 border-blue-400"
+        <div className="flex w-full justify-between max-w-3xl border rounded-lg py-2 px-3 shadow-md transition-all duration-300 bg-blue-50 border-blue-400 cursor-pointer"
             onClick={handleNavigate}>
             <div className="w-8/12 p-4 sm:p-5 rounded-t sm:rounded-l sm:rounded-tr-none">
                 <p className="text-xl sm:text-2xl text-blue-700 font-semibold">{notification.title}</p>
@@ -41,7 +41,7 @@ export default function NotificationTemp({ notification, formatDate, toggleReadS
                     <div
                         onClick={(e) => {
                             e.stopPropagation();
-                            toggleReadStatus(notification._id);
+                            toggleReadStatus(notification._id, all);
                         }}
                         className="flex items-center justify-evenly mt-2 py-1 bg-green-500 rounded-lg shadow-sm hover:bg-green-600 transition duration-200 cursor-pointer"
                     >
