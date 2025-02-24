@@ -13,6 +13,7 @@ export default function SupportPage() {
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
+        
         console.log(token);
 
         try {
