@@ -36,6 +36,8 @@ import NewNotification from "../pages/OwnerDashboard/pages/Notifications/pages/N
 import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/ReadNotification";
 import AllNotification from "../pages/OwnerDashboard/pages/Notifications/pages/AllNotification";
 import TicketSend from "../pages/OwnerDashboard/pages/TicketSend";
+import ChatOwner from "../pages/OwnerDashboard/pages/ChatOwner";
+
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +63,7 @@ export const router = createBrowserRouter([
           { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
           { path: 'support', element: <SupportPage /> },
           { path: 'TicketSend', element: <TicketSend /> },
+          { path: 'ChatOwner/:id', element: <ChatOwner /> },
           {
             path: 'notifications', element: <NotificationPage />, children: [
               { index: true, element: <AllNotification /> },
