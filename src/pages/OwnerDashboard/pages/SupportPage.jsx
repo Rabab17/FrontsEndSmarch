@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import Splash from "../../../components/Splash";
 
 export default function SupportPage() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -9,10 +10,10 @@ export default function SupportPage() {
     const [error, setError] = useState(null); // حالة لتخزين الأخطاء
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
-    const [isModalOpen, setIsModalOpen] = useState(false); // حالة لفتح وإغلاق نافذة إنشاء التذكرة
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
+        
         console.log(token);
 
         try {
@@ -21,7 +22,7 @@ export default function SupportPage() {
                     'Authorization': token
                 }
             });
-            console.log(response.data);
+            console.log("respons",response.data);
 
             if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                 setTickets(response.data.data);
@@ -31,7 +32,7 @@ export default function SupportPage() {
             }
 
         } catch (err) {
-            setError(err.message);
+            setError("فشل في تحميل التذاكر. يرجى المحاولة مرة أخرى."); // Updated error message
         } finally {
             setLoading(false);
         }
@@ -43,6 +44,8 @@ export default function SupportPage() {
 
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
+        console.log("hamada");
+        
         console.log("id", ticketId);
         try {
             await axios.patch(`https://smarch-back-end-nine.vercel.app/ticket/updateStatus/${ticketId}`, { status: newStatus }, {
@@ -78,18 +81,67 @@ export default function SupportPage() {
         });
     };
 
-    if (loading) return <div>Loading...</div>;
+    const getTicketByChatId = async (chatId, id, status) => {
+        const token = localStorage.getItem('token');
+        console.log("iddd",id);
+        console.log("tokenid",token);
+        
+        
+        if (status === 'closed') {
+            Swal.fire("التذكرة مغلقة!!", "لا يمكنك فتح محادثة لهذه التذكرة", "warning");
+            return; // لا تتابع إذا كانت التذكرة مغلقة
+        }
+
+        if (chatId) {
+            // Fetch chat details
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}/chat/${chatId}`, {
+                    headers: { authorization: token },
+                });
+                console.log("Chat details:", response.data);
+                // Handle chat details (e.g., open a chat modal)
+            } catch (error) {
+                console.log("Error fetching chat details:", error);
+            }
+        } else {
+            // Create a new chat
+            Swal.fire({
+                title: "هل تريد إنشاء محادثة جديدة؟",
+                icon: "warning",
+                confirmButtonText: "موافق",
+                showCancelButton: true,
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const response = await axios.post(
+                            `${import.meta.env.VITE_URL_BACKEND}/chat/create`, 
+                            { ticketID: id }, 
+                            {
+                                headers:  token ,
+                            }
+                        );
+                        console.log("id", { ticketID: id });
+                        Swal.fire({
+                            title: "تم إنشاء المحادثة",
+                            icon: "success",
+                            confirmButtonText: "موافق",
+                        });
+                        console.log(response.data.data);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            });
+        }
+    };
+
+  
+
+    if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="p-6 space-y-6">
-            <button
-                onClick={() => setIsModalOpen(true)} // فتح نافذة إنشاء التذكرة
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-                إنشاء تذكرة جديدة
-            </button>
-
             <div className="p-4 rounded-lg shadow">
                 <table className="w-full">
                     <thead>
@@ -118,9 +170,17 @@ export default function SupportPage() {
                                     <td className="py-5 px-2 text-center text-lg">
                                         <button 
                                             onClick={() => handleCloseConfirmation(ticket._id)} 
-                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                            className=" text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                         >
-                                            غلق
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12" stroke="#0061E0" />
+                                                <path d="M18.375 2.62523C18.7728 2.2274 19.3124 2.00391 19.875 2.00391C20.4376 2.00391 20.9771 2.2274 21.375 2.62523C21.7728 3.02305 21.9963 3.56262 21.9963 4.12523C21.9963 4.68784 21.7728 5.2274 21.375 5.62523L12.362 14.6392C12.1245 14.8765 11.8312 15.0501 11.509 15.1442L8.63597 15.9842C8.54992 16.0093 8.45871 16.0108 8.37188 15.9886C8.28505 15.9663 8.2058 15.9212 8.14242 15.8578C8.07904 15.7944 8.03386 15.7151 8.01162 15.6283C7.98937 15.5415 7.99087 15.4503 8.01597 15.3642L8.85597 12.4912C8.9505 12.1693 9.12451 11.8763 9.36197 11.6392L18.375 2.62523Z" stroke="#0061E0" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                    <td className="p-2 text-center">
+                                        <button className="text-blue-500 hover:underline" onClick={() => getTicketByChatId(ticket.chatID, ticket._id, ticket.status)}>
+                                            عرض المحادثة {/* نص الزر */}
                                         </button>
                                     </td>
                                 </tr>
@@ -171,10 +231,7 @@ export default function SupportPage() {
             )}
 
             {/* Modal for creating a ticket */}
-            <TicketModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
-            />
+           
         </div>
     );
 }

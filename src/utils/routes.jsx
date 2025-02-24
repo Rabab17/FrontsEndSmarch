@@ -35,6 +35,9 @@ import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
 import NewNotification from "../pages/OwnerDashboard/pages/Notifications/pages/NewNotification";
 import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/ReadNotification";
 import AllNotification from "../pages/OwnerDashboard/pages/Notifications/pages/AllNotification";
+import TicketSend from "../pages/OwnerDashboard/pages/TicketSend";
+import ChatOwner from "../pages/OwnerDashboard/pages/ChatOwner";
+
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +62,8 @@ export const router = createBrowserRouter([
           { path: 'profile', element: <ProfilePage /> },
           { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
           { path: 'support', element: <SupportPage /> },
+          { path: 'TicketSend', element: <TicketSend /> },
+          { path: 'ChatOwner/:id', element: <ChatOwner /> },
           {
             path: 'notifications', element: <NotificationPage />, children: [
               { index: true, element: <AllNotification /> },
@@ -77,7 +82,7 @@ export const router = createBrowserRouter([
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
 
-          { path: 'Overview', element: <Overview /> },
+          { index: true, element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
           { path: 'SupportUser', element: <SupportUser /> },
 

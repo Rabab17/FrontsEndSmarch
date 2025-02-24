@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoIosMenu } from "react-icons/io";
 import SidebarDashboard from './SidebarDashboard';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,25 @@ import { useNavigate } from 'react-router-dom';
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const nav = useNavigate();
-    const toggleMenu = () => {
+    
+    // New state for username and profile image
+    const [username, setUsername] = useState('');
+    const [profileImage, setProfileImage] = useState('');
 
+    const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    // Fetch username and profile image from local storage
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            // Assuming the token contains user info or you have a way to verify it
+            const userInfo = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
+            setUsername(userInfo.username);
+            setProfileImage(userInfo.username.charAt(0)); // First letter of username
+        }
+    }, []);
 
     return (
         <header className="bg-blue-50 shadow px-6 py-4 flex justify-between items-center">
@@ -21,14 +35,13 @@ export default function HeaderDashboard() {
                     onClick={toggleMenu}
                     className="text-4xl md:text-3xl transition-transform duration-300"
                 />
-
             </div>
             <div className="flex items-center gap-4">
                 <img
                     src="/assets/images/logo.png"
                     alt="Logo"
                     className="w-24"
-                    onClick={()=>{nav('/')}}
+                    onClick={() => { nav('/') }}
                 />
             </div>
 
@@ -40,12 +53,10 @@ export default function HeaderDashboard() {
             />
 
             <div className="flex items-center gap-2">
-                <span className="hidden md:block">Mohamed Fathy</span>
-                <img
-                    src="/assets/images/copy1.JPG"
-                    alt="Profile"
-                    className="rounded-full w-10 h-10 "
-                />
+                <span className="hidden md:block">{username}</span>
+                <span className="rounded-full w-10 h-10 bg-gray-300 flex items-center justify-center">
+                    {profileImage}
+                </span>
             </div>
 
             {/* Sidebar (Aside) */}

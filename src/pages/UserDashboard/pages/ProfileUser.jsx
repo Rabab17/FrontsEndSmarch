@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode'; 
 import Splash from "../../../components/Splash";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'; 
@@ -18,7 +18,6 @@ export default function ProfilePage() {
     if (token) {
       const decoded = jwtDecode(token);
       const id = decoded.id;
-
 
       const fetchUserData = async () => {
         try {
@@ -75,6 +74,10 @@ export default function ProfilePage() {
     }
   };
 
+  const getInitial = (name) => {
+    return name.charAt(0).toUpperCase(); // الحصول على أول حرف من الاسم
+  };
+
   if (!user) {
     return <Splash />;
   }
@@ -103,11 +106,9 @@ export default function ProfilePage() {
               <h2 className="text-lg font-semibold">{userName}</h2>
               <p className="text-gray-500">{email}</p>
             </div>
-            <img
-              src="/assets/images/copy1.JPG"
-              alt="Profile Picture"
-              className="w-20 h-20 rounded-full"
-            />
+            <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg">
+              {getInitial(userName)} {/* عرض أول حرف من اسم المستخدم */}
+            </div>
           </div>
         </div>
 

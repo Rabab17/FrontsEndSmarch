@@ -35,7 +35,7 @@ export default function SidebarDashboard({ isOpen }) {
                 <div
                     className={`mb-6 text-2xl flex items-center gap-2 cursor-pointer rounded ${isExactMatch("/Overview") ? "bg-[#0061E0] text-white py-2" : ""
                         }`}
-                    onClick={() => nav('Overview')}
+                    onClick={() => nav('/UserDashboard')}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

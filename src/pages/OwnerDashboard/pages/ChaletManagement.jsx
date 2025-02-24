@@ -38,33 +38,39 @@ export default function ChaletManagement() {
 
 
     const GoToChalet = (id) => {
-        nav(`/partners/${id}`)
-    }
+        nav(`/partners/${id}`);
+    };
 
     const editChlet = (id) => {
-        nav('/ownerdashboard/editChlet', { state: { id } })
-    }
+        nav('/ownerdashboard/editChlet', { state: { id } });
+    };
 
+    const indexOfLastChalet = currentPage * itemsPerPage;
+    const indexOfFirstChalet = indexOfLastChalet - itemsPerPage;
+    const currentChalets = chalets.slice(indexOfFirstChalet, indexOfLastChalet);
 
-    if (loading) return <Splash />
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
+    const totalPages = Math.ceil(chalets.length / itemsPerPage);
+
+    if (loading) return <Splash />;
 
     return (
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
             <div className="flex flex-wrap justify-center gap-4">
-                {chalets.map((chalet) => (
+                {currentChalets.map((chalet) => (
                     <div
                         key={chalet._id}
                         className="w-72 border rounded-lg shadow-lg overflow-hidden"
                     >
-
                         <img
                             src={chalet.img}
                             alt={chalet.name}
                             className="w-full h-48 object-cover "
                         />
-
                         <div className="p-4 text-right">
                             <h2 className="text-xl font-bold mb-2 flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 22" fill="none">
@@ -85,7 +91,7 @@ export default function ChaletManagement() {
                                 عدد الحجوزات: {chalet.numOfReservation}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
-                                {chalet.status == 'active' ? (
+                                {chalet.status === 'active' ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3480)">
                                             <path
@@ -159,5 +165,5 @@ export default function ChaletManagement() {
             {/* زر إضافة شاليه جديد */}
             <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
         </div>
-    )
+    );
 }
