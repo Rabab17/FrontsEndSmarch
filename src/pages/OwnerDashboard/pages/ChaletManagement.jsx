@@ -2,23 +2,29 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Splash from "../../../components/Splash";
+import Pagination from "../../../components/Pagination";
 
 export default function ChaletManagement() {
     const nav = useNavigate();
 
     const [chalets, setChalets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const fetchPackages = async () => {
         const token = localStorage.getItem("token");
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/owner`, {
                 headers: {
                     Authorization: token
+                },
+                params: {
+                    page: currentPage
                 }
             });
-            if (response.data.status === "success") {
-                setChalets(response.data.data);
-            }
+            setChalets(response.data.data);
+            setTotalPages(response.data.pagination.totalPages)
+            console.log(response.data)
         } catch (error) {
             console.error("Error fetching packages:", error);
         } finally {
@@ -28,7 +34,7 @@ export default function ChaletManagement() {
 
     useEffect(() => {
         fetchPackages();
-    }, []);
+    }, [currentPage]);
 
 
     const GoToChalet = (id) => {
@@ -46,18 +52,17 @@ export default function ChaletManagement() {
     return (
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
-            {console.log(chalets)}
             <div className="flex flex-wrap justify-center gap-4">
                 {chalets.map((chalet) => (
                     <div
                         key={chalet._id}
-                        className="w-96 border rounded-lg shadow-lg overflow-hidden"
+                        className="w-72 border rounded-lg shadow-lg overflow-hidden"
                     >
 
                         <img
                             src={chalet.img}
                             alt={chalet.name}
-                            className="w-full h-48 object-cover"
+                            className="w-full h-48 object-cover "
                         />
 
                         <div className="p-4 text-right">
@@ -112,7 +117,7 @@ export default function ChaletManagement() {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                )}  
+                                )}
                                 {chalet.status == 'active' ? "نشط" : "غير نشط"}
                             </p>
 
@@ -138,20 +143,21 @@ export default function ChaletManagement() {
                         </div>
                     </div>
                 ))}
+                <button
+                    className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
+                    onClick={() => nav('/ownerdashboard/subscription')}
+                >
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
+                        <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
+                    </svg>
+
+                    إضافة شاليه جديد
+
+                </button>
             </div>
             {/* زر إضافة شاليه جديد */}
-            <button
-                className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
-                onClick={() => nav('/ownerdashboard/subscription')}
-            >
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
-                    <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
-                </svg>
-
-                إضافة شاليه جديد
-
-            </button>
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
         </div>
     )
 }
