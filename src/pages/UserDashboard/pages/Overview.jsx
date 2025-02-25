@@ -17,7 +17,7 @@ export default function Overview() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user`, {
+                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user?page=${currentPage}`, { // Added currentPage to the URL
                     headers: {
                         Authorization: token,
                     },
@@ -70,12 +70,11 @@ export default function Overview() {
                                 <td className="py-5 px-2 text-center text-lg">{ticket.recipient.email}</td>
                                 <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
                                 <td className="py-5 px-2 text-center text-lg">
-                                    <span className={`px-3 py-1 text-white ${ticket.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
-                                        {ticket.status === "pending" ? "قيد الانتظار" : "مغلق"}
+                                    <span className={`px-3 py-1 text-white ${ticket.status === "pending" ? "bg-yellow-500" : ticket.status === "closed" ? "bg-red-500" : "bg-green-500"} rounded-lg`}>
+                                        {ticket.status === "pending" ? "قيد الانتظار" : ticket.status === "closed" ? "مغلق" : "مكتمل"}
                                     </span>
                                 </td>
                                 <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
-                              
                             </tr>
                         ))}
                     </tbody>
