@@ -12,7 +12,6 @@ export default function NotificationContextProvider({ children }) {
     const [notification, setNotification] = useState([]);
     const [readNotification, setReadNotification] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [loadingRead, setLoadingRead] = useState(false);
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, serTotalPages] = useState(1)
     const [numOfNewNotification, setnumOfNewNotification] = useState(0)
@@ -33,7 +32,7 @@ export default function NotificationContextProvider({ children }) {
                     ...(isRead !== null && { isRead })
                 }
             })
-            console.log(data)
+            // console.log(data)
             window.scrollTo(0, 0);
 
             setNotification(data.data || [])
@@ -71,7 +70,7 @@ export default function NotificationContextProvider({ children }) {
                     isRead: false
                 }
             })
-            console.log(data)
+            // console.log(data)
             // Ensure we're setting an array
 
             // serTotalPages(data.pagination.totalPages)
@@ -98,7 +97,7 @@ export default function NotificationContextProvider({ children }) {
                     isRead: true
                 }
             })
-            console.log(data)
+            // console.log(data)
 
             setReadNotification(data.data)
 
@@ -117,7 +116,7 @@ export default function NotificationContextProvider({ children }) {
         getNotifications()
         getReadotifications()
         var decode = jwtDecode(token);
-        console.log("decode :" + decode);
+        // console.log("decode :" + decode);
         setUserId(decode.id);
 
     }, [])
@@ -129,7 +128,7 @@ export default function NotificationContextProvider({ children }) {
 
     const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
-        setLoadingRead(true)
+        // setLoadingRead(true)
 
         try {
             await axios.patch(
@@ -142,12 +141,12 @@ export default function NotificationContextProvider({ children }) {
                 }
             );
 
-            Swal.fire({
-                title: "تم تغيير حالة التنبيه بنجاح",
-                icon: "success",
-                confirmButtonText: "موافق",
-            });
-            console.log("all:" + all)
+            // Swal.fire({
+            //     title: "تم تغيير حالة التنبيه بنجاح",
+            //     icon: "success",
+            //     confirmButtonText: "موافق",
+            // });
+            
             getNotifications(all)
             getNewNotifications()
             setCurrentPage(currentPage);
@@ -160,9 +159,10 @@ export default function NotificationContextProvider({ children }) {
                 confirmButtonText: "موافق",
             });
             console.error("Failed to update notification status", error);
-        } finally {
-            setLoadingRead(false)
-        }
+        } 
+        // finally {
+        //     setLoadingRead(false)
+        // }
     };
 
 
@@ -182,8 +182,8 @@ export default function NotificationContextProvider({ children }) {
             setNotification(prevData => [notification2, ...prevData])
 
             setnumOfNewNotification(prev => prev + 1)
-            console.log("numOfNewNotification: " + numOfNewNotification)
-            console.log(notification2)
+            // console.log("numOfNewNotification: " + numOfNewNotification)
+            // console.log(notification2)
         });
 
         return () => {
@@ -198,7 +198,7 @@ export default function NotificationContextProvider({ children }) {
         loading, setCurrentPage,
         currentPage, totalPages, toggleReadStatus,
         getNotifications, numOfNotification, notification,
-        numOfNewNotification, loadingRead,readNotification,getReadotifications
+        numOfNewNotification,readNotification,getReadotifications
     }}>
         {children}
     </notificationContext.Provider>

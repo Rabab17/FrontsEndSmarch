@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
-import Swal from "sweetalert2"; // Import SweetAlert2
 import Splash from "../../../components/Splash";
 
 export default function TicketSend() {
