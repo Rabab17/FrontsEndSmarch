@@ -9,10 +9,10 @@ export const notificationContext = createContext()
 export default function NotificationContextProvider({ children }) {
     const token = localStorage.getItem("token")
     const [userId, setUserId] = useState(null);
-    // Initialize as empty array instead of null
-    // const [newNotification, setNewNotification] = useState([]);
     const [notification, setNotification] = useState([]);
+    const [readNotification, setReadNotification] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [loadingRead, setLoadingRead] = useState(false);
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, serTotalPages] = useState(1)
     const [numOfNewNotification, setnumOfNewNotification] = useState(0)
@@ -85,12 +85,37 @@ export default function NotificationContextProvider({ children }) {
         setLoading(false)
     };
 
+
+
+    const getReadotifications = async () => {
+        setLoading(true)
+        try {
+            const { data } = await axios.get(`${import.meta.env.VITE_URL_BACKEND}notification/user`, {
+                headers: {
+                    Authorization: token
+                },
+                params: {
+                    isRead: true
+                }
+            })
+            console.log(data)
+
+            setReadNotification(data.data)
+
+        } catch (error) {
+            console.log(error);
+
+
+        }
+        setLoading(false)
+    };
     //read notifications 
 
 
     useEffect(function () {
         getNewNotifications()
         getNotifications()
+        getReadotifications()
         var decode = jwtDecode(token);
         console.log("decode :" + decode);
         setUserId(decode.id);
@@ -104,6 +129,7 @@ export default function NotificationContextProvider({ children }) {
 
     const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
+        setLoadingRead(true)
 
         try {
             await axios.patch(
@@ -134,13 +160,15 @@ export default function NotificationContextProvider({ children }) {
                 confirmButtonText: "موافق",
             });
             console.error("Failed to update notification status", error);
+        } finally {
+            setLoadingRead(false)
         }
     };
 
 
 
     useEffect(() => {
-        if (!userId) return; // Add guard clause
+        if (!userId) return;
         getNewNotifications()
         getNotifications()
         setCurrentPage(currentPage)
@@ -151,6 +179,8 @@ export default function NotificationContextProvider({ children }) {
         const channel = pusherNotification.subscribe(`notification-${userId}`);
 
         channel.bind('newNotification', function (notification2) {
+            setNotification(prevData => [notification2, ...prevData])
+
             setnumOfNewNotification(prev => prev + 1)
             console.log("numOfNewNotification: " + numOfNewNotification)
             console.log(notification2)
@@ -167,7 +197,8 @@ export default function NotificationContextProvider({ children }) {
     return <notificationContext.Provider value={{
         loading, setCurrentPage,
         currentPage, totalPages, toggleReadStatus,
-        getNotifications, numOfNotification, notification, numOfNewNotification
+        getNotifications, numOfNotification, notification,
+        numOfNewNotification, loadingRead,readNotification,getReadotifications
     }}>
         {children}
     </notificationContext.Provider>

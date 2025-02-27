@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+// import Avatar from '@mui/material/Avatar';
+// import Stack from '@mui/material/Stack';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
 
 export default function ChatOwner() {
@@ -70,9 +70,9 @@ export default function ChatOwner() {
                                 const isAdmin = msg.senderRole === "admin"; // تحديد ما إذا كان المرسل هو المسؤول
                                 return (
                                     <div key={index} className={`flex items-start gap-2 ${isAdmin ? "flex-row" : "flex-row-reverse"}`}>
-                                        <Stack direction="row" spacing={2}>
+                                        {/* <Stack direction="row" spacing={2}>
                                             <Avatar>{isAdmin ? "A" : "O"}</Avatar>
-                                        </Stack>
+                                        </Stack> */}
                                         <div className={`${isAdmin ? "text-left" : "text-right"}`}>
                                             <p className={`p-2 rounded-md ${isAdmin ? "bg-gray-200" : "bg-blue-500 text-white"}`}>
                                                 {msg.message}

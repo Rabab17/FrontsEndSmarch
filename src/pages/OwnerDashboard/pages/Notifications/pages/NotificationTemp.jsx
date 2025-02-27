@@ -1,8 +1,15 @@
 /* eslint-disable react/prop-types */
 import { MdMarkEmailRead } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { notificationContext } from "../../../../../context/Notification";
+import { useContext } from "react";
 
 export default function NotificationTemp({ notification, formatDate, toggleReadStatus, all = null }) {
+    const {
+
+        loadingRead,
+
+    } = useContext(notificationContext);
     const navigate = useNavigate();
     const handleNavigate = () => {
         switch (notification.type) {
@@ -45,8 +52,23 @@ export default function NotificationTemp({ notification, formatDate, toggleReadS
                         }}
                         className="flex items-center justify-evenly mt-2 py-1 bg-green-500 rounded-lg shadow-sm hover:bg-green-600 transition duration-200 cursor-pointer"
                     >
-                        <h1>تميز ك مقروء</h1>
-                        <MdMarkEmailRead size={20} />
+                        {loadingRead ? (
+                            <>
+                                <p className="mx-5">
+                                    تميز ك مقروء
+                                </p>
+                                <div className="w-5 h-5 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+                            </>
+                        ) : (
+                            <>
+                                <h1>تميز ك مقروء</h1>
+
+                                <MdMarkEmailRead size={20} />
+                            </>
+                        )}
+
+
+
                     </div>
                 }
             </div>

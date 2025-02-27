@@ -13,16 +13,16 @@ export default function SupportPage() {
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
-        
+
         console.log(token);
 
         try {
-            const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/owner?page=${currentPage}&limit=10`, {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/owner?page=${currentPage}&limit=10`, {
                 headers: {
                     'Authorization': token
                 }
             });
-            console.log("respons",response.data);
+            console.log("respons", response.data);
 
             if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                 setTickets(response.data.data);
@@ -33,6 +33,7 @@ export default function SupportPage() {
 
         } catch (err) {
             setError("فشل في تحميل التذاكر. يرجى المحاولة مرة أخرى."); // Updated error message
+            console.log(err)
         } finally {
             setLoading(false);
         }
@@ -45,10 +46,10 @@ export default function SupportPage() {
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
         console.log("hamada");
-        
+
         console.log("id", ticketId);
         try {
-            await axios.patch(`https://smarch-back-end-nine.vercel.app/ticket/updateStatus/${ticketId}`, { status: newStatus }, {
+            await axios.patch(`${import.meta.env.VITE_URL_BACKEND}ticket/updateStatus/${ticketId}`, { status: newStatus }, {
                 headers: {
                     'Authorization': token
                 }
@@ -83,10 +84,10 @@ export default function SupportPage() {
 
     const getTicketByChatId = async (chatId, id, status) => {
         const token = localStorage.getItem('token');
-        console.log("iddd",id);
-        console.log("tokenid",token);
-        
-        
+        console.log("iddd", id);
+        console.log("tokenid", token);
+
+
         if (status === 'closed') {
             Swal.fire("التذكرة مغلقة!!", "لا يمكنك فتح محادثة لهذه التذكرة", "warning");
             return; // لا تتابع إذا كانت التذكرة مغلقة
@@ -95,7 +96,7 @@ export default function SupportPage() {
         if (chatId) {
             // Fetch chat details
             try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}/chat/${chatId}`, {
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${chatId}`, {
                     headers: { authorization: token },
                 });
                 console.log("Chat details:", response.data);
@@ -114,10 +115,13 @@ export default function SupportPage() {
                 if (result.isConfirmed) {
                     try {
                         const response = await axios.post(
-                            `${import.meta.env.VITE_URL_BACKEND}/chat/create`, 
-                            { ticketID: id }, 
+                            `${import.meta.env.VITE_URL_BACKEND}chat/create`,
+                            { ticketID: id },
                             {
-                                headers:  token ,
+                                headers: {
+
+                                    authorization: token,
+                                }
                             }
                         );
                         console.log("id", { ticketID: id });
@@ -135,7 +139,7 @@ export default function SupportPage() {
         }
     };
 
-  
+
 
     if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
@@ -168,8 +172,8 @@ export default function SupportPage() {
                                         </span>
                                     </td>
                                     <td className="py-5 px-2 text-center text-lg">
-                                        <button 
-                                            onClick={() => handleCloseConfirmation(ticket._id)} 
+                                        <button
+                                            onClick={() => handleCloseConfirmation(ticket._id)}
                                             className=" text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -231,7 +235,7 @@ export default function SupportPage() {
             )}
 
             {/* Modal for creating a ticket */}
-           
+
         </div>
     );
 }

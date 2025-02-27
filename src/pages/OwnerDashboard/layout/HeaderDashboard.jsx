@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { IoIosMenu } from "react-icons/io";
 import SidebarDashboard from './SidebarDashboard';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,15 +18,36 @@ export default function HeaderDashboard() {
     };
 
     // Fetch username and profile image from local storage
+    const token = localStorage.getItem('token');
+    
+
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (token) {
-            const userInfo = JSON.parse(atob(token.split('.')[1])); 
-            setUsername(userInfo.username);
-            setProfileImage(userInfo.username.charAt(0)); 
+          // console.log("decodedToken");
+          const decoded = jwtDecode(token);
+          const id = decoded.id;
+    
+          // console.log("userID من الـ token:", id);
+    
+          const fetchUserData = async () => {
+            try {
+              const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
+    
+              });
+              // console.log("بيانات المستخدم:", response.data);
+              const userData = response.data.data;
+              console.log(userData)
+              setUsername(userData.userName);
+              setProfileImage(userData.userName.charAt(0))
+    
+            } catch (error) {
+              console.error("خطأ في استرجاع بيانات المستخدم:", error);
+            }
+          };
+    
+          fetchUserData();
         }
-    }, []);
-    console.log("username",username);
+      }, [token]);
     
 
     return (

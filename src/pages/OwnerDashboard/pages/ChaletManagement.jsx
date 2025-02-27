@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Splash from "../../../components/Splash";
 import Pagination from "../../../components/Pagination";
+import { GiSandsOfTime } from "react-icons/gi";
+
 
 export default function ChaletManagement() {
     const nav = useNavigate();
@@ -45,15 +47,7 @@ export default function ChaletManagement() {
         nav('/ownerdashboard/editChlet', { state: { id } });
     };
 
-    const indexOfLastChalet = currentPage * itemsPerPage;
-    const indexOfFirstChalet = indexOfLastChalet - itemsPerPage;
-    const currentChalets = chalets.slice(indexOfFirstChalet, indexOfLastChalet);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const totalPages = Math.ceil(chalets.length / itemsPerPage);
 
     if (loading) return <Splash />;
 
@@ -61,7 +55,7 @@ export default function ChaletManagement() {
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
             <div className="flex flex-wrap justify-center gap-4">
-                {currentChalets.map((chalet) => (
+                {chalets.map((chalet) => (
                     <div
                         key={chalet._id}
                         className="w-72 border rounded-lg shadow-lg overflow-hidden"
@@ -91,7 +85,7 @@ export default function ChaletManagement() {
                                 عدد الحجوزات: {chalet.numOfReservation}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
-                                {chalet.status === 'active' ? (
+                                {chalet.status === 'active' ?
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3480)">
                                             <path
@@ -107,8 +101,11 @@ export default function ChaletManagement() {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    : chalet.status === 'pending' ? (
+
+                                        <GiSandsOfTime size={24} className="text-blue-400 font-extrabold" />
+
+                                    ) : <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3501)">
                                             <path
                                                 fillRule="evenodd"
@@ -122,9 +119,11 @@ export default function ChaletManagement() {
                                                 <rect width="24" height="24" fill="white" />
                                             </clipPath>
                                         </defs>
-                                    </svg>
-                                )}
-                                {chalet.status == 'active' ? "نشط" : "غير نشط"}
+                                    </svg>}
+                                {/* {chalet.status == 'active' ? "نشط" : "غير نشط"}
+                                 */}
+                                {chalet.status === 'active' ? "نشط" : chalet.status === 'pending' ? "قيد الانتظار" : "غير نشط"}
+
                             </p>
 
                             <div className="flex gap-2 mt-4">
