@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Splash from "../../../components/Splash";
 
 export default function SubscriptionOwner() {
-    const [packages, setPackages] = useState(null);
+    const [packages, setPackages] = useState([]);
     const token = localStorage.getItem("token");
     const navigate = useNavigate(); 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function SubscriptionOwner() {
                         key={plan._id}
                         className="border border-gray-300 rounded-lg shadow-md p-6 text-center w-[90%] md:w-[25%]"
                     >
-                        <h3 className="text-3xl font-bold text-blue-700 mb-4">{plan.packageId.name}</h3>
+                        <h3 className="text-3xl font-bold text-blue-700 mb-4">{plan.packageId?.name}</h3>
 
                         <div className="text-xl mb-6 space-y-2 text-start">
                             <p>

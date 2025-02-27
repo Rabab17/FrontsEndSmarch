@@ -50,7 +50,7 @@ export default function SupportPage() {
                     'Authorization': token
                 }
             });
-            fetchTickets();
+            fetchTickets(); // Fetch updated tickets after status update
         } catch (err) {
             setError(err.message);
         }
@@ -85,7 +85,7 @@ export default function SupportPage() {
         if (status === 'closed') {
             if (chatId) {
                 // إذا كان هناك شات، انتقل إلى صفحة الشات
-                navigate(`/ownerdashboard/ChatOwner/${chatId}`);
+                navigate(`/Chat/${chatId}`);
             } else {
                 // إذا لم يكن هناك شات، عرض رسالة تحذير
                 Swal.fire("التذكرة مغلقة!!", "لا يمكنك فتح محادثة جديدة لهذه التذكرة", "warning");
@@ -94,8 +94,7 @@ export default function SupportPage() {
         }
 
         if (chatId) {
-            // Navigate to ChatOwner with ticket ID
-            navigate(`/ownerdashboard/ChatOwner/${chatId}`); // Pass the chat ID in the URL
+            navigate(`/Chat/${chatId}`); 
         } else {
             // Check if the status is 'pending' or 'open' before creating a new chat
             if (status === 'pending' || status === 'open') {
@@ -115,22 +114,26 @@ export default function SupportPage() {
                                     headers: { authorization: token },
                                 }
                             );
+
                             Swal.fire({
                                 title: "تم إنشاء المحادثة",
                                 icon: "success",
                                 confirmButtonText: "موافق",
                             });
-                            // Navigate to ChatOwner with the new chat ID
-                            navigate(`/ownerdashboard/ChatOwner/${response.data.chatID}`); // Pass the new chat ID in the URL
+
+                            await updateStatus(id, 'open');
+
+                            await fetchTickets();
+
+                            // navigate(`/ownerdashboard/ChatOwner/${response.data.chatID}`); // Pass the new chat ID in the URL
                         } catch (error) {
                             console.log(error);
                         }
                     }
                 });
             } else {
-                // إذا كانت الحالة مغلقة، فقط انتقل إلى المحادثة إذا كانت موجودة
                 if (chatId) {
-                    navigate(`/ownerdashboard/ChatOwner/${chatId}`); // Pass the chat ID in the URL
+                    navigate(`/Chat/${chatId}`); 
                 } else {
                     Swal.fire("لا يمكن فتح محادثة جديدة", "لا توجد محادثة مرتبطة بهذه التذكرة.", "warning");
                 }
