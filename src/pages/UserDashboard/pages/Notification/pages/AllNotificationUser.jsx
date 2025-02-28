@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
-import Splash from "../../../../../components/Splash";
-import { notificationContext } from "../../../../../context/Notification";
 import Pagination from "../../../../../components/Pagination";
-import NotificationTemp from "./NotificationTemp";
+import Splash from "../../../../../components/Splash";
+import NotificationTemp from "../../../../OwnerDashboard/pages/Notifications/pages/NotificationTemp";
+import { notificationContext } from "../../../../../context/Notification";
 
-export default function AllNotification() {
+export default function AllNotificationUser() {
     const {
         getNotifications,
         notification,
@@ -51,7 +51,6 @@ export default function AllNotification() {
                     />
                 </div>
             ))}
-
             {notification.length == 0 ? <div className="flex justify-center items-center h-full">
                 <h2 className="text-center text-3xl text-gray-700 "> لا توجد لديك اشعارات لعرضها  </h2>
             </div> :

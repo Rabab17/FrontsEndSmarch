@@ -37,6 +37,10 @@ import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/
 import AllNotification from "../pages/OwnerDashboard/pages/Notifications/pages/AllNotification";
 import TicketSend from "../pages/OwnerDashboard/pages/TicketSend";
 import Chat from "../pages/HomePage/Chat";
+import UserNotificationPage from "../pages/UserDashboard/pages/Notification/UserNotificationPage";
+import AllNotificationUser from "../pages/UserDashboard/pages/Notification/pages/AllNotificationUser";
+import NewNotificationUser from "../pages/UserDashboard/pages/Notification/pages/NewNotificationUser";
+import ReadNotificationUser from "../pages/UserDashboard/pages/Notification/pages/ReadNotificationUser";
 
 
 
@@ -86,7 +90,13 @@ export const router = createBrowserRouter([
           { index: true, element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
           { path: 'SupportUser', element: <SupportUser /> },
-
+          {
+            path: 'notifications-user', element: <UserNotificationPage />, children: [
+              { index: true, element: <AllNotificationUser /> },
+              { path: 'new', element: <NewNotificationUser /> },
+              { path: 'read', element: <ReadNotificationUser /> },
+            ]
+          },
         ]
       },
       { path: '*', element: <NotFound /> }

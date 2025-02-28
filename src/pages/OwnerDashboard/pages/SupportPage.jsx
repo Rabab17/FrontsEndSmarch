@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import TicketModal from "../../UserDashboard/pages/TicketModal";
+// import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import Splash from "../../../components/Splash";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -97,7 +97,7 @@ export default function SupportPage() {
         }
 
         if (chatId) {
-            navigate(`/Chat/${chatId}`); 
+            navigate(`/Chat/${chatId}`);
         } else {
             // Check if the status is 'pending' or 'open' before creating a new chat
             if (status === 'pending' || status === 'open') {
@@ -110,9 +110,9 @@ export default function SupportPage() {
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         try {
-                            const response = await axios.post(
-                                `${import.meta.env.VITE_URL_BACKEND}chat/create`, 
-                                { ticketID: id }, 
+                            await axios.post(
+                                `${import.meta.env.VITE_URL_BACKEND}chat/create`,
+                                { ticketID: id },
                                 {
                                     headers: { authorization: token },
                                 }
@@ -136,7 +136,7 @@ export default function SupportPage() {
                 });
             } else {
                 if (chatId) {
-                    navigate(`/Chat/${chatId}`); 
+                    navigate(`/Chat/${chatId}`);
                 } else {
                     Swal.fire("لا يمكن فتح محادثة جديدة", "لا توجد محادثة مرتبطة بهذه التذكرة.", "warning");
                 }
