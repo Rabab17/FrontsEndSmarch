@@ -9,10 +9,9 @@ export default function ReadNotification() {
 
 
     const {
-        getNotifications,
-        notification,
+        getReadotifications,
+        readNotification,
         loading,
-        numOfNotification,
         setCurrentPage,
         totalPages,
         currentPage
@@ -24,8 +23,7 @@ export default function ReadNotification() {
     }, []);
 
     useEffect(() => {
-        console.log("asdasddasds")
-        getNotifications(true);
+        getReadotifications()
     }, [currentPage]);
 
     const formatDate = (dateString) => {
@@ -47,9 +45,8 @@ export default function ReadNotification() {
     if (loading) return (<Splash />)
     return (
         <>
-            {console.log(notification)}
-            {console.log("numOfNotification: " + numOfNotification)}
-            {notification?.map((notif, index) => (
+            
+            {readNotification?.map((notif, index) => (
                 <div key={index} className="flex justify-center mt-7 px-4 sm:px-6 lg:px-8">
                     <NotificationTemp
                         notification={notif}

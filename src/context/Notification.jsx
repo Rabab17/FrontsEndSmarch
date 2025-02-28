@@ -9,9 +9,8 @@ export const notificationContext = createContext()
 export default function NotificationContextProvider({ children }) {
     const token = localStorage.getItem("token")
     const [userId, setUserId] = useState(null);
-    // Initialize as empty array instead of null
-    // const [newNotification, setNewNotification] = useState([]);
     const [notification, setNotification] = useState([]);
+    const [readNotification, setReadNotification] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, serTotalPages] = useState(1)
@@ -33,7 +32,7 @@ export default function NotificationContextProvider({ children }) {
                     ...(isRead !== null && { isRead })
                 }
             })
-            console.log(data)
+            // console.log(data)
             window.scrollTo(0, 0);
 
             setNotification(data.data || [])
@@ -71,7 +70,7 @@ export default function NotificationContextProvider({ children }) {
                     isRead: false
                 }
             })
-            console.log(data)
+            // console.log(data)
             // Ensure we're setting an array
 
             // serTotalPages(data.pagination.totalPages)
@@ -85,14 +84,39 @@ export default function NotificationContextProvider({ children }) {
         setLoading(false)
     };
 
+
+
+    const getReadotifications = async () => {
+        setLoading(true)
+        try {
+            const { data } = await axios.get(`${import.meta.env.VITE_URL_BACKEND}notification/user`, {
+                headers: {
+                    Authorization: token
+                },
+                params: {
+                    isRead: true
+                }
+            })
+            // console.log(data)
+
+            setReadNotification(data.data)
+
+        } catch (error) {
+            console.log(error);
+
+
+        }
+        setLoading(false)
+    };
     //read notifications 
 
 
     useEffect(function () {
         getNewNotifications()
         getNotifications()
+        getReadotifications()
         var decode = jwtDecode(token);
-        console.log("decode :" + decode);
+        // console.log("decode :" + decode);
         setUserId(decode.id);
 
     }, [])
@@ -104,6 +128,7 @@ export default function NotificationContextProvider({ children }) {
 
     const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
+        // setLoadingRead(true)
 
         try {
             await axios.patch(
@@ -116,12 +141,12 @@ export default function NotificationContextProvider({ children }) {
                 }
             );
 
-            Swal.fire({
-                title: "تم تغيير حالة التنبيه بنجاح",
-                icon: "success",
-                confirmButtonText: "موافق",
-            });
-            console.log("all:" + all)
+            // Swal.fire({
+            //     title: "تم تغيير حالة التنبيه بنجاح",
+            //     icon: "success",
+            //     confirmButtonText: "موافق",
+            // });
+            
             getNotifications(all)
             getNewNotifications()
             setCurrentPage(currentPage);
@@ -134,13 +159,16 @@ export default function NotificationContextProvider({ children }) {
                 confirmButtonText: "موافق",
             });
             console.error("Failed to update notification status", error);
-        }
+        } 
+        // finally {
+        //     setLoadingRead(false)
+        // }
     };
 
 
 
     useEffect(() => {
-        if (!userId) return; // Add guard clause
+        if (!userId) return;
         getNewNotifications()
         getNotifications()
         setCurrentPage(currentPage)
@@ -151,9 +179,11 @@ export default function NotificationContextProvider({ children }) {
         const channel = pusherNotification.subscribe(`notification-${userId}`);
 
         channel.bind('newNotification', function (notification2) {
+            setNotification(prevData => [notification2, ...prevData])
+
             setnumOfNewNotification(prev => prev + 1)
-            console.log("numOfNewNotification: " + numOfNewNotification)
-            console.log(notification2)
+            // console.log("numOfNewNotification: " + numOfNewNotification)
+            // console.log(notification2)
         });
 
         return () => {
@@ -167,7 +197,8 @@ export default function NotificationContextProvider({ children }) {
     return <notificationContext.Provider value={{
         loading, setCurrentPage,
         currentPage, totalPages, toggleReadStatus,
-        getNotifications, numOfNotification, notification, numOfNewNotification
+        getNotifications, numOfNotification, notification,
+        numOfNewNotification,readNotification,getReadotifications
     }}>
         {children}
     </notificationContext.Provider>

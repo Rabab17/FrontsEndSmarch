@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Splash from "../../../components/Splash";
 import { useNavigate } from 'react-router-dom';
+import Pagination from '../../../components/Pagination';
 
 export default function ControlsPage() {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5); // يمكنك تغيير هذا الرقم حسب الحاجة
+    const [itemsPerPage] = useState(5);
     const nav = useNavigate();
 
     const fetchPackages = async () => {
@@ -18,9 +19,9 @@ export default function ControlsPage() {
                     Authorization: token
                 }
             });
-            if (response.data.status === "success") {
-                setPackages(response.data.data);
-            }
+            console.log(response.data.data)
+            setPackages(response.data.data);
+
         } catch (error) {
             console.error("Error fetching packages:", error);
         } finally {
@@ -44,9 +45,7 @@ export default function ControlsPage() {
     const indexOfFirstPackage = indexOfLastPackage - itemsPerPage;
     const currentPackages = packages.slice(indexOfFirstPackage, indexOfLastPackage);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
+
 
     const totalPages = Math.ceil(packages.length / itemsPerPage);
 
@@ -74,13 +73,13 @@ export default function ControlsPage() {
                         {/* اسم الباقة */}
                         <div className="text-center md:w-1/6">
                             <p className="text-gray-800 pb-5">اسم الباقة</p>
-                            <p className="font-bold text-blue-600">{pkg.name}</p>
+                            <p className="font-bold text-blue-600">{pkg.subscriptionID.packageId.name}</p>
                         </div>
 
                         {/* اسم الشاليه */}
                         <div className="text-center md:w-1/6">
                             <p className="text-gray-800 pb-5">اسم الشاليه</p>
-                            <p className="font-bold text-blue-600">{pkg.title}</p>
+                            <p className="font-bold text-blue-600">{pkg.name}</p>
                         </div>
 
                         {/* تاريخ البداية */}
@@ -107,20 +106,9 @@ export default function ControlsPage() {
                     </div>
                 ))}
             </div>
-            {/* Pagination Controls */}
-            {totalPages > 1 && ( // Show pagination only if there are more than 10 packages
-                <div className="flex justify-center mt-4">
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button
-                            key={index + 1}
-                            onClick={() => handlePageChange(index + 1)}
-                            className={`mx-1 px-4 py-2 rounded-lg ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
-            )}
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+
         </div>
     );
 }
