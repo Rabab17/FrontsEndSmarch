@@ -30,7 +30,7 @@ export default function ForgetPassword() {
             Swal.fire({
                 title: "خطأ",
                 text: error,
-                icon: "error",
+                icon: err.response.data.massage,
                 confirmButtonText: "حسناً",
             });
         }
