@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TicketModal from "./TicketModal"; // Import the TicketModal component
 import Splash from "../../../components/Splash";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function Overview() {
     const [tickets, setTickets] = useState([]); // State to store tickets
@@ -11,13 +12,14 @@ export default function Overview() {
     const [selectedOwnerID, setSelectedOwnerID] = useState(null); // State to store selected owner ID
     const [currentPage, setCurrentPage] = useState(1); // Current page
     const [totalPages, setTotalPages] = useState(1); // Total pages
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const fetchTickets = async () => {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user`, {
+                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user?page=${currentPage}`, {
                     headers: {
                         Authorization: token,
                     },
@@ -26,7 +28,7 @@ export default function Overview() {
                 if (response.data.status === "success") {
                     setTickets(response.data.data);
                     setTotalPages(response.data.pagination.totalPages); // Set total pages
-                    console.log("response.data.data", response.data.data);
+                    console.log("response.data.data", response.data);
                 } else {
                     setError("فشل في استرجاع البيانات.");
                 }
@@ -61,6 +63,7 @@ export default function Overview() {
                             <th>الموضوع</th>
                             <th>حالة التذكرة</th>
                             <th>تاريخ الإنشاء</th>
+                            <th>الإجراء</th> {/* إضافة عمود للإجراء */}
                         </tr>
                     </thead>
                     <tbody>
@@ -70,12 +73,24 @@ export default function Overview() {
                                 <td className="py-5 px-2 text-center text-lg">{ticket.recipient.email}</td>
                                 <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
                                 <td className="py-5 px-2 text-center text-lg">
-                                    <span className={`px-3 py-1 text-white ${ticket.status === "pending" ? "bg-yellow-500" : "bg-green-500"} rounded-lg`}>
-                                        {ticket.status === "pending" ? "قيد الانتظار" : "مغلق"}
+                                    <span className={`px-3 py-1 text-white ${ticket.status === "pending" ? "bg-yellow-500" : ticket.status === "closed" ? "bg-red-500" : "bg-green-500"} rounded-lg`}>
+                                        {ticket.status === "pending" ? "قيد الانتظار" : ticket.status === "closed" ? "مغلق" : "مكتمل"}
                                     </span>
                                 </td>
                                 <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
-                              
+                                <td className="py-5 px-2 text-center text-lg">
+                                    {ticket.chatID ? ( // تحقق مما إذا كان هناك chatID
+                                    
+                                        <button 
+                                            onClick={() => navigate(`/Chat/${ticket.chatID}`)} 
+                                            className="text-blue-500 hover:underline"
+                                        >
+                                            عرض المحادثة
+                                        </button>
+                                    ) : (
+                                        <span>لا يوجد شات</span> // إذا لم يكن هناك chatID
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

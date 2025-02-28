@@ -3,6 +3,7 @@ import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import Splash from "../../../components/Splash";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function SupportPage() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -10,6 +11,7 @@ export default function SupportPage() {
     const [error, setError] = useState(null); // حالة لتخزين الأخطاء
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
@@ -45,16 +47,13 @@ export default function SupportPage() {
 
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
-        console.log("hamada");
-
-        console.log("id", ticketId);
         try {
             await axios.patch(`${import.meta.env.VITE_URL_BACKEND}ticket/updateStatus/${ticketId}`, { status: newStatus }, {
                 headers: {
                     'Authorization': token
                 }
             });
-            fetchTickets();
+            fetchTickets(); // Fetch updated tickets after status update
         } catch (err) {
             setError(err.message);
         }
@@ -84,62 +83,66 @@ export default function SupportPage() {
 
     const getTicketByChatId = async (chatId, id, status) => {
         const token = localStorage.getItem('token');
-        console.log("iddd", id);
-        console.log("tokenid", token);
 
-
+        // إذا كانت الحالة مغلقة، تحقق مما إذا كان هناك شات موجود
         if (status === 'closed') {
-            Swal.fire("التذكرة مغلقة!!", "لا يمكنك فتح محادثة لهذه التذكرة", "warning");
+            if (chatId) {
+                // إذا كان هناك شات، انتقل إلى صفحة الشات
+                navigate(`/Chat/${chatId}`);
+            } else {
+                // إذا لم يكن هناك شات، عرض رسالة تحذير
+                Swal.fire("التذكرة مغلقة!!", "لا يمكنك فتح محادثة جديدة لهذه التذكرة", "warning");
+            }
             return; // لا تتابع إذا كانت التذكرة مغلقة
         }
 
         if (chatId) {
-            // Fetch chat details
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${chatId}`, {
-                    headers: { authorization: token },
-                });
-                console.log("Chat details:", response.data);
-                // Handle chat details (e.g., open a chat modal)
-            } catch (error) {
-                console.log("Error fetching chat details:", error);
-            }
+            navigate(`/Chat/${chatId}`); 
         } else {
-            // Create a new chat
-            Swal.fire({
-                title: "هل تريد إنشاء محادثة جديدة؟",
-                icon: "warning",
-                confirmButtonText: "موافق",
-                showCancelButton: true,
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    try {
-                        const response = await axios.post(
-                            `${import.meta.env.VITE_URL_BACKEND}chat/create`,
-                            { ticketID: id },
-                            {
-                                headers: {
-
-                                    authorization: token,
+            // Check if the status is 'pending' or 'open' before creating a new chat
+            if (status === 'pending' || status === 'open') {
+                // Create a new chat
+                Swal.fire({
+                    title: "هل تريد إنشاء محادثة جديدة؟",
+                    icon: "warning",
+                    confirmButtonText: "موافق",
+                    showCancelButton: true,
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            const response = await axios.post(
+                                `${import.meta.env.VITE_URL_BACKEND}chat/create`, 
+                                { ticketID: id }, 
+                                {
+                                    headers: { authorization: token },
                                 }
-                            }
-                        );
-                        console.log("id", { ticketID: id });
-                        Swal.fire({
-                            title: "تم إنشاء المحادثة",
-                            icon: "success",
-                            confirmButtonText: "موافق",
-                        });
-                        console.log(response.data.data);
-                    } catch (error) {
-                        console.log(error);
+                            );
+
+                            Swal.fire({
+                                title: "تم إنشاء المحادثة",
+                                icon: "success",
+                                confirmButtonText: "موافق",
+                            });
+
+                            await updateStatus(id, 'open');
+
+                            await fetchTickets();
+
+                            // navigate(`/ownerdashboard/ChatOwner/${response.data.chatID}`); // Pass the new chat ID in the URL
+                        } catch (error) {
+                            console.log(error);
+                        }
                     }
+                });
+            } else {
+                if (chatId) {
+                    navigate(`/Chat/${chatId}`); 
+                } else {
+                    Swal.fire("لا يمكن فتح محادثة جديدة", "لا توجد محادثة مرتبطة بهذه التذكرة.", "warning");
                 }
-            });
+            }
         }
     };
-
-
 
     if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
@@ -167,8 +170,8 @@ export default function SupportPage() {
                                     <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
                                     <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
                                     <td className="py-5 px-2 text-center text-lg">
-                                        <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
-                                            {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
+                                        <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : ticket.status === 'open' ? 'bg-blue-500' : 'bg-red-500'} rounded-lg`}>
+                                            {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : ticket.status === 'open' ? 'مفتوح' : 'مغلق'}
                                         </span>
                                     </td>
                                     <td className="py-5 px-2 text-center text-lg">

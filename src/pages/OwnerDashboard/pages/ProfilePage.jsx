@@ -111,9 +111,11 @@ export default function ProfilePage() {
               <h2 className="text-lg font-semibold">{userName}</h2>
               <p className="text-gray-500">{email}</p>
             </div>
-            <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg">
-              {getInitial(userName)} {/* عرض أول حرف من اسم المستخدم */}
-            </div>
+            <img
+              src="/assets/images/copy1.JPG"
+              alt="Profile Picture"
+              className="w-20 h-20 rounded-full"
+            />
           </div>
         </div>
 

@@ -74,14 +74,12 @@ export default function ManageReservations() {
         } else if (status === "approved") {
             Swal.fire({
                 icon: "info",
-                title: "هل تريد اعادة الحجز الى قيد المراجعة أم إلغاؤه؟",
+                title: "هل تريد  إلغاؤه؟",
                 showDenyButton: true,
-                confirmButtonText: "ارجاع الى قيد المراجعة",
+               
                 denyButtonText: "الحجز إلغاء",
             }).then(async (result) => {
-                if (result.isConfirmed) {
-                    await updateStatus(_id, "pending");
-                } else if (result.isDenied) {
+                 if (result.isDenied) {
                     await updateStatus(_id, "rejected");
                 }
             });
@@ -94,7 +92,7 @@ export default function ManageReservations() {
                 denyButtonText: "إلغاء",
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    await updateStatus(_id, "pending");
+                    await updateStatus(_id, "approved");
                 } else if (result.isDenied) {
                 }
             });

@@ -20,6 +20,7 @@ export default function ChaletDetails() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -125,6 +126,7 @@ export default function ChaletDetails() {
         email,
         password,
         role: "user",
+        phoneNumber: phone,
       });
       console.log("Response:", response.data);
       localStorage.setItem("isLoggedIn", true);
@@ -463,6 +465,7 @@ export default function ChaletDetails() {
                   required
                 />
               </div>
+              <FormInput label="رقم الهاتف" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
               <label className="flex items-center text-sm">
                 <input type="checkbox" className="ml-2" required />
                 أوافق على اتفاقية المستخدم
