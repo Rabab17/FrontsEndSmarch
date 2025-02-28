@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoIosMenu } from "react-icons/io";
 import SidebarDashboard from './SidebarDashboard';
 import { useNavigate } from 'react-router-dom';
@@ -8,61 +8,57 @@ import axios from 'axios';
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const nav = useNavigate();
-
-    const [userName, setName] = useState("");
-
-    const token = localStorage.getItem("token");
-    // console.log("token", token);
-
-    useEffect(() => {
-        if (token) {
-            // console.log("decodedToken");
-            const decoded = jwtDecode(token);
-            const id = decoded.id;
-
-            // console.log("userID من الـ token:", id);
-
-            const fetchUserData = async () => {
-                try {
-                    const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
-
-                    });
-                    // console.log("بيانات المستخدم:", response.data);
-                    const userData = response.data.data;
-
-                    setName(userData.userName);
-
-
-                } catch (error) {
-                    console.error("خطأ في استرجاع بيانات المستخدم:", error);
-                }
-            };
-
-            fetchUserData();
-        }
-    }, [token]);
-
-
-
-
-
+    
+    // New state for username and profile image
+    const [username, setUsername] = useState('');
+    const [profileImage, setProfileImage] = useState('');
 
     const toggleMenu = () => {
-
         setIsMenuOpen(!isMenuOpen);
     };
 
+    // Fetch username and profile image from local storage
+    const token = localStorage.getItem('token');
+    
+
+    useEffect(() => {
+        if (token) {
+          // console.log("decodedToken");
+          const decoded = jwtDecode(token);
+          const id = decoded.id;
+    
+          // console.log("userID من الـ token:", id);
+    
+          const fetchUserData = async () => {
+            try {
+              const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
+    
+              });
+              // console.log("بيانات المستخدم:", response.data);
+              const userData = response.data.data;
+              console.log(userData)
+              setUsername(userData.userName);
+              setProfileImage(userData.userName.charAt(0))
+    
+            } catch (error) {
+              console.error("خطأ في استرجاع بيانات المستخدم:", error);
+            }
+          };
+    
+          fetchUserData();
+        }
+      }, [token]);
+    
 
     return (
         <header className="bg-blue-50 shadow px-6 py-4 flex justify-between items-center">
-            {/* Hamburger Icon only visible on small screens */}
+      
             <div className='md:hidden'>
-                {/* Hamburger Icon (positioned to the right) */}
+            
                 <IoIosMenu
                     onClick={toggleMenu}
                     className="text-4xl md:text-3xl transition-transform duration-300"
                 />
-
             </div>
             <div className="flex items-center gap-4">
                 <img
@@ -81,12 +77,10 @@ export default function HeaderDashboard() {
             />
 
             <div className="flex items-center gap-2">
-                <span className="hidden md:block">{userName}</span>
-                <img
-                    src="/assets/images/copy1.JPG"
-                    alt="Profile"
-                    className="rounded-full w-10 h-10 "
-                />
+                <span className="hidden md:block">{username}</span>
+                <span className="rounded-full w-10 h-10 bg-gray-300 flex items-center justify-center">
+                    {profileImage}
+                </span>
             </div>
 
             {/* Sidebar (Aside) */}

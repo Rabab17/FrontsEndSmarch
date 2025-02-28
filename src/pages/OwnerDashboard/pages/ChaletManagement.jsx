@@ -2,23 +2,31 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Splash from "../../../components/Splash";
+import Pagination from "../../../components/Pagination";
+import { GiSandsOfTime } from "react-icons/gi";
+
 
 export default function ChaletManagement() {
     const nav = useNavigate();
 
     const [chalets, setChalets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const fetchPackages = async () => {
         const token = localStorage.getItem("token");
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/owner`, {
                 headers: {
                     Authorization: token
+                },
+                params: {
+                    page: currentPage
                 }
             });
-            if (response.data.status === "success") {
-                setChalets(response.data.data);
-            }
+            setChalets(response.data.data);
+            setTotalPages(response.data.pagination.totalPages)
+            console.log(response.data)
         } catch (error) {
             console.error("Error fetching packages:", error);
         } finally {
@@ -28,38 +36,35 @@ export default function ChaletManagement() {
 
     useEffect(() => {
         fetchPackages();
-    }, []);
+    }, [currentPage]);
 
 
     const GoToChalet = (id) => {
-        nav(`/partners/${id}`)
-    }
+        nav(`/partners/${id}`);
+    };
 
     const editChlet = (id) => {
-        nav('/ownerdashboard/editChlet', { state: { id } })
-    }
+        nav('/ownerdashboard/editChlet', { state: { id } });
+    };
 
 
-    if (loading) return <Splash />
 
+    if (loading) return <Splash />;
 
     return (
         <div className="flex flex-col items-center gap-6">
             {/* عرض الشاليهات */}
-            {console.log(chalets)}
             <div className="flex flex-wrap justify-center gap-4">
                 {chalets.map((chalet) => (
                     <div
                         key={chalet._id}
-                        className="w-96 border rounded-lg shadow-lg overflow-hidden"
+                        className="w-72 border rounded-lg shadow-lg overflow-hidden"
                     >
-
                         <img
                             src={chalet.img}
                             alt={chalet.name}
-                            className="w-full h-48 object-cover"
+                            className="w-full h-48 object-cover "
                         />
-
                         <div className="p-4 text-right">
                             <h2 className="text-xl font-bold mb-2 flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" viewBox="0 0 24 22" fill="none">
@@ -80,7 +85,7 @@ export default function ChaletManagement() {
                                 عدد الحجوزات: {chalet.numOfReservation}
                             </p>
                             <p className="flex items-center gap-1 mt-2">
-                                {chalet.status == 'active' ? (
+                                {chalet.status === 'active' ?
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3480)">
                                             <path
@@ -96,8 +101,11 @@ export default function ChaletManagement() {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    : chalet.status === 'pending' ? (
+
+                                        <GiSandsOfTime size={24} className="text-blue-400 font-extrabold" />
+
+                                    ) : <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <g clipPath="url(#clip0_231_3501)">
                                             <path
                                                 fillRule="evenodd"
@@ -111,9 +119,11 @@ export default function ChaletManagement() {
                                                 <rect width="24" height="24" fill="white" />
                                             </clipPath>
                                         </defs>
-                                    </svg>
-                                )}  
-                                {chalet.status == 'active' ? "نشط" : "غير نشط"}
+                                    </svg>}
+                                {/* {chalet.status == 'active' ? "نشط" : "غير نشط"}
+                                 */}
+                                {chalet.status === 'active' ? "نشط" : chalet.status === 'pending' ? "قيد الانتظار" : "غير نشط"}
+
                             </p>
 
                             <div className="flex gap-2 mt-4">
@@ -138,20 +148,21 @@ export default function ChaletManagement() {
                         </div>
                     </div>
                 ))}
+                <button
+                    className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
+                    onClick={() => nav('/ownerdashboard/subscription')}
+                >
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
+                        <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
+                    </svg>
+
+                    إضافة شاليه جديد
+
+                </button>
             </div>
             {/* زر إضافة شاليه جديد */}
-            <button
-                className="w-72 flex flex-col items-center gap-2 bg-blue-50 text-blue-500 text-xl font-bold py-4 px-6 rounded-lg shadow-lg"
-                onClick={() => nav('/ownerdashboard/subscription')}
-            >
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="151" height="150" viewBox="0 0 151 150" fill="none">
-                    <path d="M119.25 81.2373H81.75V118.737H69.25V81.2373H31.75V68.7373H69.25V31.2373H81.75V68.7373H119.25V81.2373Z" fill="#0061E0" />
-                </svg>
-
-                إضافة شاليه جديد
-
-            </button>
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
         </div>
-    )
+    );
 }

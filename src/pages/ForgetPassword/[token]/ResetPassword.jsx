@@ -17,7 +17,7 @@ const ResetPassword = () => {
 
   const handleResetPassword = async () => {
     const axiosInstance = axios.create({
-      baseURL: "http://localhost:8000",
+      baseURL: "https://smarch-back-end-nine.vercel.app/",
     });
 
     setLoading(true); 

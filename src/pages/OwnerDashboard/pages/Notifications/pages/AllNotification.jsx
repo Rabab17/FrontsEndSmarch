@@ -4,40 +4,42 @@ import { notificationContext } from "../../../../../context/Notification";
 import Pagination from "../../../../../components/Pagination";
 import NotificationTemp from "./NotificationTemp";
 
-
-export default function NewNotification() {
-
+export default function AllNotification() {
     const {
         getNotifications,
         notification,
         loading,
         setCurrentPage,
-        currentPage,
         totalPages,
-        toggleReadStatus,
-    } = useContext(notificationContext)
+        currentPage,
+        toggleReadStatus, // Add this if available
+    } = useContext(notificationContext);
 
     useEffect(() => {
-        setCurrentPage(1);
-        // console.log("currentPage: " + currentPage);
-    }, []);
-
-    useEffect(() => {
-        // console.log("asdasddasds")
-        getNotifications(false);
+        getNotifications();
     }, [currentPage]);
+
     const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' };
+        const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: false,
+            timeZone: "UTC",
+        };
         const date = new Date(dateString);
-        const dateAr = new Intl.DateTimeFormat('ar-EG', options).format(date);
+        const dateAr = new Intl.DateTimeFormat("ar-EG", options).format(date);
 
         return {
             date: dateAr.split("في ")[0],
-            time: dateAr.split("في ")[1]
-        }
-    }
+            time: dateAr.split("في ")[1],
+        };
+    };
 
-    if (loading) return (<Splash />)
+    if (loading) return <Splash />;
+
     return (
         <>
             {notification?.map((notif, index) => (
@@ -45,14 +47,12 @@ export default function NewNotification() {
                     <NotificationTemp
                         notification={notif}
                         formatDate={formatDate}
-                        toggleReadStatus={toggleReadStatus}
-                        all={false}
+                        toggleReadStatus={toggleReadStatus} 
                     />
                 </div>
             ))}
 
             <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-
         </>
     );
 }

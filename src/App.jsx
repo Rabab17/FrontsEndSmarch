@@ -7,10 +7,10 @@ function App() {
 
   return (
     <>
-    {/* <NotificationContextProvider> */}
-    <RouterProvider router={router} />
-    {/* </NotificationContextProvider> */}
-    
+      <NotificationContextProvider>
+        <RouterProvider router={router} />
+      </NotificationContextProvider>
+
     </>
   )
 }

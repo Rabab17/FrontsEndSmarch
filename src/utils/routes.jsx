@@ -34,6 +34,11 @@ import SubscriptionOwner from "../pages/OwnerDashboard/pages/SubscriptionOwner";
 import AddChalet from "../pages/OwnerDashboard/pages/AddChalet/AddChalet";
 import NewNotification from "../pages/OwnerDashboard/pages/Notifications/pages/NewNotification";
 import ReadNotification from "../pages/OwnerDashboard/pages/Notifications/pages/ReadNotification";
+import AllNotification from "../pages/OwnerDashboard/pages/Notifications/pages/AllNotification";
+import TicketSend from "../pages/OwnerDashboard/pages/TicketSend";
+import Chat from "../pages/HomePage/Chat";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -52,16 +57,21 @@ export const router = createBrowserRouter([
       { path: "ForgetPassword", element: <ForgetPassword /> },
       { path: "UpdatePassword", element: <UpdatePassword /> },
       { path: "ResetPassword/:token", element: <ResetPassword /> },
+      { path: 'Chat/:id', element: <Chat /> },
       {
         path: "OwnerDashboard", element: <OwnerDashboard />, children: [
           { index: true, element: <ControlsPage /> },
           { path: 'profile', element: <ProfilePage /> },
           { path: 'BalanceRecharge', element: <BalanceRechargePage /> },
           { path: 'support', element: <SupportPage /> },
-          { path: 'notifications', element: <NotificationPage />, children:[
-            {path:'new', element : <NewNotification/>},
-            {path: 'read' , element : <ReadNotification/>}
-          ] },
+          { path: 'TicketSend', element: <TicketSend /> },
+          {
+            path: 'notifications', element: <NotificationPage />, children: [
+              { index: true, element: <AllNotification /> },
+              { path: 'new', element: <NewNotification /> },
+              { path: 'read', element: <ReadNotification /> },
+            ]
+          },
           { path: 'ChaletManagement', element: <ChaletManagement /> },
           { path: 'ManageReservations', element: <ManageReservations /> },
           { path: 'subscription', element: <SubscriptionOwner /> },
@@ -72,8 +82,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "UserDashboard", element: <UserDashboard />, children: [
-        
-          {path: 'Overview', element: <Overview /> },
+
+          { index: true, element: <Overview /> },
           { path: 'profile', element: <ProfileUser /> },
           { path: 'SupportUser', element: <SupportUser /> },
 

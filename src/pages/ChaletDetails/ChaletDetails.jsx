@@ -6,8 +6,9 @@ import axios from "axios";
 import Splash from "../../components/Splash";
 import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode";
-import { FaFacebook } from "react-icons/fa";
+import { FaFacebook, FaPhone, FaSnapchatGhost, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
+import { IoLocation } from "react-icons/io5";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
@@ -19,6 +20,7 @@ export default function ChaletDetails() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -27,7 +29,7 @@ export default function ChaletDetails() {
     const fetchChalet = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/${id}`);
-        console.log("بيانات الشاليه:", response.data);
+        console.log(response.data);
         const chaletData = response.data.data;
         setChalet(chaletData);
       } catch (error) {
@@ -124,6 +126,7 @@ export default function ChaletDetails() {
         email,
         password,
         role: "user",
+        phoneNumber: phone,
       });
       console.log("Response:", response.data);
       localStorage.setItem("isLoggedIn", true);
@@ -177,10 +180,11 @@ export default function ChaletDetails() {
           ) : ''}
           <div className="bg-blue-50 py-10 flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
             <div className="w-full md:w-[60%] px-2 sm:px-4">
+              <h1 className="text-3xl font-bold my-4 sm:my-6">{chalet.name}</h1>
               <h1 className="text-3xl font-bold my-4 sm:my-6">{chalet.title}</h1>
               <p className="text-xl font-normal">{chalet.description}</p>
               <h1 className="text-2xl font-bold text-[#0061E0] my-6 sm:my-8">
-                {chalet.price} / ليله
+                {chalet.price} رس / ليله
               </h1>
               <div className="w-full md:w-[80%] space-y-4 sm:space-y-6 pb-8">
                 {/* المرافق */}
@@ -221,7 +225,12 @@ export default function ChaletDetails() {
                     )}
                   </div>
                 </div>
-
+                {openSection === "الموقع" && (
+                  <div className="flex gap-2 items-center text-[#101828]  text-2xl bg-white p-4 sm:p-6 rounded-lg">
+                    <IoLocation size={24} />
+                    {chalet.location.city} {chalet.location.street}
+                  </div>
+                )}
 
                 {/* شروط الحجز */}
                 <div className="p-4 rounded-lg shadow-md transition-all duration-300 bg-[#0061E0]">
@@ -246,7 +255,7 @@ export default function ChaletDetails() {
                     ))}
                   </div>
                 )}
-                {(chalet.facebook || chalet.instagram || chalet.tiktok || chalet.whatsapp) && (
+                {(chalet.facebook || chalet.instagram || chalet.tiktok || chalet.whatsapp || chalet.snapchat || chalet.phoneOfChalet) && (
 
                   <div className="p-4 rounded-lg shadow-md transition-all duration-300 bg-[#0061E0]">
                     <div
@@ -266,26 +275,52 @@ export default function ChaletDetails() {
                   <div className="mt-2 sm:mt-4 text-[#101828] bg-white p-4 sm:p-6 rounded-lg">
                     <div className="flex items-center">
 
+                      {chalet.phoneOfChalet && (
+                        <a href={`tel:${chalet.phoneOfChalet}`} className="text-green-500 text-lg me-4">
+                          <FaPhone size={28} />
+                        </a>
+                      )}
                       {chalet.facebook && (
                         <a href={chalet.facebook} target="_blank" className="me-4">
-                          <FaFacebook className="text-3xl text-blue-800" />
+                          <FaFacebook className="text-blue-800" size={28} />
                         </a>
                       )}
 
                       {chalet.instagram && (
                         <a href={chalet.instagram} target="_blank" className="me-4">
-                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                          <FaSquareInstagram className="text-pink-600" size={28} />
                         </a>
                       )}
                       {chalet.whatsapp && (
-                        <a href={chalet.whatsapp} target="_blank" className="me-4">
-                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                        <a href={`https://wa.me/${chalet.whatsapp}`} target="_blank" className="me-4">
+                          <FaWhatsapp className="text-green-600" size={28} />
                         </a>
                       )}
 
                       {chalet.tiktok && (
-                        <a href={chalet.tiktok} target="_blank" className="me-4">
-                          <FaSquareInstagram className="text-3xl text-pink-600" />
+                        <a href={chalet.tiktok} target="_blank" className="me-4 relative inline-block">
+                          {/* الطبقة الخلفية - الأزرق */}
+                          <FaTiktok
+                            size={28}
+                            className="absolute text-[#25F4EE] top-[2px] left-[2px]"
+                          />
+
+                          {/* الطبقة الخلفية - الأحمر */}
+                          <FaTiktok
+                            size={28}
+                            className="absolute text-[#FE2C55] top-[-3px] left-[-2px]"
+                          />
+
+                          {/* الطبقة الأساسية - الأبيض */}
+                          <FaTiktok
+                            size={28}
+                            className="relative text-black"
+                          />
+                        </a>
+                      )}
+                      {chalet.snapchat && (
+                        <a href={chalet.snapchat} target="_blank" className="me-4">
+                          <FaSnapchatGhost className="text-yellow-400" size={28} />
                         </a>
                       )}
 
@@ -430,6 +465,7 @@ export default function ChaletDetails() {
                   required
                 />
               </div>
+              <FormInput label="رقم الهاتف" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
               <label className="flex items-center text-sm">
                 <input type="checkbox" className="ml-2" required />
                 أوافق على اتفاقية المستخدم

@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import Splash from "../../../components/Splash";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
+import Pagination from "../../../components/Pagination";
 export default function SingleChaletManagement() {
     const location = useLocation();
     const { chaletId } = location.state || {};
@@ -32,6 +33,7 @@ export default function SingleChaletManagement() {
             setReservations(response.data.numberOfReservations);
             setTotalPages(response.data.pagination.totalPages);
         } catch (error) {
+
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
         } finally {
             setLoading(false);
@@ -40,7 +42,7 @@ export default function SingleChaletManagement() {
 
     useEffect(() => {
         fetchBookings(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     const updateStatus = async (id, newStatus) => {
@@ -52,16 +54,36 @@ export default function SingleChaletManagement() {
             );
             fetchBookings(currentPage)
             console.log(`تم ${newStatus === "approved" ? "تأكيد" : "إلغاء"} الحجز:`, response.data);
-            Swal.fire(`تم ${newStatus === "approved" ? "تأكيد" : "إلغاء"} الحجز بنجاح!`, '', 'success');
+            Swal.fire({
+                title: "ناجح",
+                text: response.data.message,
+                icon: "success",
+                confirmButtonText: "حسنا",
+            })
         } catch (error) {
-            console.error(`حدث خطأ أثناء ${newStatus === "approved" ? "تأكيد" : "إلغاء"} الحجز:`, error);
-            Swal.fire(`حدث خطأ أثناء ${newStatus === "approved" ? "تأكيد" : "إلغاء"} الحجز`, '', 'error');
+            console.error(`${error.response.data.message} ${newStatus === "approved" ? "تأكيد" : "إلغاء"} :`, error);
+            Swal.fire({
+                title: "خطأ",
+                text: error.response.data.message,
+                icon: "error",
+                confirmButtonText: "حسنا",
+            })
         }
     };
 
     const editStatus = async (chalet) => {
-        const { _id, status } = chalet;
+        const { _id, status, checkInDate } = chalet;
+        const nowDate = new Date(new Date().setUTCHours(0, 0, 0, 0))
+        const checkIn = new Date(checkInDate);
 
+        if (nowDate > checkIn && status != "pending") {
+            Swal.fire({
+                icon: "info",
+                title: " خطا فى تغير حالة الحجز ",
+                text: "لا يمكن تغير حالة الشاليه بسبب ان تاريخ بدء الحجز قبل تاريخ اليوم "
+            })
+            return;
+        }
         if (status === "pending") {
             Swal.fire({
                 icon: "info",
@@ -79,31 +101,27 @@ export default function SingleChaletManagement() {
         } else if (status === "approved") {
             Swal.fire({
                 icon: "info",
-                title: "هل تريد اعادة الحجز الى قيد المراجعة أم إلغاؤه؟",
+                title: "هل انت متأكد من الغاء الحجز ؟ ",
                 showDenyButton: true,
-                confirmButtonText: "ارجاع الى فيد المراجعه",
-                denyButtonText: "الحجز إلغاء",
+                confirmButtonText: " رجوع ",
+                denyButtonText: " إلغاء الحجز ",
             }).then(async (result) => {
-                if (result.isConfirmed) {
-                    await updateStatus(_id, "pending");
-                } else if (result.isDenied) {
+                if (result.isDenied) {
                     await updateStatus(_id, "rejected");
                 }
             });
         } else {
             Swal.fire({
                 icon: "info",
-                title: "هل تريد اعادة الحجز الى قيد المراجعة أم تأكيده؟",
+                title: "هل انت متاكد من اعادة تأكيد الحجز ؟",
                 showDenyButton: true,
-                confirmButtonText: "ارجاع الى فيد المراجعه",
+                confirmButtonText: "رجوع ",
                 denyButtonText: "تأكيد الحجز",
                 customClass: {
                     denyButton: "bg-green-500",
                 },
             }).then(async (result) => {
-                if (result.isConfirmed) {
-                    await updateStatus(_id, "pending");
-                } else if (result.isDenied) {
+                if (result.isDenied) {
                     await updateStatus(_id, "approved");
                 }
             });
@@ -234,12 +252,8 @@ export default function SingleChaletManagement() {
                                                     <path d="M18.375 2.62523C18.7728 2.2274 19.3124 2.00391 19.875 2.00391C20.4376 2.00391 20.9771 2.2274 21.375 2.62523C21.7728 3.02305 21.9963 3.56262 21.9963 4.12523C21.9963 4.68784 21.7728 5.2274 21.375 5.62523L12.362 14.6392C12.1245 14.8765 11.8312 15.0501 11.509 15.1442L8.63597 15.9842C8.54992 16.0093 8.45871 16.0108 8.37188 15.9886C8.28505 15.9663 8.2058 15.9212 8.14242 15.8578C8.07904 15.7944 8.03386 15.7151 8.01162 15.6283C7.98937 15.5415 7.99087 15.4503 8.01597 15.3642L8.85597 12.4912C8.9505 12.1693 9.12451 11.8763 9.36197 11.6392L18.375 2.62523Z" stroke="#0061E0" />
                                                 </svg>
                                             </button>
-                                            <span className="text-3xl">/</span>
-                                            <button>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 28 28" fill="none">
-                                                    <path d="M8.1665 24.5C7.52484 24.5 6.97573 24.2717 6.51917 23.8152C6.06261 23.3586 5.83395 22.8091 5.83317 22.1667V7H4.6665V4.66667H10.4998V3.5H17.4998V4.66667H23.3332V7H22.1665V22.1667C22.1665 22.8083 21.9382 23.3578 21.4817 23.8152C21.0251 24.2725 20.4756 24.5008 19.8332 24.5H8.1665ZM10.4998 19.8333H12.8332V9.33333H10.4998V19.8333ZM15.1665 19.8333H17.4998V9.33333H15.1665V19.8333Z" fill="#FF0000" />
-                                                </svg>
-                                            </button>
+
+
                                         </td>
                                     </tr>
                                 ))}
@@ -248,26 +262,8 @@ export default function SingleChaletManagement() {
 
 
                     </div>
-                    {/* عناصر التحكم في الصفحات */}
-                    {totalPages > 1 &&
-                        <div className="flex justify-between mt-4">
-                            <button
-                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                            >
-                                الصفحة السابقة
-                            </button>
-                            <span>الصفحة {currentPage} من {totalPages}</span>
-                            <button
-                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                            >
-                                الصفحة التالية
-                            </button>
-                        </div>
-                    }
+
+                    <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
 
                 </div>
                 : <div className="text-center w-full">
