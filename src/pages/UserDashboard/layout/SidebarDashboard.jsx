@@ -1,12 +1,15 @@
 
 
+import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import { notificationContext } from "../../../context/Notification";
 
 // eslint-disable-next-line react/prop-types
 export default function SidebarDashboard({ isOpen }) {
     const nav = useNavigate();
     const location = useLocation();
+    const { numOfNewNotification } = useContext(notificationContext);
 
     const isExactMatch = (path) => location.pathname === path;
 
@@ -44,8 +47,8 @@ export default function SidebarDashboard({ isOpen }) {
                         viewBox="0 0 32 32"
                         fill="currentColor"
                         className={`text-[#0061E0] ${isExactMatch("/Overview") ? "text-white" : ""}`
-                    }
-                  
+                        }
+
                     >
                         <path d="M28.2267 13.7732H19.3334C18.7222 13.7732 18.2267 13.2777 18.2267 12.6665V3.77317C18.2267 3.16198 18.7222 2.6665 19.3334 2.6665C24.8562 2.6665 29.3334 7.14366 29.3334 12.6665C29.3334 13.2777 28.8379 13.7732 28.2267 13.7732ZM27.0267 11.5598C26.5354 8.14623 23.8536 5.46448 20.44 4.97317V11.5598H27.0267Z" />
                         <path d="M28.1067 15.9998H17.24C16.9182 15.9998 16.6096 15.872 16.3821 15.6444C16.1545 15.4169 16.0267 15.1083 16.0267 14.7865V3.89312C16.0288 3.54331 15.8814 3.20926 15.6216 2.97497C15.3619 2.74067 15.0144 2.62843 14.6667 2.66646C7.70661 3.4055 2.50275 9.40047 2.74951 16.3953C2.99627 23.3902 8.60964 29.0035 15.6045 29.2503C22.5993 29.4971 28.5943 24.2932 29.3334 17.3331C29.3633 16.9897 29.2474 16.6496 29.0141 16.3959C28.7807 16.1423 28.4514 15.9985 28.1067 15.9998Z" />
@@ -90,14 +93,17 @@ export default function SidebarDashboard({ isOpen }) {
                     <div
                         className={`text-2xl flex items-center gap-2 cursor-pointer rounded ${isPartialMatch("/notifications") ? "bg-[#0061E0] text-white py-2" : ""
                             }`}
-                        onClick={() => nav("notifications")}
+                        onClick={() => nav("notifications-user")}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
-                            className={`text-[#0061E0] ${isPartialMatch("/notifications") ? "text-white" : ""}`}
-                            fill="currentColor">
-                            <path d="M16 4C13.6131 4 11.3239 4.94821 9.63604 6.63604C7.94822 8.32387 7.00001 10.6131 7.00001 13V17.802L5.07201 22.63C5.01162 22.7816 4.98926 22.9457 5.00688 23.108C5.02451 23.2702 5.08157 23.4257 5.1731 23.5608C5.26463 23.6959 5.38784 23.8066 5.53198 23.8832C5.67612 23.9597 5.8368 23.9998 6.00001 24H26C26.1632 23.9998 26.3239 23.9597 26.468 23.8832C26.6122 23.8066 26.7354 23.6959 26.8269 23.5608C26.9184 23.4257 26.9755 23.2702 26.9931 23.108C27.0107 22.9457 26.9884 22.7816 26.928 22.63L25 17.8V13C25 10.6131 24.0518 8.32387 22.364 6.63604C20.6761 4.94821 18.387 4 16 4ZM16 29C15.113 29.0002 14.2512 28.7056 13.5499 28.1626C12.8486 27.6195 12.3477 26.8588 12.126 26H19.874C19.6523 26.8588 19.1514 27.6195 18.4501 28.1626C17.7488 28.7056 16.887 29.0002 16 29Z" />
-                        </svg>
-                        <h1>الإشعارات</h1>
+                        <div className="flex gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"
+                                className={`text-[#0061E0] ${isPartialMatch("/notifications") ? "text-white" : ""}`}
+                                fill="currentColor">
+                                <path d="M16 4C13.6131 4 11.3239 4.94821 9.63604 6.63604C7.94822 8.32387 7.00001 10.6131 7.00001 13V17.802L5.07201 22.63C5.01162 22.7816 4.98926 22.9457 5.00688 23.108C5.02451 23.2702 5.08157 23.4257 5.1731 23.5608C5.26463 23.6959 5.38784 23.8066 5.53198 23.8832C5.67612 23.9597 5.8368 23.9998 6.00001 24H26C26.1632 23.9998 26.3239 23.9597 26.468 23.8832C26.6122 23.8066 26.7354 23.6959 26.8269 23.5608C26.9184 23.4257 26.9755 23.2702 26.9931 23.108C27.0107 22.9457 26.9884 22.7816 26.928 22.63L25 17.8V13C25 10.6131 24.0518 8.32387 22.364 6.63604C20.6761 4.94821 18.387 4 16 4ZM16 29C15.113 29.0002 14.2512 28.7056 13.5499 28.1626C12.8486 27.6195 12.3477 26.8588 12.126 26H19.874C19.6523 26.8588 19.1514 27.6195 18.4501 28.1626C17.7488 28.7056 16.887 29.0002 16 29Z" />
+                            </svg>
+                            <h1>الإشعارات</h1>
+                        </div>
+                        <p className="rounded-full bg-red-700 w-8 h-8 text-center "> {numOfNewNotification} </p>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useResolvedPath } from "react-router-dom";
 
 export default function HeaderNotification() {
-  const buttons = ["جميع الاشعارات " ,"اشعارات جديدة", "اشعارات مقروءة" ];
+  const buttons = ["جميع الاشعارات ", "اشعارات جديدة", "اشعارات مقروءة"];
   const { pathname } = useResolvedPath()
   const navigate = useNavigate()
   const [selectedIndex, setSelectedIndex] = useState(null); // Track selected button index

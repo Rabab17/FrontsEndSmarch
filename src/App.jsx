@@ -7,17 +7,10 @@ function App() {
 
   return (
     <>
-<<<<<<< HEAD
-      <NotificationContextProvider>
-        <RouterProvider router={router} />
-      </NotificationContextProvider>
-
-=======
     <NotificationContextProvider>
     <RouterProvider router={router} />
     </NotificationContextProvider>
     
->>>>>>> 69c6a84 (solve Datepicker problem)
     </>
   )
 }

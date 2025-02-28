@@ -1,12 +1,10 @@
 import { useContext, useEffect } from "react";
-import Splash from "../../../../../components/Splash";
 import { notificationContext } from "../../../../../context/Notification";
+import Splash from "../../../../../components/Splash";
+import NotificationTemp from "../../../../OwnerDashboard/pages/Notifications/pages/NotificationTemp";
 import Pagination from "../../../../../components/Pagination";
-import NotificationTemp from "./NotificationTemp";
 
-
-export default function NewNotification() {
-
+export default function NewNotificationUser() {
     const {
         getNotifications,
         notification,
@@ -19,7 +17,6 @@ export default function NewNotification() {
 
     useEffect(() => {
         setCurrentPage(1);
-        // console.log("currentPage: " + currentPage);
     }, []);
 
     useEffect(() => {
@@ -50,6 +47,7 @@ export default function NewNotification() {
                     />
                 </div>
             ))}
+
             {notification.length == 0 ?
                 <div className="flex justify-center items-center h-full">
                     <h2 className="text-center text-3xl text-gray-700 "> لا توجد لديك اشعارات لعرضها  </h2>
@@ -57,7 +55,6 @@ export default function NewNotification() {
 
                 <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             }
-
         </>
     );
 }
