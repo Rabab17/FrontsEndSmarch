@@ -106,8 +106,9 @@ export default function ControlsPage() {
                     </div>
                 ))}
             </div>
-
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            {packages.length == 0 ? '' :
+                < Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            }
 
         </div>
     );

@@ -45,7 +45,7 @@ export default function ReadNotification() {
     if (loading) return (<Splash />)
     return (
         <>
-            
+
             {readNotification?.map((notif, index) => (
                 <div key={index} className="flex justify-center mt-7 px-4 sm:px-6 lg:px-8">
                     <NotificationTemp
@@ -54,8 +54,13 @@ export default function ReadNotification() {
                     />
                 </div>
             ))}
+            {readNotification.length == 0 ?
+                <div className="flex justify-center items-center h-full">
+                    <h2 className="text-center text-3xl text-gray-700 "> لا توجد لديك اشعارات لعرضها  </h2>
+                </div> :
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            }
 
         </>
     );

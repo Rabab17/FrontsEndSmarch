@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -12,7 +12,7 @@ export default function Chat() {
     const [ticket, setTicket] = useState(null);
     const [message, setMessage] = useState("");
     const messagesEndRef = useRef(null);
-
+    const nav = useNavigate()
     const getTicketByChatId = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${id}`, {
@@ -38,6 +38,7 @@ export default function Chat() {
     };
 
     useEffect(() => {
+        if (!token) nav('/')
         getTicketByChatId(); // Fetch ticket on mount
     }, [id]);
 
@@ -54,8 +55,8 @@ export default function Chat() {
 
         const channel = pusher.subscribe(`message-${id}`);
         channel.bind("newMessage", (data) => {
-            console.log("data",data);
-            
+            console.log("data", data);
+
             setTicket((prevTicket) => ({
                 ...prevTicket,
                 messages: data,
@@ -68,23 +69,21 @@ export default function Chat() {
         };
     }, [id]);
 
-    const Message = ({ text, isUser, timestamp }) => {
+    const Message = ({ text, isOwner }) => {
         return (
             <div
                 style={{
-                    alignSelf: isUser ? "flex-end" : "flex-start",
+                    alignSelf: isOwner ? "flex-start" : " flex-end",
                     maxWidth: "100%",
                     padding: "12px",
                     borderRadius: "8px",
-                    backgroundColor: isUser ? "#3b82f6" : "#e5e7eb",
-                    color: isUser ? "white" : "black",
+                    backgroundColor: isOwner ? "#e5e7eb" : "#3b82f6",
+                    color: isOwner ? "black" : " white",
                     wordBreak: "break-word",
                 }}
             >
                 {text}
-                <div style={{ fontSize: "10px", color: "#6b7280", marginTop: "4px" }}>
-                    {new Date(timestamp).toLocaleTimeString()}
-                </div>
+
             </div>
         );
     };
@@ -105,21 +104,28 @@ export default function Chat() {
                     }}
                 >
                     {ticket?.messages?.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                        <div className="text-gray-500  flex flex-col items-center justify-center h-full">
                             <HiChatBubbleLeftRight className="w-16 h-16 text-gray-400 animate-bounce" />
                             <p className="mt-2">لا توجد رسائل حتى الآن، يمكنك بدء المحادثة الآن.</p>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-2">
+                        <div className="w-full flex flex-col space-y-4">
                             {ticket?.messages?.map((msg, index) => {
-                                const isUser = msg.senderRole === "user";
+                                const isOwner = msg.senderRole === "owner";
+                                const messageTime = new Date(msg.timestamp).toLocaleString("ar-EG", {
+                                    weekday: "short", // اسم اليوم (مثل: السبت)
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: true // لعرض الوقت بصيغة 12 ساعة
+                                });
                                 return (
-                                    <div key={index} className={`flex items-start gap-2 ${isUser ? "flex-row-reverse" : "flex-row"}`}>
+                                    <div key={index} className={`flex items-start gap-2 ${isOwner ? "flex-row" : " flex-row-reverse"}`}>
                                         <Stack direction="row" spacing={2}>
-                                            <Avatar>{isUser ? "U" : "A"}</Avatar>
+                                            <Avatar>{isOwner ? "A" : "U"}</Avatar>
                                         </Stack>
-                                        <div className={`${isUser ? "text-right" : "text-left"}`}>
-                                            <Message text={msg.message} isUser={isUser} timestamp={msg.timestamp} />
+                                        <div className={`${isOwner ? "text-left" : "text-right"}`}>
+                                            <Message text={msg.message} isOwner={isOwner} />
+                                            <p className={`text-xs text-gray-500 ${isOwner ? 'text-right' : ' text-end'}`}>{messageTime}</p>
                                         </div>
                                     </div>
                                 );
