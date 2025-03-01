@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Splash from "../../../components/Splash";
+import { useNavigate } from "react-router-dom"; // إضافة استيراد useNavigate
 
 export default function TicketSend() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -10,6 +11,8 @@ export default function TicketSend() {
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
     const [isModalOpen, setIsModalOpen] = useState(false); // حالة لفتح وإغلاق نافذة إنشاء التذكرة
+
+    const navigate = useNavigate(); // استخدام useNavigate
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
@@ -71,9 +74,21 @@ export default function TicketSend() {
                                     <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
                                     <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
                                     <td className="py-5 px-2 text-center text-lg">
-                                        <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
-                                            {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
-                                        </span>
+                                    <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : ticket.status === 'open' ? 'bg-blue-500' : 'bg-red-500'} rounded-lg`}>
+    {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : ticket.status === 'open' ? 'مفتوح' : 'مغلق'}
+</span>
+                                    </td>
+                                    <td className="py-5 px-2 text-center text-lg">
+                                        {ticket.chatID ? ( 
+                                            <button 
+                                                onClick={() => navigate(`/Chat/${ticket.chatID}`)} 
+                                                className="text-blue-500 hover:underline"
+                                            >
+                                                عرض المحادثة
+                                            </button>
+                                        ) : (
+                                            <span>لا يوجد شات</span> // إذا لم يكن هناك chatID
+                                        )}
                                     </td>
                                 </tr>
                             ))

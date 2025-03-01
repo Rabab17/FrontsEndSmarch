@@ -5,6 +5,7 @@ import Pusher from 'pusher-js';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import Splash from '../../components/Splash';
 
 export default function Chat() {
     const { id } = useParams();
@@ -54,8 +55,7 @@ export default function Chat() {
 
         const channel = pusher.subscribe(`message-${id}`);
         channel.bind("newMessage", (data) => {
-            console.log("data",data);
-            
+            console.log("data", data);
             setTicket((prevTicket) => ({
                 ...prevTicket,
                 messages: data,
@@ -68,29 +68,32 @@ export default function Chat() {
         };
     }, [id]);
 
-    const Message = ({ text, isUser, timestamp }) => {
+    const Message = ({ text, senderRole, timestamp }) => {
+        const isOwner = senderRole === "owner"; 
+        const isAdmin = senderRole === "admin"; 
+        
         return (
             <div
                 style={{
-                    alignSelf: isUser ? "flex-end" : "flex-start",
+                    alignSelf: isOwner ? "flex-end" : "flex-start",
                     maxWidth: "100%",
                     padding: "12px",
                     borderRadius: "8px",
-                    backgroundColor: isUser ? "#3b82f6" : "#e5e7eb",
-                    color: isUser ? "white" : "black",
+                    backgroundColor: isOwner ? "#3b82f6" : "#e5e7eb", // لون الخلفية للـ owner
+                    color: isOwner ? "white" : "black",
                     wordBreak: "break-word",
                 }}
             >
-                {text}
-                <div style={{ fontSize: "10px", color: "#6b7280", marginTop: "4px" }}>
+                <div style={{ fontSize: "10px", color: "#6b7280", marginBottom: "4px" }}>
                     {new Date(timestamp).toLocaleTimeString()}
                 </div>
+                {text}
             </div>
         );
     };
 
     if (!ticket) {
-        return <p>جاري تحميل البيانات...</p>;
+        return <Splash />;
     }
 
     return (
@@ -112,14 +115,14 @@ export default function Chat() {
                     ) : (
                         <div className="flex flex-col gap-2">
                             {ticket?.messages?.map((msg, index) => {
-                                const isUser = msg.senderRole === "user";
                                 return (
-                                    <div key={index} className={`flex items-start gap-2 ${isUser ? "flex-row-reverse" : "flex-row"}`}>
+                                    <div key={index} className={`flex items-start gap-2 ${msg.senderRole === "owner" ? "flex-row-reverse" : "flex-row"}`}>
                                         <Stack direction="row" spacing={2}>
-                                            <Avatar>{isUser ? "U" : "A"}</Avatar>
+                                            <Avatar>{msg.senderName.charAt(0)}</Avatar> {/* عرض أول حرف من اسم المرسل */}
                                         </Stack>
-                                        <div className={`${isUser ? "text-right" : "text-left"}`}>
-                                            <Message text={msg.message} isUser={isUser} timestamp={msg.timestamp} />
+                                        <div className={`${msg.senderRole === "owner" ? "text-right" : "text-left"}`}>
+                                            <p className="text-sm text-gray-600">{msg.senderName}</p> {/* عرض اسم المرسل */}
+                                            <Message text={msg.message} senderRole={msg.senderRole} timestamp={msg.timestamp} />
                                         </div>
                                     </div>
                                 );
@@ -140,12 +143,20 @@ export default function Chat() {
                         <button
                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                             onClick={sendMessage}
+                            placeholder="اكتب رسالتك هنا..."
                         >
                             إرسال
                         </button>
                     </div>
                 )}
                 {ticket?.status === "closed" && <p className="text-center text-gray-500 p-4">تم غلق تذكرة الدعم</p>}
+            </div>
+            <div className="col-span-1 md:col-span-3 bg-white shadow-md rounded-lg p-4 w-full md:w-fit self-start">
+                <h3 className="text-lg font-semibold text-blue-600 mb-3">معلومات</h3>
+                <p><strong>العميل:</strong> {ticket?.ticketID.sender.userName}</p>
+                <p><strong>الحالة:</strong> {ticket?.status}</p>
+                <p><strong>تاريخ الإنشاء:</strong> {new Date(ticket?.createdAt).toLocaleString("en-US")}</p>
+                <p><strong>آخر تحديث:</strong> {new Date(ticket?.updatedAt).toLocaleString("en-US")}</p>
             </div>
         </div>
     );

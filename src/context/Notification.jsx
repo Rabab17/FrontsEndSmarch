@@ -112,6 +112,10 @@ export default function NotificationContextProvider({ children }) {
 
 
     useEffect(function () {
+        if (!token)
+        {
+            return
+        }
         getNewNotifications()
         getNotifications()
         getReadotifications()

@@ -11,15 +11,16 @@ export default function SupportPage() {
     const [error, setError] = useState(null); // حالة لتخزين الأخطاء
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
+    const [numOfTicketsOpen, setNumOfTicketsOpen] = useState(0); // عدد التذاكر المفتوحة
+    const [numOfTicketsClosed, setNumOfTicketsClosed] = useState(0); // عدد التذاكر المغلقة
+    const [numOfTicketsPending, setNumOfTicketsPending] = useState(0); // عدد التذاكر المعلقة
     const navigate = useNavigate(); // Initialize useNavigate
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
 
-        console.log(token);
-
         try {
-            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/owner?page=${currentPage}&limit=10`, {
+            const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/owner?page=${currentPage}&limit=10`, {
                 headers: {
                     'Authorization': token
                 }
@@ -29,13 +30,15 @@ export default function SupportPage() {
             if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                 setTickets(response.data.data);
                 setTotalPages(response.data.pagination.totalPages);
+                setNumOfTicketsOpen(response.data.numOfTicketsOpen);
+                setNumOfTicketsClosed(response.data.numOfTicketsClosed);
+                setNumOfTicketsPending(response.data.numOfTicketsPending);
             } else {
                 throw new Error("Unexpected data format");
             }
 
         } catch (err) {
             setError("فشل في تحميل التذاكر. يرجى المحاولة مرة أخرى."); // Updated error message
-            console.log(err)
         } finally {
             setLoading(false);
         }
@@ -47,11 +50,8 @@ export default function SupportPage() {
 
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
-        console.log("hamada");
-
-        console.log("id", ticketId);
         try {
-            await axios.patch(`${import.meta.env.VITE_URL_BACKEND}ticket/updateStatus/${ticketId}`, { status: newStatus }, {
+            await axios.patch(`https://smarch-back-end-nine.vercel.app/ticket/updateStatus/${ticketId}`, { status: newStatus }, {
                 headers: {
                     'Authorization': token
                 }
@@ -62,22 +62,23 @@ export default function SupportPage() {
         }
     };
 
-    const handleCloseConfirmation = (ticketId) => {
+    const handleCloseConfirmation = (ticketId, currentStatus) => {
         Swal.fire({
-            title: 'هل أنت متأكد أنك تريد غلق هذه الحالة؟',
+            title: currentStatus === "open" ? 'هل تريد غلق هذه الحالة؟' : 'هل تريد فتح هذه الحالة؟',
             text: "لا يمكنك التراجع عن هذا!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'نعم، أغلقها!',
-            cancelButtonText: 'لا '
+            confirmButtonText: currentStatus === "open" ? 'نعم، أغلقها!' : 'نعم، افتحها!',
+            cancelButtonText: 'إلغاء'
         }).then((result) => {
             if (result.isConfirmed) {
-                updateStatus(ticketId, 'closed'); // غلق الحالة
+                const newStatus = currentStatus === "open" ? "closed" : "open";
+                updateStatus(ticketId, newStatus);
                 Swal.fire(
-                    'مغلق!',
-                    'تم غلق الحالة بنجاح.',
+                    newStatus === "open" ? 'تم الفتح!' : 'تم الغلق!',
+                    newStatus === "open" ? 'تم فتح الحالة بنجاح.' : 'تم غلق الحالة بنجاح.',
                     'success'
                 );
             }
@@ -86,10 +87,6 @@ export default function SupportPage() {
 
     const getTicketByChatId = async (chatId, id, status) => {
         const token = localStorage.getItem('token');
-        console.log("iddd", id);
-        console.log("tokenid", token);
-
-
 
         // إذا كانت الحالة مغلقة، تحقق مما إذا كان هناك شات موجود
         if (status === 'closed') {
@@ -104,16 +101,7 @@ export default function SupportPage() {
         }
 
         if (chatId) {
-            // Fetch chat details
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${chatId}`, {
-                    headers: { authorization: token },
-                });
-                console.log("Chat details:", response.data);
-                // Handle chat details (e.g., open a chat modal)
-            } catch (error) {
-                console.log("Error fetching chat details:", error);
-            }
+            navigate(`/Chat/${chatId}`); 
         } else {
             // Check if the status is 'pending' or 'open' before creating a new chat
             if (status === 'pending' || status === 'open') {
@@ -160,13 +148,30 @@ export default function SupportPage() {
         }
     };
 
-
-
     if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
 
+    // ترتيب التذاكر حسب تاريخ الإرسال من الأحدث إلى الأقدم
+    const sortedTickets = [...tickets].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
     return (
         <div className="p-6 space-y-6">
+            {/* بطاقات المعلومات */}
+            <div className="flex flex-wrap gap-4 justify-between">
+                <div className="bg-white p-4 rounded-lg shadow w-1/3 flex-1">
+                    <h2 className="text-xl font-bold">عدد التذاكر المفتوحة</h2>
+                    <p className="text-2xl">{numOfTicketsOpen}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow w-1/3 flex-1">
+                    <h2 className="text-xl font-bold">عدد التذاكر المغلقة</h2>
+                    <p className="text-2xl">{numOfTicketsClosed}</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow w-1/3 flex-1">
+                    <h2 className="text-xl font-bold">عدد التذاكر قيد الانتظار</h2>
+                    <p className="text-2xl">{numOfTicketsPending}</p>
+                </div>
+            </div>
+
             <div className="p-4 rounded-lg shadow">
                 <table className="w-full">
                     <thead>
@@ -176,12 +181,12 @@ export default function SupportPage() {
                             <th>تاريخ الارسال</th>
                             <th>الموضوع</th>
                             <th>الحاله</th>
-                            <th>غلق هذه الحاله</th>
+                            <th>غلق/فتح هذه الحاله</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {Array.isArray(tickets) && tickets.length > 0 ? (
-                            tickets.map((ticket, index) => (
+                        {Array.isArray(sortedTickets) && sortedTickets.length > 0 ? (
+                            sortedTickets.map((ticket, index) => (
                                 <tr key={ticket._id}>
                                     <td className="py-5 px-2 text-center text-lg">{(currentPage - 1) * 10 + index + 1}</td>
                                     <td className="py-5 px-2 text-center text-lg">{ticket.sender.userName}</td>
@@ -193,8 +198,8 @@ export default function SupportPage() {
                                         </span>
                                     </td>
                                     <td className="py-5 px-2 text-center text-lg">
-                                        <button
-                                            onClick={() => handleCloseConfirmation(ticket._id)}
+                                        <button 
+                                            onClick={() => handleCloseConfirmation(ticket._id, ticket.status)} 
                                             className=" text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -256,7 +261,7 @@ export default function SupportPage() {
             )}
 
             {/* Modal for creating a ticket */}
-
+           
         </div>
     );
 }
