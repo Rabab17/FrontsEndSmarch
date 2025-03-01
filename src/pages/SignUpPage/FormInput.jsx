@@ -17,7 +17,7 @@ export default function FormInput({ label, type, value, onChange, required }) {
                 onChange={onChange}
                 placeholder={label}
                 required={required}
-                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0] pr-10"
+                className="w-full p-3 bg-white rounded-lg text-right focus:outline-[#0061E0]"
             />
             {type === "password" && (
                 <button
