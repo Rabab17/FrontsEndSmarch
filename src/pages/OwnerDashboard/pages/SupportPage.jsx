@@ -47,6 +47,9 @@ export default function SupportPage() {
 
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
+        console.log("hamada");
+
+        console.log("id", ticketId);
         try {
             await axios.patch(`${import.meta.env.VITE_URL_BACKEND}ticket/updateStatus/${ticketId}`, { status: newStatus }, {
                 headers: {
@@ -83,6 +86,10 @@ export default function SupportPage() {
 
     const getTicketByChatId = async (chatId, id, status) => {
         const token = localStorage.getItem('token');
+        console.log("iddd", id);
+        console.log("tokenid", token);
+
+
 
         // إذا كانت الحالة مغلقة، تحقق مما إذا كان هناك شات موجود
         if (status === 'closed') {
@@ -97,7 +104,16 @@ export default function SupportPage() {
         }
 
         if (chatId) {
-            navigate(`/Chat/${chatId}`);
+            // Fetch chat details
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${chatId}`, {
+                    headers: { authorization: token },
+                });
+                console.log("Chat details:", response.data);
+                // Handle chat details (e.g., open a chat modal)
+            } catch (error) {
+                console.log("Error fetching chat details:", error);
+            }
         } else {
             // Check if the status is 'pending' or 'open' before creating a new chat
             if (status === 'pending' || status === 'open') {
@@ -143,6 +159,8 @@ export default function SupportPage() {
             }
         }
     };
+
+
 
     if (loading) return <div><Splash /></div>;
     if (error) return <div>Error: {error}</div>;
