@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode"; // تأكد من استيراد jwtDecode
+import { notificationContext } from "../../context/Notification";
 
 export default function Login() {
+  const { setToken } = useContext(notificationContext)
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -25,6 +28,7 @@ export default function Login() {
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
         localStorage.setItem("user", JSON.stringify(user));
+        setToken(response.data.token);
 
 
         const decoded = jwtDecode(user.token);
