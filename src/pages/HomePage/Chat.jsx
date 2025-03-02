@@ -5,6 +5,7 @@ import Pusher from 'pusher-js';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { HiChatBubbleLeftRight } from "react-icons/hi2";
+import Splash from '../../components/Splash';
 
 export default function Chat() {
     const { id } = useParams();
@@ -89,7 +90,7 @@ export default function Chat() {
     };
 
     if (!ticket) {
-        return <p>جاري تحميل البيانات...</p>;
+        return <Splash />;
     }
 
     return (
@@ -146,12 +147,20 @@ export default function Chat() {
                         <button
                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
                             onClick={sendMessage}
+                            placeholder="اكتب رسالتك هنا..."
                         >
                             إرسال
                         </button>
                     </div>
                 )}
                 {ticket?.status === "closed" && <p className="text-center text-gray-500 p-4">تم غلق تذكرة الدعم</p>}
+            </div>
+            <div className="col-span-1 md:col-span-3 bg-white shadow-md rounded-lg p-4 w-full md:w-fit self-start">
+                <h3 className="text-lg font-semibold text-blue-600 mb-3">معلومات</h3>
+                <p><strong>العميل:</strong> {ticket?.ticketID.sender.userName}</p>
+                <p><strong>الحالة:</strong> {ticket?.status}</p>
+                <p><strong>تاريخ الإنشاء:</strong> {new Date(ticket?.createdAt).toLocaleString("en-US")}</p>
+                <p><strong>آخر تحديث:</strong> {new Date(ticket?.updatedAt).toLocaleString("en-US")}</p>
             </div>
         </div>
     );
