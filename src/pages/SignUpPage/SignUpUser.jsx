@@ -1,10 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import FormInput from "./FormInput";
+import { notificationContext } from "../../context/Notification";
 
 export default function SignUpUser() {
+    const { setToken } = useContext(notificationContext)
     const location = useLocation();
     const { userType } = location.state || {};
     const [username, setUsername] = useState("");
@@ -57,6 +59,8 @@ export default function SignUpUser() {
             });
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("token", response.data.token);
+            setToken(response.data.token);
+            
             Swal.fire({
                 title: "تم التسجيل بنجاح!",
                 text: "تم إنشاء حسابك بنجاح. سيتم تحويلك إلى الصفحة الرئيسية.",

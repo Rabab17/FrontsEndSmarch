@@ -5,6 +5,7 @@ import Splash from "../../../components/Splash";
 
 export default function SubscriptionOwner() {
     const [packages, setPackages] = useState([]);
+    const [loading, setLoading] = useState(true);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
     useEffect(() => {
@@ -21,13 +22,15 @@ export default function SubscriptionOwner() {
                 console.log(response.data.data);
             } catch (error) {
                 console.error("خطأ في استرجاع بيانات المستخدم:", error);
+            }finally{
+                setLoading(false);
             }
         };
 
         fetchUserData();
     }, [token]);
 
-    if (!packages) {
+    if (loading) {
         return <Splash />;
     }
 

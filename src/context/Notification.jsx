@@ -7,8 +7,8 @@ import Swal from "sweetalert2";
 export const notificationContext = createContext()
 
 export default function NotificationContextProvider({ children }) {
-    const token = localStorage.getItem("token")
     const [userId, setUserId] = useState(null);
+    const [token, setToken] = useState(null);
     const [notification, setNotification] = useState([]);
     const [readNotification, setReadNotification] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -108,20 +108,25 @@ export default function NotificationContextProvider({ children }) {
     //read notifications 
 
 
-    useEffect(function () {
-        if (!token) return
-        getNewNotifications()
-        getNotifications()
-        getReadotifications()
+    useEffect(() => {
+        console.log("token in useEffect " + token);
+        if (!token) return;
+        console.log("token in useEffect " + token);
+
+        getNewNotifications();
+        getNotifications();
+        getReadotifications();
+
         var decode = jwtDecode(token);
         setUserId(decode.id);
-
-    }, [])
-    // useEffect(function () {
-
-    //     getNewNotifications()
-    // }, [currentPage])
-
+    }, [token]);
+    useEffect(() => {
+        console.log(token);
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            setToken(storedToken);
+        }
+    }, []);
 
     const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
@@ -188,7 +193,7 @@ export default function NotificationContextProvider({ children }) {
         loading, setCurrentPage,
         currentPage, totalPages, toggleReadStatus,
         getNotifications, numOfNotification, notification,
-        numOfNewNotification, readNotification, getReadotifications
+        numOfNewNotification, readNotification, getReadotifications, setToken
     }}>
         {children}
     </notificationContext.Provider>

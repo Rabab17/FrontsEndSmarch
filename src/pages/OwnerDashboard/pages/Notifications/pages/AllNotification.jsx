@@ -14,6 +14,7 @@ export default function AllNotification() {
         currentPage,
         toggleReadStatus, // Add this if available
     } = useContext(notificationContext);
+    
 
     useEffect(() => {
         getNotifications();

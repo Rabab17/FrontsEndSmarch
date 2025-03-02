@@ -81,8 +81,6 @@ export default function EditChalet() {
             ...chalet,
             facilities, 
             reservationPolicy: policy,
-            // img: imageUrl, 
-            // gallery: galleryUrls 
         };
         console.log(updatedData);
         try {
