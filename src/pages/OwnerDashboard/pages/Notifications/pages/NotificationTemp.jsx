@@ -4,27 +4,30 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function NotificationTemp({ notification, formatDate, toggleReadStatus, all = null }) {
-    // const { loadingRead } = useContext(notificationContext);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false); // حالة تحميل مستقلة لكل إشعار
+    const [loading, setLoading] = useState(false);
 
     const handleNavigate = (id, all) => {
         toggleReadStatus(id, all);
         switch (notification.type) {
             case "Reservation":
-                navigate("/OwnerDashboard/ManageReservations");
+                {
+                    notification.recipientRole == 'user' ?
+                        navigate("/UserDashboard") :
+                        navigate("/OwnerDashboard/ManageReservations")
+                }
                 break;
             case "Ticket":
                 navigate("/OwnerDashboard/support");
                 break;
             case "Subscription":
-                navigate("/ownerdashboard/BalanceRecharge");
+                navigate("/ownerdashboard/Subscription");
                 break;
             case "Chalet":
                 navigate("/ownerdashboard/ChaletManagement");
                 break;
             case "Chat":
-                navigate("/ownerdashboard/ChaletManagement");
+                navigate(`/chat/${notification.relatedEntityId}`);
                 break;
             default:
                 navigate(`/`);

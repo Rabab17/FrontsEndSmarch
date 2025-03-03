@@ -38,7 +38,7 @@ export default function NotificationContextProvider({ children }) {
             setNotification(data.data || [])
             serTotalPages(data.pagination.totalPages)
             setnumOfNotification(data.pagination.totalItems)
-
+            console.log(data.data)
 
         } catch (error) {
             console.log(error);
@@ -130,7 +130,6 @@ export default function NotificationContextProvider({ children }) {
 
     const toggleReadStatus = async (id, all) => {
         const token = localStorage.getItem("token");
-        // setLoadingRead(true)
 
         try {
             await axios.patch(
@@ -155,9 +154,7 @@ export default function NotificationContextProvider({ children }) {
             });
             console.error("Failed to update notification status", error);
         }
-        // finally {
-        //     setLoadingRead(false)
-        // }
+
     };
 
 
@@ -177,8 +174,7 @@ export default function NotificationContextProvider({ children }) {
             setNotification(prevData => [notification2, ...prevData])
 
             setnumOfNewNotification(prev => prev + 1)
-            // console.log("numOfNewNotification: " + numOfNewNotification)
-            // console.log(notification2)
+
         });
 
         return () => {
