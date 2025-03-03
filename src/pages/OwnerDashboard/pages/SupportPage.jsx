@@ -20,7 +20,7 @@ export default function SupportPage() {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/owner?page=${currentPage}&limit=10`, {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/owner?page=${currentPage}&limit=10`, {
                 headers: {
                     'Authorization': token
                 }
@@ -51,7 +51,7 @@ export default function SupportPage() {
     const updateStatus = async (ticketId, newStatus) => {
         const token = localStorage.getItem('token');
         try {
-            await axios.patch(`https://smarch-back-end-nine.vercel.app/ticket/updateStatus/${ticketId}`, { status: newStatus }, {
+            await axios.patch(`${import.meta.env.VITE_URL_BACKEND}ticket/updateStatus/${ticketId}`, { status: newStatus }, {
                 headers: {
                     'Authorization': token
                 }

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Splash from "../../components/Splash";
+import Pagination from "../../components/Pagination";
+import axios from "axios";
 
 export default function Blog() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true)
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const nav = useNavigate();
 
   const GoToPost = (id) => {
@@ -13,12 +16,20 @@ export default function Blog() {
   };
 
   useEffect(() => {
+
     const fetchPosts = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_URL_BACKEND}article`);
-        const data = await response.json();
-        if (data.status === "success") {
-          setBlogPosts(data.data);
+        const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}article`, {
+          params: {
+            page: currentPage,
+          }
+        });
+
+        if (response.data.status === "success") {
+          setBlogPosts(response.data.data);
+          console.log(response.data);
+          setTotalPage(response.data.pagination.totalPages);
         }
       } catch (error) {
         console.error("Error fetching blog posts:", error);
@@ -62,11 +73,12 @@ export default function Blog() {
                 className="w-full h-60 object-cover rounded-lg mb-10"
               />
             )}
-            <h2 className="text-lg font-semibold text-blue-700 mb-2">{post.title}</h2>
-            <p className="text-gray-600 text-sm mb-4">{post.subTitel}</p>
+            <h2 className="text-lg font-semibold text-blue-700 mb-2 truncate">{post.title}</h2>
+            <p className="text-gray-600 text-sm mb-4 truncate">{post.subTitel}</p>
           </div>
         ))}
       </div>
+      <Pagination setCurrentPage={setCurrentPage} totalPages={totalPage} currentPage={currentPage} />
     </div>
   );
 }

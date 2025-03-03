@@ -1,30 +1,31 @@
+/* eslint-disable react/prop-types */
 import axios from 'axios';
-import React, { useState } from 'react';
-import Swal from 'sweetalert2'; 
-import { jwtDecode } from 'jwt-decode'; 
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+import { jwtDecode } from 'jwt-decode';
 
 const TicketModal = ({ isOpen, onClose, ownerID }) => {
     const [subject, setSubject] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const token = localStorage.getItem('token');
         console.log("التوكن:", token);
-        
+
         try {
             // التحقق من الدور من الـ token
             const userRole = getUserRole(token); // دالة للحصول على الدور
 
             if (userRole === 'user') { // تحقق من أن الدور هو user
                 console.log("إرسال التذكرة بالموضوع:", subject, "و ownerID:", ownerID);
-                
-                const response = await axios.post('https://smarch-back-end-nine.vercel.app/ticket/create', {
+
+                const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}ticket/create`, {
                     subject,
                     recipient: ownerID
                 }, {
                     headers: {
-                        'Authorization': token 
+                        'Authorization': token
                     }
                 });
 
@@ -36,19 +37,19 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
                         icon: 'success',
                         confirmButtonText: 'موافق'
                     });
-                    onClose(); 
+                    onClose();
                 } else {
                     console.error('حالة استجابة غير متوقعة:', response.status);
                     console.error('بيانات الاستجابة:', response.data);
                 }
             } else if (userRole === 'owner') { // تحقق من أن الدور هو owner
                 console.log("إرسال التذكرة بالموضوع:", subject);
-                
-                const response = await axios.post('https://smarch-back-end-nine.vercel.app/ticket/create', {
+
+                const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}ticket/create`, {
                     subject,
                 }, {
                     headers: {
-                        'Authorization': token 
+                        'Authorization': token
                     }
                 });
 
@@ -60,7 +61,7 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
                         icon: 'success',
                         confirmButtonText: 'موافق'
                     });
-                    onClose(); 
+                    onClose();
                 } else {
                     console.error('حالة استجابة غير متوقعة:', response.status);
                     console.error('بيانات الاستجابة:', response.data);
