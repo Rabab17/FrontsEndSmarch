@@ -18,6 +18,7 @@ export default function HomePage() {
     const handleMessage = async (event) => {
 
       if (event.origin !== "http://smarch-admin.vercel.app/") return;
+      
 
       const { id } = event.data;
       const { role } = event.data
