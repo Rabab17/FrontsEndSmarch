@@ -17,8 +17,8 @@ export default function HomePage() {
   useEffect(() => {
     const handleMessage = async (event) => {
 
-      if (event.origin !== "http://smarch-admin.vercel.app/") return;
-      
+      if (event.origin !== "https://smarch-admin.vercel.app") return;
+
 
       const { id } = event.data;
       const { role } = event.data
