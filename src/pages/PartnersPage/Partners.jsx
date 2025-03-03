@@ -19,6 +19,7 @@ export default function Partners() {
           {
             params: {
               page: currentPage,
+              limit: 12
             }
           });
         setTotalPages(response.data.pagination.totalPages)

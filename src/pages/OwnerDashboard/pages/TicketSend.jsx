@@ -17,7 +17,7 @@ export default function TicketSend() {
         console.log(token);
 
         try {
-            const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/owner/send?page=${currentPage}&limit=10`, {
+            const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/owner/send?page=${currentPage}&limit=10`, {
                 headers: {
                     'Authorization': token
                 }

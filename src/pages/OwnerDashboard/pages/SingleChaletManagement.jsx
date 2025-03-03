@@ -13,6 +13,7 @@ export default function SingleChaletManagement() {
     const [currentPage, setCurrentPage] = useState(1); // الصفحة الحالية
     const [totalPages, setTotalPages] = useState(1); // إجمالي الصفحات
     const [Reservations, setReservations] = useState(0)
+    const [totalRevenue, setTotalRevenue] = useState(0)
     const [clients, setClients] = useState(0)
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +33,7 @@ export default function SingleChaletManagement() {
             setClients(response.data.numberOfClients);
             setReservations(response.data.numberOfReservations);
             setTotalPages(response.data.pagination.totalPages);
+            setTotalRevenue(response.data.totalRevenue)
         } catch (error) {
 
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
@@ -171,7 +173,7 @@ export default function SingleChaletManagement() {
                                 <div className="flex justify-between items-center mb-6">
                                     <div>
                                         <h3 className="text-lg font-semibold text-gray-700 mb-3">الإيرادات</h3>
-                                        <p className="text-2xl font-semibold text-[#101828]">revenue رس</p>
+                                        <p className="text-2xl font-semibold text-[#101828]"> {totalRevenue} رس</p>
                                     </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="60" height="61" viewBox="0 0 60 61" fill="none">
                                         <path opacity="0.21" d="M0 30.9067V37.9067C0 50.6093 10.2975 60.9067 23 60.9067H30H37C49.7025 60.9067 60 50.6093 60 37.9067V30.9067V23.9067C60 11.2042 49.7025 0.906738 37 0.906738H30H23C10.2975 0.906738 0 11.2042 0 23.9067V30.9067Z" fill="#4AD991" />

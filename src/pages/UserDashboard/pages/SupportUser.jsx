@@ -22,7 +22,7 @@ export default function Overview() {
             const token = localStorage.getItem("token");
 
             try {
-                const response = await axios.get(`https://smarch-back-end-nine.vercel.app/ticket/user?page=${currentPage}`, {
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/user?page=${currentPage}`, {
                     headers: {
                         Authorization: token,
                     },

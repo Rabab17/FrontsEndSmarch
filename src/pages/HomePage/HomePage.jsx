@@ -26,7 +26,7 @@ export default function HomePage() {
 
       try {
         const response = await axios.get(
-          `https://smarch-back-end-nine.vercel.app/user/token/${id}`,
+          `${import.meta.env.VITE_URL_BACKEND}/user/token/${id}`,
           {
             headers: {
               authorization: import.meta.env.VITE_ADMIN_TOKEN
