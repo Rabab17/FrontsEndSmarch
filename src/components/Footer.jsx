@@ -72,9 +72,9 @@ export default function Footer() {
         <div className="mt-8 md:mt-16 w-full md:w-[15%] text-center md:text-start">
           <h1 className="text-2xl">روابط أخرى</h1>
           <div className="mt-8 flex flex-col space-y-4">
-            <Link to="/" className="text-[#101828] hover:text-blue-700">سياسة الخصوصية</Link>
-            <Link to="/" className="text-[#101828] hover:text-blue-700">الشروط والأحكام</Link>
-            <Link to="/" className="text-[#101828] hover:text-blue-700">الأسئلة الشائعة</Link>
+            <Link to="/privacy" className="text-[#101828] hover:text-blue-700">سياسة الخصوصية</Link>
+            <Link to="/terms" className="text-[#101828] hover:text-blue-700">الشروط والأحكام</Link>
+            <Link to="/faq" className="text-[#101828] hover:text-blue-700">الأسئلة الشائعة</Link>
           </div>
         </div>
 

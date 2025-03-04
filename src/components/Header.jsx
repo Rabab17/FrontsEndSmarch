@@ -15,11 +15,9 @@ export default function Header() {
 
   useEffect(() => {
     if (token) {
-      // console.log("decodedToken");
       const decoded = jwtDecode(token);
       const id = decoded.id;
 
-      // console.log("userID من الـ token:", id);
 
       const fetchUserData = async () => {
         try {

@@ -14,31 +14,31 @@ export default function HeroSection() {
 
     useEffect(() => {
         if (token) {
-          // console.log("decodedToken");
-          const decoded = jwtDecode(token);
-          const id = decoded.id;
-    
-          // console.log("userID من الـ token:", id);
-    
-          const fetchUserData = async () => {
-            try {
-              const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
-    
-              });
-              // console.log("بيانات المستخدم:", response.data);
-              const userData = response.data.data;
-              console.log(userData)
-              setName(userData.userName);
-              setRole(userData.role)
-    
-            } catch (error) {
-              console.error("خطأ في استرجاع بيانات المستخدم:", error);
-            }
-          };
-    
-          fetchUserData();
+            // console.log("decodedToken");
+            const decoded = jwtDecode(token);
+            const id = decoded.id;
+
+            // console.log("userID من الـ token:", id);
+
+            const fetchUserData = async () => {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
+
+                    });
+                    // console.log("بيانات المستخدم:", response.data);
+                    const userData = response.data.data;
+                    console.log(userData)
+                    setName(userData.userName);
+                    setRole(userData.role)
+
+                } catch (error) {
+                    console.error("خطأ في استرجاع بيانات المستخدم:", error);
+                }
+            };
+
+            fetchUserData();
         }
-      }, [token]);
+    }, [token]);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -53,6 +53,13 @@ export default function HeroSection() {
     const GotoDashboard = () => {
         role == 'user' ? nav('/userdashboard') : nav('/ownerdashboard');
     }
+
+    const handelButtonClick = () => {
+        const token = localStorage.getItem('token');
+        if (!token) nav('/signup');
+        else nav('/partners')
+    }
+
     return (
         <div
             className="bg-cover bg-center relative h-[500px] sm:h-[700px] lg:h-[900px]"
@@ -173,7 +180,9 @@ export default function HeroSection() {
                 </p>
 
                 {/* الزر */}
-                <button className="w-40 sm:w-48 md:w-56 lg:w-64 mt-6 bg-gradient-to-l from-[#48BB78] via-[#48BB78] to-[#1A71FF] text-white text-sm sm:text-lg md:text-2xl px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 start-button">
+                <button
+                    onClick={handelButtonClick}
+                    className="w-40 sm:w-48 md:w-56 lg:w-64 mt-6 bg-gradient-to-l from-[#48BB78] via-[#48BB78] to-[#1A71FF] text-white text-sm sm:text-lg md:text-2xl px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 start-button">
                     ابدأ الآن
                 </button>
             </div>

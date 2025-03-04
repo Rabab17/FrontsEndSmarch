@@ -41,6 +41,9 @@ import UserNotificationPage from "../pages/UserDashboard/pages/Notification/User
 import AllNotificationUser from "../pages/UserDashboard/pages/Notification/pages/AllNotificationUser";
 import NewNotificationUser from "../pages/UserDashboard/pages/Notification/pages/NewNotificationUser";
 import ReadNotificationUser from "../pages/UserDashboard/pages/Notification/pages/ReadNotificationUser";
+import Privacy from "../pages/privacy/privacy";
+import Terms from "../pages/terms/Terms";
+import FAQ from "../pages/FAQ/FAQ";
 
 
 
@@ -62,6 +65,9 @@ export const router = createBrowserRouter([
       { path: "UpdatePassword", element: <UpdatePassword /> },
       { path: "ResetPassword/:token", element: <ResetPassword /> },
       { path: 'Chat/:id', element: <Chat /> },
+      { path: 'privacy', element: <Privacy /> },
+      { path: 'terms', element: <Terms /> },
+      { path: 'faq', element: <FAQ /> },
       {
         path: "OwnerDashboard", element: <OwnerDashboard />, children: [
           { index: true, element: <ControlsPage /> },

@@ -23,7 +23,6 @@ export default function HomePage() {
       const { id } = event.data;
       const { role } = event.data
       setRole(role);
-      console.log(event.data)
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_URL_BACKEND}user/token/${id}`,
@@ -35,7 +34,6 @@ export default function HomePage() {
         );
 
         const token = response.data.token;
-        console.log(response.data)
         localStorage.setItem("token", token);
         setTokenOwner(token);
       } catch (error) {

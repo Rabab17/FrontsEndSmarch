@@ -60,14 +60,14 @@ export default function SignUpUser() {
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("token", response.data.token);
             setToken(response.data.token);
-            
+
             Swal.fire({
                 title: "تم التسجيل بنجاح!",
-                text: "تم إنشاء حسابك بنجاح. سيتم تحويلك إلى الصفحة الرئيسية.",
+                text: "تم إنشاء حسابك بنجاح. سيتم تحويلك إلى  لوحة التحكم .",
                 icon: "success",
                 confirmButtonText: "حسناً",
             }).then(() => {
-                nav("/");
+                userType == 'user' ? nav("/userdashboard") : nav("/ownerdashboard")
             });
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);
@@ -78,7 +78,7 @@ export default function SignUpUser() {
                 confirmButtonText: "حسناً",
             });
         } finally {
-            setIsLoading(false); // إيقاف اللودر
+            setIsLoading(false);
 
         }
 
@@ -114,7 +114,9 @@ export default function SignUpUser() {
 
                     <label className="flex items-center text-sm">
                         <input type="checkbox" className="ml-2" required />
-                        أوافق على اتفاقية المستخدم
+                        <a href="/terms" target="_blank" rel="noopener noreferrer">
+                            أوافق على اتفاقية المستخدم
+                        </a>
                     </label>
                     <button
                         type="submit"
@@ -134,7 +136,7 @@ export default function SignUpUser() {
                     </button>
                 </form>
                 <p className="text-center text-sm mt-4">
-                    لديك حساب بالفعل؟{" "}
+                    لديك حساب بالفعل؟
                     <Link to="/login" className="text-[#0061E0] font-semibold hover:underline">
                         سجل الدخول الآن
                     </Link>

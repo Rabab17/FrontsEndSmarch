@@ -9,9 +9,16 @@ import { jwtDecode } from "jwt-decode";
 import { FaFacebook, FaPhone, FaSnapchatGhost, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { IoLocation } from "react-icons/io5";
-
+import FormInput from "../SignUpPage/FormInput";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from "swiper/modules";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
+  const [allImages, setAllImages] = useState([])
+  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal visibility
@@ -29,9 +36,10 @@ export default function ChaletDetails() {
     const fetchChalet = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/${id}`);
-        console.log(response.data);
         const chaletData = response.data.data;
         setChalet(chaletData);
+        setAllImages([chaletData.img, ...chaletData.gallery])
+
       } catch (error) {
         console.error("خطأ في استرجاع بيانات الشاليه:", error);
       } finally {
@@ -100,7 +108,7 @@ export default function ChaletDetails() {
       console.error("خطأ في تسجيل الدخول:", err);
       Swal.fire({
         title: "خطأ في تسجيل الدخول",
-        text:err.response.data.massage,
+        text: err.response.data.massage,
         icon: "error",
         confirmButtonText: "حسنًا",
       });
@@ -150,12 +158,47 @@ export default function ChaletDetails() {
     }
   };
 
+  const openSlider = () => {
+    console.log(allImages)
+    setIsOpen(true);
+  };
+
+
+
+
   return (
     <>
       {loading ? (
         <Splash />
       ) : (
         <div className="my-10 mx-4 sm:mx-8">
+          {isOpen && (
+            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-80 z-50">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute top-5 right-5 text-white text-3xl z-50"
+              >
+                ✖
+              </button>
+              <Swiper
+                modules={[Navigation]}
+                navigation={true}
+                className="w-full h-full"
+              >
+                {allImages.map((image, index) => (
+                  <SwiperSlide key={index} className="flex justify-center items-center h-full">
+                    <img
+                      src={image}
+                      className="max-w-full max-h-full object-contain w-full h-full"
+                      alt={`Slide ${index}`}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          )}
+
+
           {isOwner ? (
             <div dir="ltr" className="my-6 sm:my-8 px-4 sm:px-8 ">
               <button
@@ -334,6 +377,7 @@ export default function ChaletDetails() {
               <img
                 src={chalet.img}
                 alt={chalet.title}
+                onClick={openSlider}
                 className="w-full h-[500px] sm:h-[500px] object-cover rounded-lg"
               />
               <div
@@ -490,7 +534,13 @@ export default function ChaletDetails() {
             </p>
             <button onClick={() => setShowSignUpModal(false)} className="mt-4 text-red-500">إغلاق</button>
           </div>
+
         </div>
+
+
+
+
+
       )}
     </>
   );

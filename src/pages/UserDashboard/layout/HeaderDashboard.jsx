@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { IoIosMenu } from "react-icons/io";
 import SidebarDashboard from './SidebarDashboard';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 export default function HeaderDashboard() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const nav = useNavigate();
-    
+
     // New state for username and profile image
     const [username, setUsername] = useState('');
     const [profileImage, setProfileImage] = useState('');
@@ -14,17 +16,36 @@ export default function HeaderDashboard() {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+    const token = localStorage.getItem('token');
 
     // Fetch username and profile image from local storage
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (token) {
-            // Assuming the token contains user info or you have a way to verify it
-            const userInfo = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
-            setUsername(userInfo.username);
-            setProfileImage(userInfo.username.charAt(0)); // First letter of username
+            // console.log("decodedToken");
+            const decoded = jwtDecode(token);
+            const id = decoded.id;
+
+            // console.log("userID من الـ token:", id);
+
+            const fetchUserData = async () => {
+                try {
+                    const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
+
+                    });
+                    // console.log("بيانات المستخدم:", response.data);
+                    const userData = response.data.data;
+                    console.log(userData)
+                    setUsername(userData.userName);
+                    setProfileImage(userData.userName.charAt(0))
+
+                } catch (error) {
+                    console.error("خطأ في استرجاع بيانات المستخدم:", error);
+                }
+            };
+
+            fetchUserData();
         }
-    }, []);
+    }, [token]);
 
     return (
         <header className="bg-blue-50 shadow px-6 py-4 flex justify-between items-center">
