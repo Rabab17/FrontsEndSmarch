@@ -107,16 +107,15 @@ export default function ProfilePage() {
             تعديل
           </button>
           <div className="flex items-center gap-4">
-            <div className="text-end">
-              <h2 className="text-lg font-semibold">{userName}</h2>
-              <p className="text-gray-500">{email}</p>
-            </div>
-            <img
-              src="/assets/images/copy1.JPG"
-              alt="Profile Picture"
-              className="w-20 h-20 rounded-full"
-            />
-          </div>
+  <div className="text-end">
+    <h2 className="text-lg font-semibold">{userName}</h2>
+    <p className="text-gray-500">{email}</p>
+  </div>
+  <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl">
+    {userName.charAt(0)}
+  </div>
+</div>
+
         </div>
 
         <div className="flex flex-wrap justify-evenly gap-4 px-6 sm:px-10">

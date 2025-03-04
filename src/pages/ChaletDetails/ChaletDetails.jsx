@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { jwtDecode } from "jwt-decode";
 import { FaFacebook, FaPhone, FaSnapchatGhost, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { FaSquareInstagram } from "react-icons/fa6";
-import { IoLocation } from "react-icons/io5";
+import FormInput from "../SignUpPage/FormInput";
 
 export default function ChaletDetails() {
   const [chalet, setChalet] = useState([]);
