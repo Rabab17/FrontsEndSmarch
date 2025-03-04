@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -13,7 +13,7 @@ export default function Chat() {
     const [ticket, setTicket] = useState(null);
     const [message, setMessage] = useState("");
     const messagesEndRef = useRef(null);
-    const nav = useNavigate()
+
     const getTicketByChatId = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chat/${id}`, {
@@ -39,7 +39,6 @@ export default function Chat() {
     };
 
     useEffect(() => {
-        if (!token) nav('/')
         getTicketByChatId(); // Fetch ticket on mount
     }, [id]);
 
@@ -57,8 +56,6 @@ export default function Chat() {
         const channel = pusher.subscribe(`message-${id}`);
         channel.bind("newMessage", (data) => {
             console.log("data", data);
-
-            console.log("data", data);
             setTicket((prevTicket) => ({
                 ...prevTicket,
                 messages: data,
@@ -71,21 +68,26 @@ export default function Chat() {
         };
     }, [id]);
 
-    const Message = ({ text, isOwner }) => {
+    const Message = ({ text, senderRole, timestamp }) => {
+        const isOwner = senderRole === "owner"; 
+        const isAdmin = senderRole === "admin"; 
+        
         return (
             <div
                 style={{
-                    alignSelf: isOwner ? "flex-start" : " flex-end",
+                    alignSelf: isOwner ? "flex-end" : "flex-start",
                     maxWidth: "100%",
                     padding: "12px",
                     borderRadius: "8px",
-                    backgroundColor: isOwner ? "#e5e7eb" : "#3b82f6",
-                    color: isOwner ? "black" : " white",
+                    backgroundColor: isOwner ? "#3b82f6" : "#e5e7eb", // لون الخلفية للـ owner
+                    color: isOwner ? "white" : "black",
                     wordBreak: "break-word",
                 }}
             >
+                <div style={{ fontSize: "10px", color: "#6b7280", marginBottom: "4px" }}>
+                    {new Date(timestamp).toLocaleTimeString()}
+                </div>
                 {text}
-
             </div>
         );
     };
@@ -106,28 +108,21 @@ export default function Chat() {
                     }}
                 >
                     {ticket?.messages?.length === 0 ? (
-                        <div className="text-gray-500  flex flex-col items-center justify-center h-full">
+                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
                             <HiChatBubbleLeftRight className="w-16 h-16 text-gray-400 animate-bounce" />
                             <p className="mt-2">لا توجد رسائل حتى الآن، يمكنك بدء المحادثة الآن.</p>
                         </div>
                     ) : (
-                        <div className="w-full flex flex-col space-y-4">
+                        <div className="flex flex-col gap-2">
                             {ticket?.messages?.map((msg, index) => {
-                                const isOwner = msg.senderRole === "owner";
-                                const messageTime = new Date(msg.timestamp).toLocaleString("ar-EG", {
-                                    weekday: "short", // اسم اليوم (مثل: السبت)
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: true // لعرض الوقت بصيغة 12 ساعة
-                                });
                                 return (
-                                    <div key={index} className={`flex items-start gap-2 ${isOwner ? "flex-row" : " flex-row-reverse"}`}>
+                                    <div key={index} className={`flex items-start gap-2 ${msg.senderRole === "owner" ? "flex-row-reverse" : "flex-row"}`}>
                                         <Stack direction="row" spacing={2}>
-                                            <Avatar>{isOwner ? "A" : "U"}</Avatar>
+                                            <Avatar>{msg.senderName.charAt(0)}</Avatar> {/* عرض أول حرف من اسم المرسل */}
                                         </Stack>
-                                        <div className={`${isOwner ? "text-left" : "text-right"}`}>
-                                            <Message text={msg.message} isOwner={isOwner} />
-                                            <p className={`text-xs text-gray-500 ${isOwner ? 'text-right' : ' text-end'}`}>{messageTime}</p>
+                                        <div className={`${msg.senderRole === "owner" ? "text-right" : "text-left"}`}>
+                                            <p className="text-sm text-gray-600">{msg.senderName}</p> {/* عرض اسم المرسل */}
+                                            <Message text={msg.message} senderRole={msg.senderRole} timestamp={msg.timestamp} />
                                         </div>
                                     </div>
                                 );

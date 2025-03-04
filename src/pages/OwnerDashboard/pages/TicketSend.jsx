@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Splash from "../../../components/Splash";
-import Pagination from "../../../components/Pagination";
+import { useNavigate } from "react-router-dom"; // إضافة استيراد useNavigate
+import Pagination from "../../../components/Pagination"; // استيراد Pagination
 
 export default function TicketSend() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -55,46 +56,55 @@ export default function TicketSend() {
             >
                 إنشاء تذكرة جديدة
             </button>
-            {tickets.length == 0 ? <div>
-                <h2 className="text-3xl text-center text-gray-500 mt-12">
-                    لا توجد لديك تذاكر حتى الان
-                </h2>
-            </div> :
-                <>
-                    <div className="p-4 rounded-lg shadow">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="text-[#0061E0] p-2 text-xl">
-                                    <th>رقم التذكره</th>
-                                    <th>تاريخ الارسال</th>
-                                    <th>الموضوع</th>
-                                    <th>الحاله</th>
+
+            <div className="p-4 rounded-lg shadow">
+                <table className="w-full">
+                    <thead>
+                        <tr className="text-[#0061E0] p-2 text-xl">
+                            <th>رقم التذكره</th>
+                            <th>تاريخ الارسال</th>
+                            <th>الموضوع</th>
+                            <th>الحاله</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(tickets) && tickets.length > 0 ? (
+                            tickets.map((ticket, index) => (
+                                <tr key={ticket._id}>
+                                    <td className="py-5 px-2 text-center text-lg">{(currentPage - 1) * 10 + index + 1}</td>
+                                    <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
+                                    <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
+                                    <td className="py-5 px-2 text-center text-lg">
+                                        <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : ticket.status === 'open' ? 'bg-blue-500' : 'bg-red-500'} rounded-lg`}>
+                                            {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : ticket.status === 'open' ? 'مفتوح' : 'مغلق'}
+                                        </span>
+                                    </td>
+                                    <td className="py-5 px-2 text-center text-lg">
+                                        {ticket.chatID ? ( 
+                                            <button 
+                                                onClick={() => navigate(`/Chat/${ticket.chatID}`)} 
+                                                className="text-blue-500 hover:underline"
+                                            >
+                                                عرض المحادثة
+                                            </button>
+                                        ) : (
+                                            <span>لا يوجد شات</span> // إذا لم يكن هناك chatID
+                                        )}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {Array.isArray(tickets) && (
-                                    tickets.map((ticket, index) => (
-                                        <tr key={ticket._id}>
-                                            <td className="py-5 px-2 text-center text-lg">{(currentPage - 1) * 10 + index + 1}</td>
-                                            <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
-                                            <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
-                                            <td className="py-5 px-2 text-center text-lg">
-                                                <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
-                                                    {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="text-center">لا توجد تذاكر لعرضها</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
-                    {/* Pagination Controls */}
-                    < Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
-                </>
-
-            }
+            {/* Pagination Controls */}
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
 
             {/* Modal for creating a ticket */}
             <TicketModal
