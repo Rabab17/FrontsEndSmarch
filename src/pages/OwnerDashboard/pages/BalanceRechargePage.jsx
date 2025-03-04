@@ -64,7 +64,7 @@ export default function BalanceRechargePage() {
                     // عرض رسالة النجاح
                     Swal.fire({
                         title: "تم الاشتراك بنجاح!",
-                        text: "تم الاشتراك في الباقة بنجاح. يمكنك الآن الاستفادة من مزاياها.",
+                        text: response.data.message,
                         icon: "success",
                         confirmButtonText: "حسنًا",
                     });
@@ -73,7 +73,7 @@ export default function BalanceRechargePage() {
 
                     Swal.fire({
                         title: "حدث خطأ!",
-                        text: "تعذر الاشتراك في الباقة. يرجى المحاولة لاحقًا.",
+                        text: error.response.data.message,
                         icon: "error",
                         confirmButtonText: "حسنًا",
                     });

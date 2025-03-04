@@ -32,7 +32,7 @@ export default function NotificationContextProvider({ children }) {
                     ...(isRead !== null && { isRead })
                 }
             })
-            // console.log(data)
+
             window.scrollTo(0, 0);
 
             setNotification(data.data || [])
@@ -70,10 +70,7 @@ export default function NotificationContextProvider({ children }) {
                     isRead: false
                 }
             })
-            // console.log(data)
-            // Ensure we're setting an array
 
-            // serTotalPages(data.pagination.totalPages)
             setnumOfNewNotification(data.pagination.totalItems)
 
         } catch (error) {
@@ -112,15 +109,11 @@ export default function NotificationContextProvider({ children }) {
 
 
     useEffect(function () {
-        if (!token)
-        {
-            return
-        }
+        if (!token) return
         getNewNotifications()
         getNotifications()
         getReadotifications()
         var decode = jwtDecode(token);
-        // console.log("decode :" + decode);
         setUserId(decode.id);
 
     }, [])
@@ -144,13 +137,6 @@ export default function NotificationContextProvider({ children }) {
                     },
                 }
             );
-
-            // Swal.fire({
-            //     title: "تم تغيير حالة التنبيه بنجاح",
-            //     icon: "success",
-            //     confirmButtonText: "موافق",
-            // });
-            
             getNotifications(all)
             getNewNotifications()
             setCurrentPage(currentPage);
@@ -163,7 +149,7 @@ export default function NotificationContextProvider({ children }) {
                 confirmButtonText: "موافق",
             });
             console.error("Failed to update notification status", error);
-        } 
+        }
         // finally {
         //     setLoadingRead(false)
         // }
@@ -202,7 +188,7 @@ export default function NotificationContextProvider({ children }) {
         loading, setCurrentPage,
         currentPage, totalPages, toggleReadStatus,
         getNotifications, numOfNotification, notification,
-        numOfNewNotification,readNotification,getReadotifications
+        numOfNewNotification, readNotification, getReadotifications
     }}>
         {children}
     </notificationContext.Provider>

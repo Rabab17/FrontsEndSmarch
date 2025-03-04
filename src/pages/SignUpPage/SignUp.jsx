@@ -22,7 +22,7 @@ export default function SignUp() {
           </p>
         </div>
         {/* زر "أريد إدارة شاليه" */}
-        <div onClick={() => { nav('/signupuser', {state:{userType:"owner"}}) }} className="flex-1 bg-white border-2 border-blue-400 rounded-lg shadow-md p-6 transition-transform transform hover:scale-105 cursor-pointer w-64 h-64 md:w-80 md:h-80 flex flex-col justify-center">
+        <div onClick={() => { nav('/signupuser', { state: { userType: "owner" } }) }} className="flex-1 bg-white border-2 border-blue-400 rounded-lg shadow-md p-6 transition-transform transform hover:scale-105 cursor-pointer w-64 h-64 md:w-80 md:h-80 flex flex-col justify-center">
           <h2 className="text-xl md:text-3xl font-bold mb-4 text-[#101828]">أريد إدارة شاليه</h2>
           <p className="text-sm md:text-xl text-center text-[#5A6678]">
             أضف شاليهك وابدأ استقبال الحجوزات من العملاء الآن.

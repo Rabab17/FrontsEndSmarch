@@ -162,7 +162,10 @@ export default function ChaletManagement() {
                 </button>
             </div>
             {/* زر إضافة شاليه جديد */}
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            {chalets.length == 0 ? '' :
+
+                <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            }
         </div>
     );
 }

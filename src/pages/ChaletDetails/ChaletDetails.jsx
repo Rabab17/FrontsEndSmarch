@@ -100,7 +100,7 @@ export default function ChaletDetails() {
       console.error("خطأ في تسجيل الدخول:", err);
       Swal.fire({
         title: "خطأ في تسجيل الدخول",
-        text: "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى إعادة المحاولة.",
+        text:err.response.data.massage,
         icon: "error",
         confirmButtonText: "حسنًا",
       });

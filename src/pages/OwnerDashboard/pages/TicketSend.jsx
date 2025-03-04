@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import TicketModal from "../../UserDashboard/pages/TicketModal";
 import Splash from "../../../components/Splash";
-import { useNavigate } from "react-router-dom"; // إضافة استيراد useNavigate
+import Pagination from "../../../components/Pagination";
 
 export default function TicketSend() {
     const [tickets, setTickets] = useState([]); // حالة لتخزين التذاكر
@@ -55,92 +55,51 @@ export default function TicketSend() {
             >
                 إنشاء تذكرة جديدة
             </button>
-
-            <div className="p-4 rounded-lg shadow">
-                <table className="w-full">
-                    <thead>
-                        <tr className="text-[#0061E0] p-2 text-xl">
-                            <th>رقم التذكره</th>
-                            <th>تاريخ الارسال</th>
-                            <th>الموضوع</th>
-                            <th>الحاله</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Array.isArray(tickets) && tickets.length > 0 ? (
-                            tickets.map((ticket, index) => (
-                                <tr key={ticket._id}>
-                                    <td className="py-5 px-2 text-center text-lg">{(currentPage - 1) * 10 + index + 1}</td>
-                                    <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
-                                    <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
-                                    <td className="py-5 px-2 text-center text-lg">
-                                    <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : ticket.status === 'open' ? 'bg-blue-500' : 'bg-red-500'} rounded-lg`}>
-    {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : ticket.status === 'open' ? 'مفتوح' : 'مغلق'}
-</span>
-                                    </td>
-                                    <td className="py-5 px-2 text-center text-lg">
-                                        {ticket.chatID ? ( 
-                                            <button 
-                                                onClick={() => navigate(`/Chat/${ticket.chatID}`)} 
-                                                className="text-blue-500 hover:underline"
-                                            >
-                                                عرض المحادثة
-                                            </button>
-                                        ) : (
-                                            <span>لا يوجد شات</span> // إذا لم يكن هناك chatID
-                                        )}
-                                    </td>
+            {tickets.length == 0 ? <div>
+                <h2 className="text-3xl text-center text-gray-500 mt-12">
+                    لا توجد لديك تذاكر حتى الان
+                </h2>
+            </div> :
+                <>
+                    <div className="p-4 rounded-lg shadow">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="text-[#0061E0] p-2 text-xl">
+                                    <th>رقم التذكره</th>
+                                    <th>تاريخ الارسال</th>
+                                    <th>الموضوع</th>
+                                    <th>الحاله</th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="4" className="text-center">لا توجد تذاكر لعرضها</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                            </thead>
+                            <tbody>
+                                {Array.isArray(tickets) && (
+                                    tickets.map((ticket, index) => (
+                                        <tr key={ticket._id}>
+                                            <td className="py-5 px-2 text-center text-lg">{(currentPage - 1) * 10 + index + 1}</td>
+                                            <td className="py-5 px-2 text-center text-lg">{new Date(ticket.createdAt).toLocaleDateString()}</td>
+                                            <td className="py-5 px-2 text-center text-lg">{ticket.subject}</td>
+                                            <td className="py-5 px-2 text-center text-lg">
+                                                <span className={`px-3 py-1 text-white ${ticket.status === 'pending' ? 'bg-yellow-500' : ticket.status === 'complete' ? 'bg-green-500' : 'bg-red-500'} rounded-lg`}>
+                                                    {ticket.status === 'pending' ? 'قيد الانتظار' : ticket.status === 'complete' ? 'مكتمل' : 'مغلق'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-                <nav aria-label="Page navigation example" className="flex justify-center">
-                    <ul className="inline-flex -space-x-px text-sm">
-                        <li>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                            >
-                                السابق
-                            </button>
-                        </li>
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <li key={index}>
-                                <button
-                                    onClick={() => setCurrentPage(index + 1)}
-                                    className={`flex items-center justify-center px-3 h-8 leading-tight ${currentPage === index + 1 ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700'}`}
-                                >
-                                    {index + 1}
-                                </button>
-                            </li>
-                        ))}
-                        <li>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                            >
-                                التالي
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-            )}
+                    {/* Pagination Controls */}
+                    < Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                </>
+
+            }
 
             {/* Modal for creating a ticket */}
-            <TicketModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+            <TicketModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
             />
         </div>
     );

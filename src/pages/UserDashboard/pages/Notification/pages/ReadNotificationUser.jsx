@@ -1,31 +1,28 @@
 import { useContext, useEffect } from "react";
-import Splash from "../../../../../components/Splash";
 import { notificationContext } from "../../../../../context/Notification";
+import Splash from "../../../../../components/Splash";
+import NotificationTemp from "../../../../OwnerDashboard/pages/Notifications/pages/NotificationTemp";
 import Pagination from "../../../../../components/Pagination";
-import NotificationTemp from "./NotificationTemp";
 
-
-export default function NewNotification() {
-
+export default function ReadNotificationUser() {
     const {
-        getNotifications,
-        notification,
+        getReadotifications,
+        readNotification,
         loading,
         setCurrentPage,
-        currentPage,
         totalPages,
-        toggleReadStatus,
+        currentPage
     } = useContext(notificationContext)
 
     useEffect(() => {
         setCurrentPage(1);
-        // console.log("currentPage: " + currentPage);
+        console.log("currentPage: " + currentPage);
     }, []);
 
     useEffect(() => {
-        // console.log("asdasddasds")
-        getNotifications(false);
+        getReadotifications()
     }, [currentPage]);
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' };
         const date = new Date(dateString);
@@ -37,24 +34,24 @@ export default function NewNotification() {
         }
     }
 
+
+
+
+
+
     if (loading) return (<Splash />)
     return (
         <>
-            {notification?.map((notif, index) => (
+
+            {readNotification?.map((notif, index) => (
                 <div key={index} className="flex justify-center mt-7 px-4 sm:px-6 lg:px-8">
                     <NotificationTemp
                         notification={notif}
                         formatDate={formatDate}
-                        toggleReadStatus={toggleReadStatus}
-                        all={false}
                     />
                 </div>
             ))}
-            {notification.length == 0 ?
-                <div className="flex justify-center items-center h-full">
-                    <h2 className="text-center text-3xl text-gray-700 "> لا توجد لديك اشعارات لعرضها  </h2>
-                </div> :
-
+            {readNotification.length != 0 &&
                 <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
             }
 
