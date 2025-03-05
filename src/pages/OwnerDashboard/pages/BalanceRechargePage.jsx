@@ -12,11 +12,11 @@ export default function BalanceRechargePage() {
 
     useEffect(() => {
 
-        console.log("decodedToken");
+        
         const decoded = jwtDecode(token);
         const id = decoded.id;
 
-        console.log("userID من الـ token:", id);
+        
 
         const fetchUserData = async () => {
             try {
@@ -59,7 +59,7 @@ export default function BalanceRechargePage() {
                             },
                         }
                     );
-                    console.log(response);
+                    
 
                     // عرض رسالة النجاح
                     Swal.fire({
@@ -87,7 +87,7 @@ export default function BalanceRechargePage() {
     }
     return (
         <div className="flex flex-col md:flex-row justify-center items-center gap-6 p-6">
-            {console.log(packages)}
+            
             {
                 packages.map((plan) => (
                     <div

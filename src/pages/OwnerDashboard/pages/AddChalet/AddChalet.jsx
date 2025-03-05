@@ -89,7 +89,6 @@ export default function AddChalet() {
                 [name]: value,
             }
         }));
-        // console.log(formData);
         setFormErrors((prevErrors) => ({
             ...prevErrors,
             city: value ? "" : prevErrors[city],
@@ -145,7 +144,6 @@ export default function AddChalet() {
             const optimizedUrl = `${data.secure_url}`;
 
             setImageUrl(optimizedUrl);
-            console.log(optimizedUrl);
         } catch (error) {
             console.error("Error uploading image:", error);
         } finally {
@@ -277,13 +275,11 @@ export default function AddChalet() {
                 reservationPolicy: policy,
             };
 
-            console.log(updatedFormData)
             const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}chalet/addChalet`, updatedFormData, {
                 headers: {
                     Authorization: token,
                 },
             });
-            console.log(response)
 
             if (response.data.status === "success") {
                 Swal.fire({

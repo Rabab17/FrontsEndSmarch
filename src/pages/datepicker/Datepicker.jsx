@@ -22,7 +22,7 @@ export default function Datapicker() {
             Authorization: localStorage.getItem("token"),
           },
         });
-        console.log(response.data.data)
+        
         const bookings = response.data.data;
 
         let allBookedDates = [];
@@ -65,9 +65,9 @@ export default function Datapicker() {
     const checkOutDate = new Date(dateRange[1]);
     checkOutDate.setDate(checkOutDate.getDate() + 1);
 
-    console.log("checkInDate: " + checkInDate)
-    console.log("checkInDate: " + checkInDate.toLocaleDateString("en-CA"))
-    // console.log("checkOutDate: " + checkOutDate.toISOString())
+    
+    
+    
 
     try {
       const token = localStorage.getItem("token");

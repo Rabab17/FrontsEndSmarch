@@ -24,9 +24,7 @@ export default function Header() {
           const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
 
           });
-          // console.log("بيانات المستخدم:", response.data);
           const userData = response.data.data;
-          console.log(userData)
           setName(userData.userName);
           setRole(userData.role)
 

@@ -16,7 +16,6 @@ export default function TicketSend() {
 
     const fetchTickets = async () => {
         const token = localStorage.getItem('token');
-        console.log(token);
 
         try {
             const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}ticket/owner/send?page=${currentPage}&limit=10`, {
@@ -24,7 +23,6 @@ export default function TicketSend() {
                     'Authorization': token
                 }
             });
-            console.log(response.data);
 
             if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                 setTickets(response.data.data);

@@ -62,7 +62,6 @@ export default function ProfilePage() {
           Authorization: ` ${token}`,
         },
       });
-      console.log("تم تحديث البيانات بنجاح:", response.data);
       Swal.fire({
         title: "تم التحديث بنجاح",
         text: "تم حفظ بياناتك بنجاح.",

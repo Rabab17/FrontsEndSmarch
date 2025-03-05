@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { token } = useParams(); 
-  console.log("toto",token)
+  
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ const ResetPassword = () => {
           confirmPassword: confirmPassword,
         }
       );
-      console.log("res",response)
+      
 
       if (response.status === 200) {
         Swal.fire({

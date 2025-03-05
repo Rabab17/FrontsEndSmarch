@@ -20,7 +20,6 @@ export default function NewNotificationUser() {
     }, []);
 
     useEffect(() => {
-        // console.log("asdasddasds")
         getNotifications(false);
     }, [currentPage]);
     const formatDate = (dateString) => {

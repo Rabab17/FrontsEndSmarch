@@ -38,7 +38,7 @@ export default function NotificationContextProvider({ children }) {
             setNotification(data.data || [])
             serTotalPages(data.pagination.totalPages)
             setnumOfNotification(data.pagination.totalItems)
-            console.log(data.data)
+            
 
         } catch (error) {
             console.log(error);
@@ -94,7 +94,7 @@ export default function NotificationContextProvider({ children }) {
                     isRead: true
                 }
             })
-            // console.log(data)
+            
 
             setReadNotification(data.data)
 
@@ -109,9 +109,9 @@ export default function NotificationContextProvider({ children }) {
 
 
     useEffect(() => {
-        console.log("token in useEffect " + token);
+        
         if (!token) return;
-        console.log("token in useEffect " + token);
+        
 
         getNewNotifications();
         getNotifications();
@@ -121,7 +121,6 @@ export default function NotificationContextProvider({ children }) {
         setUserId(decode.id);
     }, [token]);
     useEffect(() => {
-        console.log(token);
         const storedToken = localStorage.getItem("token");
         if (storedToken) {
             setToken(storedToken);

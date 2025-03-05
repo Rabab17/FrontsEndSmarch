@@ -23,7 +23,7 @@ export default function ManageReservations() {
                 },
                 params: { page }
             });
-            console.log("بيانات المستخدم:", response.data);
+            
             const userData = response.data.data;
 
             setBookings(userData);

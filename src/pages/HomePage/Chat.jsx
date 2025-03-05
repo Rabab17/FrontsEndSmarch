@@ -57,7 +57,7 @@ export default function Chat() {
 
         const channel = pusher.subscribe(`message-${id}`);
         channel.bind("newMessage", (data) => {
-            console.log("data", data);
+            
 
             setTicket((prevTicket) => ({
                 ...prevTicket,

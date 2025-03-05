@@ -19,7 +19,6 @@ export default function ReadNotification() {
 
     useEffect(() => {
         setCurrentPage(1);
-        console.log("currentPage: " + currentPage);
     }, []);
 
     useEffect(() => {

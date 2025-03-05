@@ -19,7 +19,7 @@ const ChaletSlider = () => {
         const fetchChalet = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}chalet/users`);
-                console.log("بيانات المستخدم:", response.data);
+                
                 const chaletData = response.data.data;
                 setChalets(chaletData);
             } catch (error) {

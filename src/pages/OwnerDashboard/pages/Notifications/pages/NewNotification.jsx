@@ -19,11 +19,9 @@ export default function NewNotification() {
 
     useEffect(() => {
         setCurrentPage(1);
-        // console.log("currentPage: " + currentPage);
     }, []);
 
     useEffect(() => {
-        // console.log("asdasddasds")
         getNotifications(false);
     }, [currentPage]);
     const formatDate = (dateString) => {

@@ -14,20 +14,19 @@ export default function HeroSection() {
 
     useEffect(() => {
         if (token) {
-            // console.log("decodedToken");
             const decoded = jwtDecode(token);
             const id = decoded.id;
 
-            // console.log("userID من الـ token:", id);
+            
 
             const fetchUserData = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
 
                     });
-                    // console.log("بيانات المستخدم:", response.data);
+                    
                     const userData = response.data.data;
-                    console.log(userData)
+                    
                     setName(userData.userName);
                     setRole(userData.role)
 

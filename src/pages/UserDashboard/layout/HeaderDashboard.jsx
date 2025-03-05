@@ -21,20 +21,16 @@ export default function HeaderDashboard() {
     // Fetch username and profile image from local storage
     useEffect(() => {
         if (token) {
-            // console.log("decodedToken");
             const decoded = jwtDecode(token);
             const id = decoded.id;
 
-            // console.log("userID من الـ token:", id);
 
             const fetchUserData = async () => {
                 try {
                     const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}user/${id}`, {
 
                     });
-                    // console.log("بيانات المستخدم:", response.data);
                     const userData = response.data.data;
-                    console.log(userData)
                     setUsername(userData.userName);
                     setProfileImage(userData.userName.charAt(0))
 

@@ -29,7 +29,7 @@ export default function SingleChaletManagement() {
                 }
             );
             setBookings(response.data.data);
-            console.log(response.data)
+            
             setClients(response.data.numberOfClients);
             setReservations(response.data.numberOfReservations);
             setTotalPages(response.data.pagination.totalPages);
@@ -55,7 +55,6 @@ export default function SingleChaletManagement() {
                 { headers: { Authorization: token } }
             );
             fetchBookings(currentPage)
-            console.log(`تم ${newStatus === "approved" ? "تأكيد" : "إلغاء"} الحجز:`, response.data);
             Swal.fire({
                 title: "ناجح",
                 text: response.data.message,

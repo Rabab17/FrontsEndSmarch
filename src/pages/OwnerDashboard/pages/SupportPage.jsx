@@ -25,7 +25,6 @@ export default function SupportPage() {
                     'Authorization': token
                 }
             });
-            console.log("respons", response.data);
 
             if (response.data.status === 'success' && Array.isArray(response.data.data)) {
                 setTickets(response.data.data);

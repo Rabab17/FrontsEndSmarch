@@ -19,7 +19,6 @@ export default function SubscriptionOwner() {
                 }
             );
             setPackages(response.data.data);
-            console.log(response.data.data);
         } catch (error) {
             console.error("خطأ في استرجاع بيانات المستخدم:", error);
         } finally {
@@ -54,7 +53,6 @@ export default function SubscriptionOwner() {
                 icon: "success",
             })
             fetchUserData();
-            console.log(response.data.data);
         } catch (error) {
             Swal.fire({
                 title: "خطأ",

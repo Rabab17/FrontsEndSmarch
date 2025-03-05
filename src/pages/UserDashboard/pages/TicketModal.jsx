@@ -11,14 +11,12 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
         e.preventDefault();
 
         const token = localStorage.getItem('token');
-        console.log("التوكن:", token);
 
         try {
             // التحقق من الدور من الـ token
             const userRole = getUserRole(token); // دالة للحصول على الدور
 
             if (userRole === 'user') { // تحقق من أن الدور هو user
-                console.log("إرسال التذكرة بالموضوع:", subject, "و ownerID:", ownerID);
 
                 const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}ticket/create`, {
                     subject,
@@ -43,7 +41,6 @@ const TicketModal = ({ isOpen, onClose, ownerID }) => {
                     console.error('بيانات الاستجابة:', response.data);
                 }
             } else if (userRole === 'owner') { // تحقق من أن الدور هو owner
-                console.log("إرسال التذكرة بالموضوع:", subject);
 
                 const response = await axios.post(`${import.meta.env.VITE_URL_BACKEND}ticket/create`, {
                     subject,

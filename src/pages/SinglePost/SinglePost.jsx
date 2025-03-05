@@ -25,7 +25,6 @@ export default function SinglePost() {
     if (loading) return <Splash />;
     return (
         <div className="mx-auto bg-white rounded-lg shadow-md ">
-            {console.log(post)}
             <div className="text-center mx-auto">
                 <img
                     src={post.image}

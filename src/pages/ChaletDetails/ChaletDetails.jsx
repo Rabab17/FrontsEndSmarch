@@ -53,7 +53,7 @@ export default function ChaletDetails() {
     if (!loading && chalet && token) {
       const decoded = jwtDecode(token);
       const ownerid = decoded.id;
-      console.log(chalet);
+      
       if (ownerid === chalet.ownerID._id) {
         setIsOwner(true);
       }
@@ -84,7 +84,7 @@ export default function ChaletDetails() {
       const response = await axios.post(`${url}user/login`, { email, password });
       if (response.status === 200) {
         const user = response.data;
-        console.log("تم تسجيل الدخول بنجاح:", user);
+        
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("token", user.token);
         localStorage.setItem("user", JSON.stringify(user));
@@ -136,7 +136,7 @@ export default function ChaletDetails() {
         role: "user",
         phoneNumber: phone,
       });
-      console.log("Response:", response.data);
+      
       localStorage.setItem("isLoggedIn", true);
       localStorage.setItem("token", response.data.token);
       Swal.fire({
@@ -159,7 +159,7 @@ export default function ChaletDetails() {
   };
 
   const openSlider = () => {
-    console.log(allImages)
+    
     setIsOpen(true);
   };
 

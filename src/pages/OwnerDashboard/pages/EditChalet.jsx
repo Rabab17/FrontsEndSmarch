@@ -58,7 +58,7 @@ export default function EditChalet() {
                         Authorization: token,
                     },
                 });
-                console.log("بيانات الشاليه:", response.data.data);
+                
                 setChalet(response.data.data);
                 setFacilities(response.data.data.facilities || []);
                 setPolicy(response.data.data.reservationPolicy || []);
@@ -82,14 +82,14 @@ export default function EditChalet() {
             facilities, 
             reservationPolicy: policy,
         };
-        console.log(updatedData);
+        
         try {
             const response = await axios.patch(`${import.meta.env.VITE_URL_BACKEND}chalet/update/${id}`, updatedData, {
                 headers: {
                     Authorization: token,
                 },
             });
-            console.log('تم التعديل بنجاح', response.data);
+            
             Swal.fire({
                 title: `${response.data.message}`,
                 icon: 'success',
@@ -141,7 +141,7 @@ export default function EditChalet() {
                     img: data.secure_url,
                 }));
 
-                console.log("Image uploaded:", data.secure_url);
+                
             } else {
                 console.error("Failed to upload image");
             }
@@ -179,7 +179,7 @@ export default function EditChalet() {
                     );
     
                     const data = await response.json();
-                    console.log("image upload"+data.secure_url)
+                    
                     return `${data.secure_url}`;
                 });
     

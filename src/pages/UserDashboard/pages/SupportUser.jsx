@@ -35,7 +35,6 @@ export default function Overview() {
                     setNumOfTicketsClosed(response.data.numOfTicketsClosed); // Set closed tickets count
                     setNumOfTicketsOpen(response.data.numOfTicketsOpen); // Set open tickets count
                     setNumOfTicketsPending(response.data.numOfTicketsPending); // Set pending tickets count
-                    console.log("response.data.data", response.data);
                 } else {
                     setError("فشل في استرجاع البيانات.");
                 }

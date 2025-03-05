@@ -28,7 +28,7 @@ export default function Blog() {
 
         if (response.data.status === "success") {
           setBlogPosts(response.data.data);
-          console.log(response.data);
+          
           setTotalPage(response.data.pagination.totalPages);
         }
       } catch (error) {

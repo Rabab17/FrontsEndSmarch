@@ -26,7 +26,7 @@ export default function ChaletManagement() {
             });
             setChalets(response.data.data);
             setTotalPages(response.data.pagination.totalPages)
-            console.log(response.data)
+            
         } catch (error) {
             console.error("Error fetching packages:", error);
         } finally {

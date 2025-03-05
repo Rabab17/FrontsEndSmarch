@@ -10,7 +10,6 @@ export default function ContentDashbiard() {
 
     useEffect(() => {
         if (token) {
-            console.log("decodedToken");
             const decoded = jwtDecode(token);
             const id = decoded.id;
             const role = decoded.role;

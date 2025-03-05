@@ -19,7 +19,6 @@ export default function ControlsPage() {
                     Authorization: token
                 }
             });
-            console.log(response.data.data)
             setPackages(response.data.data);
 
         } catch (error) {

@@ -34,7 +34,6 @@ export default function Overview() {
                 if (response.data.status === "success") {
                     setBookings(response.data.data);
                     setTotalPages(response.data.pagination.totalPages); // Set total pages
-                    console.log("response.data.data", response.data.data);
                 } else {
                     setError("فشل في استرجاع البيانات.");
                 }
@@ -55,7 +54,6 @@ export default function Overview() {
             [bookingId]: rating,
         }));
         // هنا يمكنك إضافة كود لإرسال التقييم إلى الخادم إذا لزم الأمر
-        console.log(`تم تقييم الحجز ${bookingId} بـ ${rating} نجوم`);
     };
 
     if (loading) {
