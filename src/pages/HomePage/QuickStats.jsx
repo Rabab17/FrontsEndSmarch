@@ -13,7 +13,7 @@ export default function QuickStats() {
         setLoading(true)
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}siteData/67c6518decf118807f5737ae`);
+                const response = await axios.get(`${import.meta.env.VITE_URL_BACKEND}siteData`);
                 console.log(response.data);
                 setStats(response.data.data)
             } catch (error) {
@@ -27,10 +27,10 @@ export default function QuickStats() {
     }, []);
     if (loading) return <Splash />;
     const statsData = [
-        { icon: MdOutlineHome, value: stats?.chalet, label: "شاليه" },
-        { icon: SlCalender, value: stats?.reservation, label: "تقيم" },
-        { icon: IoIosPeople, value: stats?.client, label: "عميل" },
-        { icon: TbStars, value: stats?.rating, label: "حجز" },
+        { icon: MdOutlineHome, value: stats?.chalet|0, label: "شاليه" },
+        { icon: SlCalender, value: stats?.reservation|0, label: "تقيم" },
+        { icon: IoIosPeople, value: stats?.client|0, label: "عميل" },
+        { icon: TbStars, value: stats?.rating|0, label: "حجز" },
     ];
     return (
         <div className="mx-auto lg:w-[80%] w-[90%] bg-blue-50 py-4 rounded-3xl">

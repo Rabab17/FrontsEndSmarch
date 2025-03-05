@@ -121,7 +121,7 @@ export default function HeroSection() {
                         alt="Logo"
                         className="h-[40px] w-auto"
                     />
-                    {token ? <h1 className='text-[#E9F3FF] md:text-xl'> مرحبا {name} </h1> :
+                    {token ? <h1 className='text-[#E9F3FF] md:text-xl' onClick={GotoDashboard}> مرحبا {name} </h1> :
                         <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
                             تسجيل الدخول
                         </button>

@@ -96,7 +96,7 @@ export default function Header() {
         />
 
         {/* Mobile Login Button */}
-        {token ? <h1 className='md:text-xl'> مرحبا {userName} </h1> :
+        {token ? <h1 className='md:text-xl' onClick={GotoDashboard}> مرحبا {userName} </h1> :
           <button onClick={SiginUpButtonClick} className="bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white px-4 py-1 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm">
             تسجيل الدخول
           </button>
