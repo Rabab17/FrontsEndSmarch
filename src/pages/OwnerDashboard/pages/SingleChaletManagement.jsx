@@ -210,63 +210,68 @@ export default function SingleChaletManagement() {
                         </div>
                     </div>
                     {/* الجدول */}
-                    <button
-                        onClick={() => { downloadExcel() }}
-                        className="m-5 p-5 text-3xl bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
-                    >
-                        تحميل الداتا
-                    </button>
-                    <div className="bg-white p-4 rounded-lg shadow">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="text-[#0061E0] p-2 text-xl">
-                                    <th >رقم الحجز</th>
-                                    <th >اسم العميل</th>
-                                    <th >اسم الشاليه</th>
-                                    <th >تاريخ الحجز</th>
-                                    <th >تاريخ المغادرة</th>
-                                    <th>مبلغ الحجز</th>
-                                    <th >حالة الحجز</th>
-                                    <th>خيارات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bookings.map((booking, index) => (
-                                    <tr key={booking._id}>
+                    {bookings.length > 0 ?
 
-                                        <td className="py-2 px-1 text-center text-lg">{index + 1}</td>
-                                        <td className="py-2 px-1 text-center text-lg">{booking.userID.userName}</td>
-                                        <td className="py-2 px-1 text-center text-lg">{booking.chaletID.name}</td>
-                                        <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString('en-GB')}</td>
-                                        <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString('en-GB')}</td>
-                                        <td className="py-2 px-1 text-center text-lg">{`${Math.ceil((new Date(booking.checkOutDate) - new Date(booking.checkInDate)) / (1000 * 60 * 60 * 24)) * booking.chaletID.price} ريال`} </td>
-                                        <td className="py-2 px-1 text-center text-lg">
-                                            <span
-                                                className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-[#ECC94B]" : booking.status === "approved" ? "bg-[#48BB78]" : "bg-[#F00]"} rounded-lg`}>
-                                                {booking.status === "pending" ? "قيد الانتظار" : booking.status === "approved" ? "مكتمل" : "ملغي"}
-                                            </span>
+                        <div>
+                            <button
+                                onClick={() => { downloadExcel() }}
+                                className="m-5 p-5 text-3xl bg-gradient-to-l from-[#48BB78] to-[#1A71FF] text-white py-3 rounded-lg"
+                            >
+                                تحميل الداتا
+                            </button>
+                            <div className="bg-white p-4 rounded-lg shadow">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr className="text-[#0061E0] p-2 text-xl">
+                                            <th >رقم الحجز</th>
+                                            <th >اسم العميل</th>
+                                            <th >اسم الشاليه</th>
+                                            <th >تاريخ الحجز</th>
+                                            <th >تاريخ المغادرة</th>
+                                            <th>مبلغ الحجز</th>
+                                            <th >حالة الحجز</th>
+                                            <th>خيارات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {bookings.map((booking, index) => (
+                                            <tr key={booking._id}>
 
-                                        </td>
-                                        <td className="p-2 text-center">
-                                            <button onClick={() => { editStatus(booking) }}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M12 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12" stroke="#0061E0" />
-                                                    <path d="M18.375 2.62523C18.7728 2.2274 19.3124 2.00391 19.875 2.00391C20.4376 2.00391 20.9771 2.2274 21.375 2.62523C21.7728 3.02305 21.9963 3.56262 21.9963 4.12523C21.9963 4.68784 21.7728 5.2274 21.375 5.62523L12.362 14.6392C12.1245 14.8765 11.8312 15.0501 11.509 15.1442L8.63597 15.9842C8.54992 16.0093 8.45871 16.0108 8.37188 15.9886C8.28505 15.9663 8.2058 15.9212 8.14242 15.8578C8.07904 15.7944 8.03386 15.7151 8.01162 15.6283C7.98937 15.5415 7.99087 15.4503 8.01597 15.3642L8.85597 12.4912C8.9505 12.1693 9.12451 11.8763 9.36197 11.6392L18.375 2.62523Z" stroke="#0061E0" />
-                                                </svg>
-                                            </button>
+                                                <td className="py-2 px-1 text-center text-lg">{index + 1}</td>
+                                                <td className="py-2 px-1 text-center text-lg">{booking.userID.userName}</td>
+                                                <td className="py-2 px-1 text-center text-lg">{booking.chaletID.name}</td>
+                                                <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkInDate).toLocaleDateString('en-GB')}</td>
+                                                <td className="py-2 px-1 text-center text-lg">{new Date(booking.checkOutDate).toLocaleDateString('en-GB')}</td>
+                                                <td className="py-2 px-1 text-center text-lg">{`${Math.ceil((new Date(booking.checkOutDate) - new Date(booking.checkInDate)) / (1000 * 60 * 60 * 24)) * booking.chaletID.price} ريال`} </td>
+                                                <td className="py-2 px-1 text-center text-lg">
+                                                    <span
+                                                        className={`px-3 py-1 text-white ${booking.status === "pending" ? "bg-[#ECC94B]" : booking.status === "approved" ? "bg-[#48BB78]" : "bg-[#F00]"} rounded-lg`}>
+                                                        {booking.status === "pending" ? "قيد الانتظار" : booking.status === "approved" ? "مكتمل" : "ملغي"}
+                                                    </span>
 
-
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                                </td>
+                                                <td className="p-2 text-center">
+                                                    <button onClick={() => { editStatus(booking) }}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path d="M12 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V12" stroke="#0061E0" />
+                                                            <path d="M18.375 2.62523C18.7728 2.2274 19.3124 2.00391 19.875 2.00391C20.4376 2.00391 20.9771 2.2274 21.375 2.62523C21.7728 3.02305 21.9963 3.56262 21.9963 4.12523C21.9963 4.68784 21.7728 5.2274 21.375 5.62523L12.362 14.6392C12.1245 14.8765 11.8312 15.0501 11.509 15.1442L8.63597 15.9842C8.54992 16.0093 8.45871 16.0108 8.37188 15.9886C8.28505 15.9663 8.2058 15.9212 8.14242 15.8578C8.07904 15.7944 8.03386 15.7151 8.01162 15.6283C7.98937 15.5415 7.99087 15.4503 8.01597 15.3642L8.85597 12.4912C8.9505 12.1693 9.12451 11.8763 9.36197 11.6392L18.375 2.62523Z" stroke="#0061E0" />
+                                                        </svg>
+                                                    </button>
 
 
-                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
 
-                    <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
 
+                                <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+                            </div>
+                        </div> :
+                        <div className="text-center text-2xl">لا توجد حجوزات متاحة حاليا</div>
+
+                    }
                 </div>
                 : <div className="text-center w-full">
                     <h1 className="text-3xl">
