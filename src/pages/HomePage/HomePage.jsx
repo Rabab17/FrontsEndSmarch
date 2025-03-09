@@ -16,8 +16,8 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleMessage = async (event) => {
-
-      if (event.origin !== "https://smarch-admin.vercel.app") return;
+      console.log(event)
+      if (event.origin !== import.meta.env.VITE_ADMIN_URL) return;
 
 
       const { id } = event.data;

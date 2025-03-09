@@ -28,7 +28,7 @@ export default function Blog() {
 
         if (response.data.status === "success") {
           setBlogPosts(response.data.data);
-          
+
           setTotalPage(response.data.pagination.totalPages);
         }
       } catch (error) {
@@ -56,7 +56,7 @@ export default function Blog() {
           <div className="text-center space-y-4 mb-8">
             <h1 className="text-blue-700 text-3xl font-bold">استكشف مقالاتنا</h1>
             <h3 className="text-gray-600 text-lg">
-              تعرف على أحدث الأخبار والنصائح حول استئجار الشاليهات وإدارة العطلات المثالية.
+              تعرف على أحدث الأخبار والنصائح حوسل استئجار الشاليهات وإدارة العطلات المثالية.
             </h3>
             <input
               type="search"

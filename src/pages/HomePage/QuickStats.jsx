@@ -7,7 +7,7 @@ import { TbStars } from "react-icons/tb";
 import Splash from "../../components/Splash";
 
 export default function QuickStats() {
-    const [stats, setStats] = useState()
+    const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         setLoading(true)
