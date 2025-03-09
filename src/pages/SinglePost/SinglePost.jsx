@@ -39,8 +39,9 @@ export default function SinglePost() {
             <div>
                 {post.KeyPointes.map((point) => (
                     <div key={point._id} className="p-2 ps-10 border rounded-lg shadow-md mb-2">
-                        <p className="font-semibold text-xl mb-2 break-words text-wrap">{point.content}</p>
-
+                        <p className="text-2xl mb-4 ms-5 me-5 break-words text-wrap"
+                            dangerouslySetInnerHTML={{ __html: post.content }}
+                        />
                         <div className="flex gap-2 flex-wrap">
                             {point.images.map((img, index) => (
                                 <img

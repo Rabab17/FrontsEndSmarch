@@ -28,7 +28,7 @@ export default function Blog() {
 
         if (response.data.status === "success") {
           setBlogPosts(response.data.data);
-          
+
           setTotalPage(response.data.pagination.totalPages);
         }
       } catch (error) {
@@ -86,8 +86,8 @@ export default function Blog() {
                 <p className="text-gray-600 text-sm mb-4 truncate">{post.subTitel}</p>
               </div>
             ))}
-            <Pagination setCurrentPage={setCurrentPage} totalPages={totalPage} currentPage={currentPage} />
           </div>
+          <Pagination setCurrentPage={setCurrentPage} totalPages={totalPage} currentPage={currentPage} />
 
         </>
       }
